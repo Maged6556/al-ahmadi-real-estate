@@ -12,6 +12,8 @@ node_modules
 .env.*
 !.env.example
 !.env.production.example
+!tsconfig.base.json
+!apps/**/tsconfig*.json
 backups
 playwright-report
 test-results
