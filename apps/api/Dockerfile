@@ -1,23 +1,32 @@
-FROM node:22-bookworm-slim AS base
+FROM node:22-trixie-slim AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && corepack prepare pnpm@10.6.5 --activate
+RUN apt-get update -y \
+  && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends openssl \
+    && rm -rf /var/lib/apt/lists/* \
+    && corepack enable \
+    && corepack prepare pnpm@10.6.5 --activate
 WORKDIR /app
 
 FROM base AS production-dependencies
+ENV PRISMA_SKIP_POSTINSTALL_GENERATE=true
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/package.json
 COPY packages/shared/package.json packages/shared/package.json
-RUN pnpm install --prod --frozen-lockfile
 COPY apps/api/prisma apps/api/prisma
+RUN pnpm install --prod --frozen-lockfile
 RUN pnpm --filter @al-ahmadi/api db:generate
 
 FROM base AS build
+ENV PRISMA_SKIP_POSTINSTALL_GENERATE=true
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY apps/api/package.json apps/api/package.json
 COPY packages/shared/package.json packages/shared/package.json
+COPY apps/api/prisma apps/api/prisma
 RUN pnpm install --frozen-lockfile
+COPY tsconfig.base.json ./
 COPY apps/api apps/api
 COPY packages/shared packages/shared
 RUN pnpm --filter @al-ahmadi/api db:generate \
