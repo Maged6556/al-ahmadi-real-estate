@@ -1,0 +1,462 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  ADMIN
+  EDITOR
+  USER
+}
+
+enum EmailTokenType {
+  VERIFY_EMAIL
+  RESET_PASSWORD
+  CHANGE_EMAIL
+}
+
+enum ImportJobStatus {
+  PENDING
+  VALIDATED
+  COMMITTED
+  FAILED
+}
+
+enum ListingType {
+  APARTMENT        @map("apartment")
+  BUILDING         @map("building")
+  RESIDENTIAL_UNIT @map("residential_unit")
+  VILLA            @map("villa")
+  LAND             @map("land")
+}
+
+enum ListingOffer {
+  SALE @map("sale")
+  RENT @map("rent")
+}
+
+enum ListingStatus {
+  AVAILABLE @map("available")
+  SOLD      @map("sold")
+  RENTED    @map("rented")
+}
+
+enum LeadSource {
+  WHATSAPP_LISTING  @map("whatsapp_listing")
+  WHATSAPP_FLOATING @map("whatsapp_floating")
+  PROPERTY_REQUEST  @map("property_request")
+  OWNER_SUBMISSION  @map("owner_submission")
+  PHONE             @map("phone")
+  REFERRAL          @map("referral")
+  SOCIAL            @map("social")
+  OTHER             @map("other")
+}
+
+enum LeadStage {
+  NEW         @map("new")
+  CONTACTED   @map("contacted")
+  NEGOTIATING @map("negotiating")
+  WON         @map("won")
+  LOST        @map("lost")
+}
+
+enum LeadLostReason {
+  NO_RESPONSE       @map("no_response")
+  BUDGET_MISMATCH   @map("budget_mismatch")
+  BOUGHT_ELSEWHERE  @map("bought_elsewhere")
+  LOCATION_MISMATCH @map("location_mismatch")
+  NOT_SERIOUS       @map("not_serious")
+  OTHER             @map("other")
+}
+
+enum CommissionStatus {
+  EXPECTED
+  INVOICED
+  COLLECTED
+  WAIVED
+}
+
+enum LeadActivityType {
+  NOTE
+  CALL
+  WHATSAPP
+  STAGE_CHANGE
+  REMINDER_DONE
+}
+
+enum PropertyRequestStatus {
+  OPEN
+  MATCHED
+  CLOSED
+}
+
+enum OwnerSubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  NEEDS_INFO
+}
+
+enum MediaKind {
+  IMAGE
+  VIDEO
+}
+
+model User {
+  id                String             @id @default(uuid()) @db.Uuid
+  email             String             @unique @db.VarChar(320)
+  passwordHash      String
+  name              String?
+  role              UserRole           @default(USER)
+  preferredLocale   String             @default("ar") @db.VarChar(2)
+  emailVerifiedAt   DateTime?
+  termsAcceptedAt   DateTime?
+  termsVersion      String?            @db.VarChar(32)
+  privacyVersion    String?            @db.VarChar(32)
+  isActive          Boolean            @default(true)
+  failedLoginCount  Int                @default(0)
+  lockedUntil       DateTime?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  emailTokens       EmailToken[]
+  favorites         Favorite[]
+  importJobs        ImportJob[]
+  assignedLeads     Lead[]             @relation("LeadAssignee")
+  activities        LeadActivity[]     @relation("ActivityActor")
+  refreshTokens     RefreshToken[]
+  mediaUploadGrants MediaUploadGrant[]
+  auditLogs         AuditLog[]
+
+  @@index([role, isActive])
+}
+
+model EmailToken {
+  id          String         @id @default(uuid()) @db.Uuid
+  userId      String         @db.Uuid
+  type        EmailTokenType
+  tokenHash   String         @unique
+  expiresAt   DateTime
+  usedAt      DateTime?
+  targetEmail String?        @db.VarChar(320)
+  createdAt   DateTime       @default(now())
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type, expiresAt])
+  @@index([expiresAt])
+}
+
+model Favorite {
+  userId    String   @db.Uuid
+  listingId String   @db.Uuid
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@id([userId, listingId])
+  @@index([listingId])
+}
+
+model ImportJob {
+  id          String          @id @default(uuid()) @db.Uuid
+  actorId     String          @db.Uuid
+  filename    String
+  status      ImportJobStatus @default(PENDING)
+  totalRows   Int             @default(0)
+  okRows      Int             @default(0)
+  errorRows   Int             @default(0)
+  errorReport Json?
+  createdAt   DateTime        @default(now())
+  actor       User            @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([actorId, createdAt])
+  @@index([status, createdAt])
+}
+
+model LandingPage {
+  id          String        @id @default(uuid()) @db.Uuid
+  slug        String        @unique
+  city        String
+  district    String?
+  type        ListingType?
+  offer       ListingOffer?
+  titleAr     String
+  titleEn     String
+  introAr     String
+  introEn     String
+  isPublished Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([isPublished, city])
+  @@index([city, district, type, offer])
+}
+
+model Lead {
+  id                   String            @id @default(uuid()) @db.Uuid
+  name                 String
+  phone                String            @db.VarChar(16)
+  activePhone          String?           @unique @db.VarChar(16)
+  email                String?           @db.VarChar(320)
+  source               LeadSource
+  stage                LeadStage         @default(NEW)
+  assignedToId         String?           @db.Uuid
+  interestedListingIds String[]          @default([])
+  preferredLocale      String            @default("ar") @db.VarChar(2)
+  budgetMin            Decimal?          @db.Decimal(14, 2)
+  budgetMax            Decimal?          @db.Decimal(14, 2)
+  notesSummary         String?           @db.Text
+  nextFollowUpAt       DateTime?
+  lastContactAt        DateTime?
+  wonAt                DateTime?
+  lostAt               DateTime?
+  lostReason           LeadLostReason?
+  utmSource            String?
+  utmMedium            String?
+  utmCampaign          String?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  assignedTo           User?             @relation("LeadAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  deal                 Deal?
+  activities           LeadActivity[]
+  propertyRequests     PropertyRequest[]
+  ownerSubmissions     OwnerSubmission[]
+
+  @@index([stage, nextFollowUpAt])
+  @@index([assignedToId, stage, updatedAt])
+  @@index([source, createdAt])
+  @@index([createdAt])
+}
+
+model Deal {
+  id                String           @id @default(uuid()) @db.Uuid
+  leadId            String           @unique @db.Uuid
+  listingId         String?          @db.Uuid
+  offer             ListingOffer
+  agreedPrice       Decimal?         @db.Decimal(14, 2)
+  commissionPercent Decimal?         @db.Decimal(5, 2)
+  commissionAmount  Decimal?         @db.Decimal(14, 2)
+  commissionStatus  CommissionStatus @default(EXPECTED)
+  collectedAt       DateTime?
+  notes             String?          @db.Text
+  createdAt         DateTime         @default(now())
+  lead              Lead             @relation(fields: [leadId], references: [id], onDelete: Restrict)
+  listing           Listing?         @relation(fields: [listingId], references: [id], onDelete: SetNull)
+
+  @@index([commissionStatus, createdAt])
+  @@index([listingId])
+}
+
+model LeadActivity {
+  id        String           @id @default(uuid()) @db.Uuid
+  leadId    String           @db.Uuid
+  actorId   String           @db.Uuid
+  type      LeadActivityType
+  body      String?          @db.Text
+  createdAt DateTime         @default(now())
+  lead      Lead             @relation(fields: [leadId], references: [id], onDelete: Restrict)
+  actor     User             @relation("ActivityActor", fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([leadId, createdAt])
+  @@index([actorId, createdAt])
+}
+
+model PropertyRequest {
+  id          String                @id @default(uuid()) @db.Uuid
+  leadId      String                @db.Uuid
+  offer       ListingOffer
+  types       ListingType[]
+  city        String
+  districts   String[]              @default([])
+  bedroomsMin Int?
+  areaMin     Decimal?              @db.Decimal(10, 2)
+  budgetMin   Decimal?              @db.Decimal(14, 2)
+  budgetMax   Decimal?              @db.Decimal(14, 2)
+  notes       String?               @db.Text
+  status      PropertyRequestStatus @default(OPEN)
+  createdAt   DateTime              @default(now())
+  lead        Lead                  @relation(fields: [leadId], references: [id], onDelete: Restrict)
+
+  @@index([status, offer, city])
+  @@index([leadId, createdAt])
+}
+
+model OwnerSubmission {
+  id                       String                 @id @default(uuid()) @db.Uuid
+  leadId                   String                 @db.Uuid
+  ownerName                String
+  phone                    String                 @db.VarChar(16)
+  offer                    ListingOffer
+  type                     ListingType
+  city                     String
+  district                 String?
+  addressText              String?
+  areaSqm                  Decimal?               @db.Decimal(10, 2)
+  bedrooms                 Int?
+  description              String                 @db.Text
+  ownerAskingPrice         Decimal?               @db.Decimal(14, 2)
+  ownerAskingCurrency      String?                @db.Char(3)
+  commissionNoticeVersion  String?
+  commissionAcknowledgedAt DateTime?
+  commissionAckIpHash      String?
+  commissionTermsSnapshot  Json?
+  status                   OwnerSubmissionStatus  @default(PENDING)
+  rejectionNote            String?                @db.Text
+  convertedListingId       String?                @unique @db.Uuid
+  createdAt                DateTime               @default(now())
+  updatedAt                DateTime               @updatedAt
+  lead                     Lead                   @relation(fields: [leadId], references: [id], onDelete: Restrict)
+  convertedListing         Listing?               @relation("ConvertedSubmission", fields: [convertedListingId], references: [id], onDelete: SetNull)
+  media                    OwnerSubmissionMedia[]
+
+  @@index([status, createdAt])
+  @@index([phone, city, type, createdAt])
+  @@index([leadId])
+}
+
+model OwnerSubmissionMedia {
+  id                String          @id @default(uuid()) @db.Uuid
+  ownerSubmissionId String          @db.Uuid
+  kind              MediaKind
+  url               String
+  publicId          String          @unique
+  width             Int?
+  height            Int?
+  sortOrder         Int             @default(0)
+  createdAt         DateTime        @default(now())
+  ownerSubmission   OwnerSubmission @relation(fields: [ownerSubmissionId], references: [id], onDelete: Cascade)
+
+  @@index([ownerSubmissionId, sortOrder])
+}
+
+model ConsentLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  version   String
+  consented Boolean
+  createdAt DateTime @default(now())
+
+  @@index([version, createdAt])
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  tokenHash String    @unique
+  family    String    @db.Uuid
+  expiresAt DateTime
+  revokedAt DateTime?
+  userAgent String?
+  ip        String?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, family])
+  @@index([family, revokedAt])
+  @@index([expiresAt])
+}
+
+model Listing {
+  id                   String             @id @default(uuid()) @db.Uuid
+  code                 String             @unique @db.VarChar(32)
+  slug                 String             @unique
+  type                 ListingType
+  offer                ListingOffer
+  status               ListingStatus      @default(AVAILABLE)
+  titleAr              String
+  titleEn              String
+  descriptionAr        String             @db.Text
+  descriptionEn        String             @db.Text
+  city                 String
+  district             String?
+  addressText          String?
+  latitude             Decimal?           @db.Decimal(10, 7)
+  longitude            Decimal?           @db.Decimal(10, 7)
+  areaSqm              Decimal?           @db.Decimal(10, 2)
+  bedrooms             Int?
+  bathrooms            Int?
+  floor                Int?
+  features             String[]           @default([])
+  isPublished          Boolean            @default(false)
+  publishedAt          DateTime?
+  soldAt               DateTime?
+  rentedAt             DateTime?
+  deletedAt            DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  media                Media[]
+  favorites            Favorite[]
+  inquiries            Inquiry[]
+  mediaUploadGrants    MediaUploadGrant[]
+  deals                Deal[]
+  convertedSubmissions OwnerSubmission[]  @relation("ConvertedSubmission")
+
+  @@index([status, type, offer, city])
+  @@index([isPublished, deletedAt, createdAt])
+  @@index([city, district])
+  @@index([type, offer, status])
+}
+
+model Media {
+  id        String    @id @default(uuid()) @db.Uuid
+  listingId String    @db.Uuid
+  kind      MediaKind
+  url       String
+  publicId  String    @unique
+  width     Int?
+  height    Int?
+  sortOrder Int       @default(0)
+  isCover   Boolean   @default(false)
+  altAr     String?
+  altEn     String?
+  createdAt DateTime  @default(now())
+  listing   Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+
+  @@index([listingId, sortOrder])
+  @@index([listingId, isCover])
+}
+
+model MediaUploadGrant {
+  id         String    @id @default(uuid()) @db.Uuid
+  listingId  String    @db.Uuid
+  actorId    String    @db.Uuid
+  tokenHash  String    @unique
+  mimeType   String    @db.VarChar(64)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  listing    Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  actor      User      @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([listingId, expiresAt])
+  @@index([actorId, expiresAt])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid()) @db.Uuid
+  actorId   String?  @db.Uuid
+  action    String
+  entity    String
+  entityId  String?
+  diff      Json?
+  ip        String?
+  createdAt DateTime @default(now())
+  actor     User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId, createdAt])
+  @@index([entity, entityId, createdAt])
+}
+
+model Inquiry {
+  id        String   @id @default(uuid()) @db.Uuid
+  listingId String?  @db.Uuid
+  channel   String
+  createdAt DateTime @default(now())
+  listing   Listing? @relation(fields: [listingId], references: [id], onDelete: SetNull)
+
+  @@index([listingId, createdAt])
+  @@index([channel, createdAt])
+}
