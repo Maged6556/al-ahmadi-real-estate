@@ -6,6 +6,7 @@
     "node": ">=22"
   },
   "scripts": {
+    "postinstall": "pnpm --filter @al-ahmadi/api db:generate",
     "dev": "pnpm --parallel --filter @al-ahmadi/api --filter @al-ahmadi/web dev",
     "dev:api": "pnpm --filter @al-ahmadi/api dev",
     "dev:web": "pnpm --filter @al-ahmadi/web dev",
