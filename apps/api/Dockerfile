@@ -28,6 +28,7 @@ COPY apps/api/prisma apps/api/prisma
 RUN pnpm install --frozen-lockfile
 COPY tsconfig.base.json ./
 COPY apps/api apps/api
+COPY packages/shared packages/shared
 RUN pnpm --filter @al-ahmadi/api db:generate \
     && pnpm --filter @al-ahmadi/api typecheck
 
