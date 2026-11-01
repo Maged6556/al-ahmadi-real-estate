@@ -33,7 +33,7 @@ jobs:
             type=raw,value=sha-${{ github.event.workflow_run.head_sha }}
             type=raw,value=latest,enable={{is_default_branch}}
       - name: Publish API
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: apps/api/Dockerfile
@@ -41,7 +41,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
       - name: Publish web
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: apps/web/Dockerfile
