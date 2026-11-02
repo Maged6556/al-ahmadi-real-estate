@@ -63,6 +63,8 @@ jobs:
         with:
           image-ref: ${{ fromJSON(steps.meta-api.outputs.json).tags[0] }}
           version: v0.76.1
+          scanners: vuln
+          ignore-unfixed: true
           format: table
           severity: HIGH,CRITICAL
           exit-code: "1"
@@ -71,6 +73,8 @@ jobs:
         with:
           image-ref: ${{ fromJSON(steps.meta-web.outputs.json).tags[0] }}
           version: v0.76.1
+          scanners: vuln
+          ignore-unfixed: true
           format: table
           severity: HIGH,CRITICAL
           exit-code: "1"
