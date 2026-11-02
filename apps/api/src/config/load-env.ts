@@ -13,7 +13,7 @@ export function loadEnv() {
     return;
   }
 
-  const result = config({ path: workspaceEnvPath });
+  const result = config({ path: workspaceEnvPath, quiet: true });
 
   if (result.error) {
     throw new Error("Unable to load the workspace .env file.", {
