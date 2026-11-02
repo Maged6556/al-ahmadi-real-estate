@@ -2,7 +2,7 @@ FROM node:22-bookworm-slim AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable && corepack prepare pnpm@10.6.5 --activate
+RUN npm install --global pnpm@10.6.5
 WORKDIR /app
 
 FROM base AS dependencies

@@ -6,8 +6,7 @@ RUN apt-get update -y \
   && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends openssl \
     && rm -rf /var/lib/apt/lists/* \
-    && corepack enable \
-    && corepack prepare pnpm@10.6.5 --activate
+    && npm install --global pnpm@10.6.5
 WORKDIR /app
 
 FROM base AS production-dependencies
