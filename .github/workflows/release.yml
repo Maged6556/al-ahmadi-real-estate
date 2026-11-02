@@ -25,7 +25,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Image metadata
-        id: meta
+        id: meta-api
         uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
         with:
           images: ghcr.io/${{ github.repository }}-api
@@ -46,8 +46,8 @@ jobs:
           context: .
           file: apps/api/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ steps.meta-api.outputs.tags }}
+          labels: ${{ steps.meta-api.outputs.labels }}
       - name: Publish web
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
@@ -61,14 +61,16 @@ jobs:
       - name: Scan API image
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
-          image-ref: ghcr.io/${{ github.repository }}-api:sha-${{ github.event.workflow_run.head_sha }}
+          image-ref: ${{ fromJSON(steps.meta-api.outputs.json).tags[0] }}
+          version: v0.76.1
           format: table
           severity: HIGH,CRITICAL
           exit-code: "1"
       - name: Scan web image
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
-          image-ref: ghcr.io/${{ github.repository }}-web:sha-${{ github.event.workflow_run.head_sha }}
+          image-ref: ${{ fromJSON(steps.meta-web.outputs.json).tags[0] }}
+          version: v0.76.1
           format: table
           severity: HIGH,CRITICAL
           exit-code: "1"
