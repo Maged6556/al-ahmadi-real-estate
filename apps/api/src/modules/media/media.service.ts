@@ -61,11 +61,14 @@ export type SanitizedImage = {
 };
 
 export async function sanitizeImage(
-  buffer: Buffer,
+  buffer: unknown,
   claimedMime: string | undefined,
   maxImageBytes = MAX_IMAGE_BYTES,
   maxImagePixels = MAX_IMAGE_PIXELS,
 ): Promise<SanitizedImage> {
+  if (!Buffer.isBuffer(buffer)) {
+    throw invalidImage();
+  }
   if (
     buffer.length === 0 ||
     buffer.length > maxImageBytes ||
