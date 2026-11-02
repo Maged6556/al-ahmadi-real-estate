@@ -1,4 +1,4 @@
-FROM node:22-trixie-slim AS base
+FROM node:26-trixie-slim AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -31,7 +31,7 @@ COPY packages/shared packages/shared
 RUN pnpm --filter @al-ahmadi/api db:generate \
     && pnpm --filter @al-ahmadi/api typecheck
 
-FROM node:22-trixie-slim AS runtime
+FROM node:26-trixie-slim AS runtime
 RUN apt-get update -y \
   && apt-get upgrade -y \
   && apt-get install -y --no-install-recommends openssl \
