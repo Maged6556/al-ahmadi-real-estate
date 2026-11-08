@@ -16,6 +16,7 @@ import { AdminMediaManager } from "./admin-media-manager";
 type Fields = Omit<
   AdminListingInput,
   | "features"
+  | "slug"
   | "district"
   | "addressText"
   | "latitude"
@@ -39,7 +40,6 @@ type Fields = Omit<
 function emptyFields(): Fields {
   return {
     code: "",
-    slug: "",
     type: "apartment",
     offer: "sale",
     titleAr: "",
@@ -63,10 +63,21 @@ function optionalNumber(value: string) {
   return value.trim() === "" ? null : Number(value);
 }
 
+function createListingSlug(title: string, code: string) {
+  const normalize = (value: string) =>
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  const titleSlug = normalize(title).slice(0, 110).replace(/-+$/g, "");
+  const codeSlug = normalize(code).slice(0, 40).replace(/-+$/g, "");
+
+  return `${titleSlug || "property"}-${codeSlug || "listing"}-${crypto.randomUUID().slice(0, 8)}`;
+}
+
 function listingFields(listing: AdminListing): Fields {
   return {
     code: listing.code,
-    slug: listing.slug,
     type: listing.type,
     offer: listing.offer,
     titleAr: listing.titleAr,
@@ -134,7 +145,7 @@ export function AdminListingEditor({
 
     const input: AdminListingInput = {
       code: fields.code.trim(),
-      slug: fields.slug.trim(),
+      slug: listing?.slug ?? createListingSlug(fields.titleEn, fields.code),
       type: fields.type,
       offer: fields.offer,
       titleAr: fields.titleAr.trim(),
@@ -246,7 +257,6 @@ export function AdminListingEditor({
           <h2>{messages.admin.listingDetails}</h2>
           <div className="admin-form-grid">
             {textField("code", messages.admin.code, { required: true })}
-            {textField("slug", messages.admin.slug, { required: true })}
             <label className="admin-field">
               <span>{messages.admin.type}</span>
               <select
@@ -345,9 +355,9 @@ export function AdminListingEditor({
           </div>
         </section>
 
-        {listing && (
-          <section className="admin-form-section">
-            <h2>{messages.admin.media}</h2>
+        <section className="admin-form-section">
+          <h2>{messages.admin.media}</h2>
+          {listing ? (
             <AdminMediaManager
               listingId={listing.id}
               media={listing.media}
@@ -356,8 +366,10 @@ export function AdminListingEditor({
                 setListing((current) => current && { ...current, media })
               }
             />
-          </section>
-        )}
+          ) : (
+            <p className="admin-muted">{messages.admin.mediaCreateFirst}</p>
+          )}
+        </section>
 
         <div className="admin-form-actions">
           <button
