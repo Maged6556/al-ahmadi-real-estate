@@ -15,6 +15,7 @@ const redis = new Redis(env.REDIS_URL, {
   maxRetriesPerRequest: 1,
   enableOfflineQueue: false,
 });
+await redis.connect();
 const mailQueue = createMailQueue(
   env.REDIS_URL,
   env.RESEND_API_KEY,
