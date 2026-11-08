@@ -34,7 +34,7 @@ export default async function LocaleLayout({
   const locale = requireLocale(localeParam);
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body>
+      <body suppressHydrationWarning>
         <a className="skip-link" href="#main-content">
           {locale === "ar" ? "انتقل إلى المحتوى" : "Skip to content"}
         </a>
