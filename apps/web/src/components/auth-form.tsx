@@ -7,6 +7,34 @@ import type { Locale } from "@al-ahmadi/shared";
 import { LEGAL_PRIVACY_VERSION, LEGAL_TERMS_VERSION } from "@al-ahmadi/shared";
 import { getMessages } from "../lib/i18n";
 
+function isAdminLoginResponse(
+  payload: unknown,
+): payload is { data: { user: { role: "ADMIN" } } } {
+  return (
+    typeof payload === "object" &&
+    payload !== null &&
+    "data" in payload &&
+    typeof payload.data === "object" &&
+    payload.data !== null &&
+    "user" in payload.data &&
+    typeof payload.data.user === "object" &&
+    payload.data.user !== null &&
+    "role" in payload.data.user &&
+    payload.data.user.role === "ADMIN"
+  );
+}
+
+function isAdminPath(path: string | null, locale: Locale): path is string {
+  const prefix = `/${locale}/admin`;
+  return Boolean(
+    path?.startsWith(prefix) &&
+      (path.length === prefix.length ||
+        path[prefix.length] === "/" ||
+        path[prefix.length] === "?" ||
+        path[prefix.length] === "#"),
+  );
+}
+
 export function AuthForm({
   locale,
   mode,
@@ -57,6 +85,7 @@ export function AuthForm({
         setFeedback({ message: messages.auth.error, success: false });
         return;
       }
+      const payload: unknown = await response.json();
       setFeedback({
         message:
           mode === "register"
@@ -67,7 +96,13 @@ export function AuthForm({
       form.reset();
       if (mode === "login") {
         const next = new URLSearchParams(window.location.search).get("next");
-        if (next?.startsWith(`/${locale}/admin`)) {
+        if (isAdminLoginResponse(payload)) {
+          window.location.assign(
+            isAdminPath(next, locale) ? next : `/${locale}/admin`,
+          );
+          return;
+        }
+        if (isAdminPath(next, locale)) {
           window.location.assign(next);
           return;
         }
