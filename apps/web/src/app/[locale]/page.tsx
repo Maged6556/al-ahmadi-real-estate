@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import type { PublicListing } from "../../lib/api";
@@ -89,22 +90,14 @@ export default async function HomePage({
             </div>
           </div>
           <div className="hero-art" aria-hidden="true">
-            <div className="hero-sun" />
-            <div className="hero-building building-back">
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="hero-building building-front">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
-            <div className="hero-ground" />
+            <Image
+              src="/al-ahmadi-logo.jpg"
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 700px) 100vw, 45vw"
+              className="hero-visual-logo"
+            />
             <div className="hero-art-label">
               <span className="label-dot" />
               <span>
