@@ -50,6 +50,7 @@ services:
 
   api:
     image: "ghcr.io/${GHCR_OWNER:?Set GHCR_OWNER}/${GHCR_REPOSITORY:-al-ahmadi-real-estate}-api:${APP_IMAGE_TAG:-latest}"
+    init: true
     environment:
       NODE_ENV: production
       API_PORT: 4000
@@ -101,6 +102,7 @@ services:
 
   web:
     image: "ghcr.io/${GHCR_OWNER:?Set GHCR_OWNER}/${GHCR_REPOSITORY:-al-ahmadi-real-estate}-web:${APP_IMAGE_TAG:-latest}"
+    init: true
     environment:
       NODE_ENV: production
       PORT: 3000

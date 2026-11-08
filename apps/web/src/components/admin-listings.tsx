@@ -354,7 +354,7 @@ export function AdminListings({ locale }: { locale: Locale }) {
                 />
               </th>
               <th>{messages.admin.code}</th>
-              <th>{messages.admin.title}</th>
+              <th>{messages.admin.listingTitle}</th>
               <th>{messages.admin.city}</th>
               <th>{messages.admin.status}</th>
               <th>{messages.admin.publication}</th>
@@ -384,7 +384,7 @@ export function AdminListings({ locale }: { locale: Locale }) {
                   <td>
                     <input
                       type="checkbox"
-                      aria-label={`${messages.admin.title}: ${listing.code}`}
+                      aria-label={`${messages.admin.listingTitle}: ${listing.code}`}
                       checked={selectedIds.has(listing.id)}
                       onChange={(event) =>
                         setSelectedIds((current) => {

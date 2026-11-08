@@ -42,6 +42,7 @@ services:
 
   api:
     image: node:22-alpine
+    init: true
     working_dir: /workspace
     command: sh -c "corepack enable && pnpm --filter @al-ahmadi/api db:migrate:deploy && pnpm --filter @al-ahmadi/api dev"
     environment:
@@ -94,6 +95,7 @@ services:
 
   web:
     image: node:22-alpine
+    init: true
     working_dir: /workspace
     command: sh -c "corepack enable && pnpm --filter @al-ahmadi/web dev"
     environment:
