@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import type { Locale } from "@al-ahmadi/shared";
+import { adminRequest } from "../lib/admin-api";
 import { getMessages } from "../lib/i18n";
 
 type AccountUser = {
@@ -108,6 +109,19 @@ export function AccountCenter({ locale }: { locale: Locale }) {
     }
   }
 
+  async function logout() {
+    setFeedback(null);
+    try {
+      await adminRequest<void>("/api/auth/logout", {
+        method: "POST",
+        body: "{}",
+      });
+      window.location.assign(`/${locale}`);
+    } catch {
+      setFeedback(copy.error);
+    }
+  }
+
   if (!loaded) {
     return <p className="account-status">{copy.loading}</p>;
   }
@@ -124,6 +138,11 @@ export function AccountCenter({ locale }: { locale: Locale }) {
 
   return (
     <div className="account-center">
+      <div className="account-section">
+        <button className="button button-outline" onClick={() => void logout()}>
+          {messages.admin.logout}
+        </button>
+      </div>
       {feedback && (
         <p className="form-feedback form-success" role="status">
           {feedback}

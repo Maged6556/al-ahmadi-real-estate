@@ -11,21 +11,23 @@ import { getMessages, localizedPath } from "../lib/i18n";
 export function SiteHeader({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const messages = getMessages(locale);
-  const [adminAccount, setAdminAccount] = useState(false);
+  const [account, setAccount] = useState<{
+    name: string | null;
+    email: string;
+    role: string;
+  } | null>(null);
   const nextLocale: Locale = locale === "ar" ? "en" : "ar";
 
   useEffect(() => {
     let active = true;
-    adminRequest<{ data: { user: { role: string } } }>("/api/auth/me")
+    adminRequest<{
+      data: { user: { name: string | null; email: string; role: string } };
+    }>("/api/auth/me")
       .then(({ data }) => {
-        if (active) {
-          setAdminAccount(
-            data.user.role === "ADMIN" || data.user.role === "EDITOR",
-          );
-        }
+        if (active) setAccount(data.user);
       })
       .catch(() => {
-        if (active) setAdminAccount(false);
+        if (active) setAccount(null);
       });
 
     return () => {
@@ -64,14 +66,17 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <Link href={`/${locale}/contact`}>{messages.nav.contact}</Link>
         </nav>
         <div className="header-actions">
-          <Link href={`/${locale}/login`} className="header-login">
-            {messages.nav.login}
-          </Link>
           <Link
-            href={`/${locale}/${adminAccount ? "admin" : "account"}`}
+            href={`/${locale}/${
+              account
+                ? account.role === "ADMIN" || account.role === "EDITOR"
+                  ? "admin"
+                  : "account"
+                : "login"
+            }`}
             className="header-login"
           >
-            {messages.nav.account}
+            {account?.name || account?.email || messages.nav.account}
           </Link>
           <a
             href={localizedPath(nextLocale, pathname)}
