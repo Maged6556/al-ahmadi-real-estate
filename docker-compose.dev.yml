@@ -1,0 +1,127 @@
+services:
+  install:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "corepack enable && pnpm install --no-frozen-lockfile"
+    volumes:
+      - .:/workspace
+      - root_node_modules:/workspace/node_modules
+      - api_node_modules:/workspace/apps/api/node_modules
+      - web_node_modules:/workspace/apps/web/node_modules
+      - shared_node_modules:/workspace/packages/shared/node_modules
+    restart: "no"
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: al_ahmadi
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}"
+      POSTGRES_DB: al_ahmadi
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U al_ahmadi -d al_ahmadi"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save 60 1 --loglevel warning
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "corepack enable && pnpm --filter @al-ahmadi/api db:migrate:deploy && pnpm --filter @al-ahmadi/api dev"
+    environment:
+      NODE_ENV: development
+      API_PORT: 4000
+      DATABASE_URL: "postgresql://al_ahmadi:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/al_ahmadi"
+      DIRECT_URL: "postgresql://al_ahmadi:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/al_ahmadi"
+      REDIS_URL: redis://redis:6379
+      CORS_ORIGIN: http://localhost:3000
+      WEB_BASE_URL: http://localhost:3000
+      RESEND_API_KEY: "${RESEND_API_KEY:-}"
+      EMAIL_FROM: "${EMAIL_FROM:-Al-ahmadi <no-reply@example.com>}"
+      JWT_ACCESS_SECRET: "${JWT_ACCESS_SECRET:?Set JWT_ACCESS_SECRET in .env}"
+      WEB_REVALIDATION_URL: http://web:3000/api/revalidate
+      WEB_REVALIDATION_SECRET: "${WEB_REVALIDATION_SECRET:?Set WEB_REVALIDATION_SECRET in .env}"
+      CLOUDINARY_CLOUD_NAME: "${CLOUDINARY_CLOUD_NAME:-}"
+      CLOUDINARY_API_KEY: "${CLOUDINARY_API_KEY:-}"
+      CLOUDINARY_API_SECRET: "${CLOUDINARY_API_SECRET:-}"
+      MEDIA_MAX_IMAGE_BYTES: "${MEDIA_MAX_IMAGE_BYTES:-10485760}"
+      MEDIA_MAX_IMAGE_PIXELS: "${MEDIA_MAX_IMAGE_PIXELS:-40000000}"
+      MEDIA_MAX_PER_LISTING: "${MEDIA_MAX_PER_LISTING:-20}"
+      ACCESS_TOKEN_TTL_SECONDS: 900
+      REFRESH_TOKEN_TTL_DAYS: 30
+      TRUST_PROXY_HOPS: 0
+    ports:
+      - "127.0.0.1:4000:4000"
+    volumes:
+      - .:/workspace
+      - root_node_modules:/workspace/node_modules
+      - api_node_modules:/workspace/apps/api/node_modules
+      - shared_node_modules:/workspace/packages/shared/node_modules
+    depends_on:
+      install:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4000/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  web:
+    image: node:22-alpine
+    working_dir: /workspace
+    command: sh -c "corepack enable && pnpm --filter @al-ahmadi/web dev"
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:4000
+      API_INTERNAL_BASE_URL: http://api:4000
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000
+      BROKER_LICENSE_NUMBER: "${BROKER_LICENSE_NUMBER:-}"
+      WEB_REVALIDATION_SECRET: "${WEB_REVALIDATION_SECRET:?Set WEB_REVALIDATION_SECRET in .env}"
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - .:/workspace
+      - root_node_modules:/workspace/node_modules
+      - web_node_modules:/workspace/apps/web/node_modules
+      - shared_node_modules:/workspace/packages/shared/node_modules
+      - next_data:/workspace/apps/web/.next
+    depends_on:
+      install:
+        condition: service_completed_successfully
+      api:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:
+  root_node_modules:
+  api_node_modules:
+  web_node_modules:
+  shared_node_modules:
+  next_data:

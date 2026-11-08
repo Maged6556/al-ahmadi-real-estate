@@ -1,0 +1,14 @@
+packages:
+  - apps/*
+  - packages/*
+
+onlyBuiltDependencies:
+  - esbuild
+  - msgpackr-extract
+  - "@prisma/client"
+  - "@prisma/engines"
+  - prisma
+
+overrides:
+  minimatch: ^11.0.1
+  postcss: ^8.5.32
