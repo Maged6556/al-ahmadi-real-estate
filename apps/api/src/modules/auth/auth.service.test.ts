@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import express from "express";
 import { rateLimit } from "express-rate-limit";
 import request from "supertest";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createApp } from "../../app.js";
 import type { ApiEnv } from "../../config/env.js";
 import { errorHandler } from "../../middleware/error.js";
@@ -24,10 +24,7 @@ import type { AccountLifecycleService } from "./account-lifecycle.service.js";
 
 function testLifecycle(): AccountLifecycleService {
   return {
-    sendVerificationEmail: async () => {},
-    confirmEmailLink: async () => {},
-    requestPasswordReset: async () => {},
-    resetPassword: async () => {},
+    sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
   } as unknown as AccountLifecycleService;
 }
 
@@ -469,6 +466,7 @@ describe("AuthService", () => {
       {
         authRepository: repository,
         rateLimiters: testRateLimiters(),
+        accountLifecycle: testLifecycle(),
       },
     );
     const productionRegister = await request(productionApp)

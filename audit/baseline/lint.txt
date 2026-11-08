@@ -1,0 +1,4 @@
+﻿
+> al-ahmadi-real-estate@ lint E:\VS Code Projects\al-ahmadi-real-estate
+> eslint .
+
