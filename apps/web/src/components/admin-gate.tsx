@@ -7,6 +7,7 @@ import { createContext, useContext } from "react";
 import type { Locale } from "@al-ahmadi/shared";
 import { AdminApiError, adminRequest, type AdminUser } from "../lib/admin-api";
 import { getMessages, localizedPath } from "../lib/i18n";
+import { ThemeToggle } from "./theme-toggle";
 
 const AdminUserContext = createContext<AdminUser | null>(null);
 
@@ -149,6 +150,7 @@ export function AdminGate({
               <strong>{user.name || user.email}</strong>
             </div>
             <div className="admin-top-actions">
+              <ThemeToggle locale={locale} />
               <Link href={`/${locale}`} className="admin-public-link">
                 {messages.admin.viewSite}
               </Link>
