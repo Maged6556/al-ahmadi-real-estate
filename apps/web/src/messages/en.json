@@ -1,5 +1,10 @@
 {
   "brand": "Al-ahmadi Real Estate Marketing",
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light mode",
+    "dark": "Dark mode"
+  },
   "nav": {
     "home": "Home",
     "listings": "Properties",

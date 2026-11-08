@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import type { Locale } from "@al-ahmadi/shared";
 import { adminRequest } from "../lib/admin-api";
 import { getMessages, localizedPath } from "../lib/i18n";
+import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const pathname = usePathname();
@@ -66,6 +67,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <Link href={`/${locale}/contact`}>{messages.nav.contact}</Link>
         </nav>
         <div className="header-actions">
+          <ThemeToggle locale={locale} />
           <Link
             href={`/${locale}/${
               account
