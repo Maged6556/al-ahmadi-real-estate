@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Locale } from "@al-ahmadi/shared";
@@ -21,9 +22,14 @@ export function SiteHeader({ locale }: { locale: Locale }) {
     <header className="site-header">
       <div className="container header-inner">
         <Link href={`/${locale}`} className="brand" aria-label={messages.brand}>
-          <span className="brand-mark" aria-hidden="true">
-            أ
-          </span>
+          <Image
+            src="/al-ahmadi-logo.jpg"
+            alt=""
+            width={56}
+            height={56}
+            className="brand-logo"
+            priority
+          />
           <span className="brand-name">{messages.brand}</span>
         </Link>
         <nav
@@ -36,9 +42,6 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <Link href={`/${locale}/contact`}>{messages.nav.contact}</Link>
         </nav>
         <div className="header-actions">
-          <Link href={`/${locale}/admin`} className="header-login">
-            {locale === "ar" ? "لوحة الإدارة" : "Admin"}
-          </Link>
           <Link href={`/${locale}/login`} className="header-login">
             {messages.nav.login}
           </Link>

@@ -105,6 +105,15 @@ select:focus-visible {
   gap: 10px;
 }
 
+.brand-logo {
+  display: block;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 auto;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
 .brand-mark,
 .auth-mark {
   display: grid;
@@ -1680,10 +1689,9 @@ p {
     padding-block: 12px;
   }
 
-  .brand-mark {
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
+  .brand-logo {
+    width: 46px;
+    height: 46px;
   }
 
   .brand-name {
