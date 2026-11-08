@@ -89,18 +89,16 @@ export function createAuthRouter(
     async (request, response) => {
       const input = registerSchema.parse(request.body);
       const session = await authService.register(input, metadataFrom(request));
+      setSessionCookies(response, session, config.cookieSecure);
       if (lifecycle) {
         await lifecycle.sendVerificationEmail(session.user);
       } else {
-        console.error(
-          JSON.stringify({
-            level: "error",
-            event: "email_verification_not_queued",
-            reason: "Account lifecycle service is not configured",
-          }),
+        throw new AppError(
+          503,
+          "EMAIL_UNAVAILABLE",
+          "Email delivery is not configured.",
         );
       }
-      setSessionCookies(response, session, config.cookieSecure);
       response.status(201).json({
         data: { user: session.user },
         meta: { accessTokenExpiresIn: session.accessTokenExpiresIn },

@@ -1,4 +1,5 @@
 import { Queue, Worker, type ConnectionOptions } from "bullmq";
+import { AppError } from "../../lib/app-error.js";
 
 export type MailMessage = {
   to: string;
@@ -48,6 +49,11 @@ class DisabledMailQueue implements MailQueue {
         event: "email_delivery_unavailable",
         reason: "RESEND_API_KEY is not configured",
       }),
+    );
+    throw new AppError(
+      503,
+      "EMAIL_UNAVAILABLE",
+      "Email delivery is not configured.",
     );
   }
 
@@ -129,6 +135,11 @@ export function createMailQueue(
             event: "email_enqueue_failed",
             errorName: error instanceof Error ? error.name : "UnknownError",
           }),
+        );
+        throw new AppError(
+          503,
+          "EMAIL_QUEUE_UNAVAILABLE",
+          "The email could not be queued. Please try again.",
         );
       }
     },
