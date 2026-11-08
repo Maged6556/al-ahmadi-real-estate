@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import express from "express";
 import { rateLimit } from "express-rate-limit";
 import request from "supertest";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createApp } from "../../app.js";
 import type { ApiEnv } from "../../config/env.js";
 import { errorHandler } from "../../middleware/error.js";
@@ -20,6 +20,13 @@ import type {
 import { AuthService } from "./auth.service.js";
 import { loginSchema, registerSchema } from "./auth.schemas.js";
 import { can } from "./permissions.js";
+import type { AccountLifecycleService } from "./account-lifecycle.service.js";
+
+function testLifecycle(): AccountLifecycleService {
+  return {
+    sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
+  } as unknown as AccountLifecycleService;
+}
 
 function testRateLimiters(): ApiRateLimiters {
   const limiter = rateLimit({
@@ -396,6 +403,7 @@ describe("AuthService", () => {
     const app = createApp(testEnvironment(), {
       authRepository: repository,
       rateLimiters: testRateLimiters(),
+      accountLifecycle: testLifecycle(),
     });
     const response = await request(app)
       .post("/api/auth/register")
@@ -458,6 +466,7 @@ describe("AuthService", () => {
       {
         authRepository: repository,
         rateLimiters: testRateLimiters(),
+        accountLifecycle: testLifecycle(),
       },
     );
     const productionRegister = await request(productionApp)
@@ -482,6 +491,7 @@ describe("AuthService", () => {
     const app = createApp(testEnvironment(), {
       authRepository: repository,
       rateLimiters: testRateLimiters(),
+      accountLifecycle: testLifecycle(),
     });
     const csrfHeaders = {
       Origin: "http://localhost:3000",

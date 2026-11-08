@@ -1,0 +1,15 @@
+
+> @al-ahmadi/api@0.1.0 dev E:\VS Code Projects\al-ahmadi-real-estate\apps\api
+> tsx watch src/server.ts
+
+E:\VS Code Projects\al-ahmadi-real-estate\node_modules\.pnpm\ioredis@5.11.1\node_modules\ioredis\built\Redis.js:220
+                    reject(new Error(utils_1.CONNECTION_CLOSED_ERROR_MSG));
+                           ^
+
+Error: Connection is closed.
+    at EventEmitter.connectionCloseHandler (E:\VS Code Projects\al-ahmadi-real-estate\node_modules\.pnpm\ioredis@5.11.1\node_modules\ioredis\built\Redis.js:220:28)
+    at EventEmitter.wrapper (node:events:639:12)
+    at EventEmitter.emit (node:events:514:20)
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+
+Node.js v26.13.0

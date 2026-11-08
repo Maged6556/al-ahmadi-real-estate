@@ -1,0 +1,67 @@
+﻿
+> al-ahmadi-real-estate@ test E:\VS Code Projects\al-ahmadi-real-estate
+> vitest run
+
+
+[1m[30m[46m RUN [49m[39m[22m [36mv4.1.12 [39m[90mE:/VS Code Projects/al-ahmadi-real-estate[39m
+
+ [32m✓[39m apps/api/src/modules/auth/mail.queue.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m apps/web/src/components/cookie-consent.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 10[2mms[22m[39m
+ [32m✓[39m apps/api/src/modules/media/cloudinary-storage.test.ts [2m([22m[2m2 tests[22m[2m)[22m[32m 121[2mms[22m[39m
+ [32m✓[39m apps/web/src/components/listing-card.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m apps/api/src/config/env.test.ts [2m([22m[2m4 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m apps/api/src/modules/listings/listings.schemas.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32m✓[39m apps/api/src/modules/auth/account-lifecycle.service.test.ts [2m([22m[2m6 tests[22m[2m)[22m[33m 1311[2mms[22m[39m
+     [33m[2m✓[22m[39m hashes new passwords and sends a notice after a valid reset [33m 897[2mms[22m[39m
+     [33m[2m✓[22m[39m rejects malformed or expired reset tokens without sending a notice [33m 383[2mms[22m[39m
+ [32m✓[39m apps/api/src/modules/listings/listings.routes.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 157[2mms[22m[39m
+ [32m✓[39m apps/api/src/modules/media/media.routes.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 289[2mms[22m[39m
+ [31m❯[39m apps/api/src/modules/auth/auth.service.test.ts [2m([22m[2m10 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[33m 5429[2mms[22m[39m
+     [33m[2m✓[22m[39m normalizes registration email, creates only USER accounts, and stores a password hash [33m 663[2mms[22m[39m
+     [32m✓[39m rejects malformed, short, oversized, and unexpected registration fields[32m 3[2mms[22m[39m
+     [33m[2m✓[22m[39m uses the same login error for existing and unknown accounts [33m 944[2mms[22m[39m
+     [33m[2m✓[22m[39m locks an account for 15 minutes after five failed login attempts [33m 2170[2mms[22m[39m
+     [33m[2m✓[22m[39m rotates refresh tokens and revokes their family after token reuse [33m 306[2mms[22m[39m
+     [33m[2m✓[22m[39m authenticates active users and rejects revoked or deactivated accounts [33m 305[2mms[22m[39m
+[31m     [31m×[31m sets HttpOnly auth cookies and returns a safe user DTO from /me[39m[33m 374[2mms[22m[39m
+     [33m[2m✓[22m[39m rotates refresh cookies and revokes the session family on logout [33m 337[2mms[22m[39m
+     [32m✓[39m rejects state-changing requests without the CSRF request header[32m 12[2mms[22m[39m
+     [33m[2m✓[22m[39m enforces the 401/403 role matrix through authentication middleware [33m 314[2mms[22m[39m
+pnpm.cmd : 
+At line:1 char:180
++ ... :\VS Code Projects\al-ahmadi-real-estate"; pnpm.cmd test *>&1 | Out-F ...
++                                                ~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m apps/api/src/modules/auth/auth.service.test.ts[2m > [22mAuthService[2m > [22msets 
+HttpOnly auth cookies and returns a safe user DTO from /me
+[31m[1mAssertionError[22m: expected 503 to be 201 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 201[39m
+[31m+ 503[39m
+
+[36m [2m❯[22m apps/api/src/modules/auth/auth.service.test.ts:[2m423:31[22m[39m
+    [90m421|[39m       })[33m;[39m
+    [90m422|[39m
+    [90m423|[39m     [34mexpect[39m(registered[33m.[39mstatus)[33m.[39m[34mtoBe[39m([34m201[39m)[33m;[39m
+    [90m   |[39m                               [31m^[39m
+    [90m424|[39m     [34mexpect[39m(registered[33m.[39mheaders[[32m"cache-control"[39m])[33m.[39m[34mtoBe[3
+9m([32m"no-store"[39m)[33m;[39m
+    [90m425|[39m     
+[34mexpect[39m(registered[33m.[39mheaders[[32m"content-security-policy"[39m])[33m.[39m[34mtoContain[39m(
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m9 passed[39m[22m[90m (10)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m44 passed[39m[22m[90m (45)[39m
+[2m   Start at [22m 20:53:26
+[2m   Duration [22m 7.53s[2m (transform 1.65s, setup 0ms, import 7.36s, tests 7.39s, environment 2ms)[22m
+
+ ELIFECYCLE  Test failed. See above for more details.
