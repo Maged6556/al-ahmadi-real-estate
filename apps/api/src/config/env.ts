@@ -16,7 +16,10 @@ const envSchema = z
     REDIS_URL: z.string().url(),
     CORS_ORIGIN: z.string().url().default("http://localhost:3000"),
     JWT_ACCESS_SECRET: z.string().min(32),
-    WEB_REVALIDATION_URL: z.string().url(),
+    WEB_REVALIDATION_URL: z
+      .string()
+      .url()
+      .default("http://localhost:3000/api/revalidate"),
     WEB_REVALIDATION_SECRET: z.string().min(32),
     WEB_BASE_URL: z.string().url().default("http://localhost:3000"),
     RESEND_API_KEY: optionalEnvString,
