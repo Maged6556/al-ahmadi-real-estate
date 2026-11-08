@@ -168,7 +168,7 @@ export function createMediaRepository(client: PrismaClient): MediaRepository {
     async createImage(input) {
       return client.$transaction(async (transaction) => {
         await transaction.$queryRaw(
-          Prisma.sql`SELECT pg_advisory_xact_lock(hashtext(${input.listingId}))`,
+          Prisma.sql`SELECT pg_advisory_xact_lock(hashtext(${input.listingId}))::text AS lock`,
         );
         const listing = await transaction.listing.findFirst({
           where: { id: input.listingId, deletedAt: null },
@@ -228,7 +228,7 @@ export function createMediaRepository(client: PrismaClient): MediaRepository {
     async createVideoLink(input) {
       return client.$transaction(async (transaction) => {
         await transaction.$queryRaw(
-          Prisma.sql`SELECT pg_advisory_xact_lock(hashtext(${input.listingId}))`,
+          Prisma.sql`SELECT pg_advisory_xact_lock(hashtext(${input.listingId}))::text AS lock`,
         );
         const listing = await transaction.listing.findFirst({
           where: { id: input.listingId, deletedAt: null },
