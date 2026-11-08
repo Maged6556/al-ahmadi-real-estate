@@ -106,7 +106,11 @@ select:focus-visible {
   color: var(--green-dark);
 }
 
-[data-theme="dark"] ::selection,
+[data-theme="dark"] ::selection {
+  background: #1e3a5f;
+  color: #fff;
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) ::selection {
     background: #1e3a5f;
@@ -147,7 +151,11 @@ select:focus-visible {
     border-color 180ms ease;
 }
 
-[data-theme="dark"] .site-header,
+[data-theme="dark"] .site-header {
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
+  background: rgb(8 13 26 / 92%);
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .site-header {
     border-bottom: 1px solid rgb(255 255 255 / 8%);
@@ -294,7 +302,12 @@ select:focus-visible {
   transition: background 200ms ease;
 }
 
-[data-theme="dark"] .hero-section,
+[data-theme="dark"] .hero-section {
+  background:
+    radial-gradient(ellipse at 12% 10%, rgb(200 150 80 / 16%), transparent 40%),
+    linear-gradient(120deg, #091220 0%, #080d1a 58%, #121929 100%);
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .hero-section {
     background:
