@@ -3,13 +3,35 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import type { Locale } from "@al-ahmadi/shared";
+import { adminRequest } from "../lib/admin-api";
 import { getMessages, localizedPath } from "../lib/i18n";
 
 export function SiteHeader({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const messages = getMessages(locale);
+  const [adminAccount, setAdminAccount] = useState(false);
   const nextLocale: Locale = locale === "ar" ? "en" : "ar";
+
+  useEffect(() => {
+    let active = true;
+    adminRequest<{ data: { user: { role: string } } }>("/api/auth/me")
+      .then(({ data }) => {
+        if (active) {
+          setAdminAccount(
+            data.user.role === "ADMIN" || data.user.role === "EDITOR",
+          );
+        }
+      })
+      .catch(() => {
+        if (active) setAdminAccount(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   function changeLocale(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
@@ -45,7 +67,10 @@ export function SiteHeader({ locale }: { locale: Locale }) {
           <Link href={`/${locale}/login`} className="header-login">
             {messages.nav.login}
           </Link>
-          <Link href={`/${locale}/account`} className="header-login">
+          <Link
+            href={`/${locale}/${adminAccount ? "admin" : "account"}`}
+            className="header-login"
+          >
             {messages.nav.account}
           </Link>
           <a
