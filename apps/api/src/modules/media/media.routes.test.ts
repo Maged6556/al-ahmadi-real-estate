@@ -486,6 +486,40 @@ describe("media upload API", () => {
       .expect(400);
   });
 
+  it("keeps media deletion successful when remote storage deletion fails", async () => {
+    const { repository, media } = createMediaRepository();
+    const { storage } = createStorage();
+    const upload = storage.uploadImage.bind(storage);
+    const deleteImage = vi.fn(async (_publicId: string) => {
+      throw new Error("Cloudinary unavailable");
+    });
+    const failingStorage: StorageProvider = { uploadImage: upload, deleteImage };
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(null, { status: 200 })),
+    );
+    const app = createTestApp(repository, failingStorage);
+    const signed = await signGrant(app);
+    const uploaded = await request(app)
+      .post(signed.body.data.uploadUrl)
+      .set("Authorization", `Bearer ${await tokenFor(adminId)}`)
+      .set("X-Requested-With", "XMLHttpRequest")
+      .set("X-Upload-Token", signed.body.data.uploadToken)
+      .set("X-Upload-Content-Type", "image/png")
+      .set("Content-Type", "application/octet-stream")
+      .send(await validPng())
+      .expect(201);
+
+    await request(app)
+      .delete(`/api/admin/media/${uploaded.body.data.id}`)
+      .set("Authorization", `Bearer ${await tokenFor(adminId)}`)
+      .set("X-Requested-With", "XMLHttpRequest")
+      .expect(200);
+
+    expect(deleteImage).toHaveBeenCalledWith(uploaded.body.data.publicId);
+    expect(media.has(uploaded.body.data.id)).toBe(false);
+  });
+
   it("deletes stored media and returns the associated listing for cache refresh", async () => {
     const { repository } = createMediaRepository();
     const { storage, stored } = createStorage();

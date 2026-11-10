@@ -1,5 +1,3 @@
-import { AppError } from "./app-error.js";
-
 export async function revalidateWebsite(
   url: string,
   secret: string,
@@ -26,11 +24,7 @@ export async function revalidateWebsite(
         reason: "unreachable",
       }),
     );
-    throw new AppError(
-      503,
-      "CACHE_REVALIDATION_FAILED",
-      "The listing change was saved, but public cache refresh failed.",
-    );
+    return;
   }
 
   if (!response.ok) {
@@ -41,10 +35,6 @@ export async function revalidateWebsite(
         status: response.status,
       }),
     );
-    throw new AppError(
-      503,
-      "CACHE_REVALIDATION_FAILED",
-      "The listing change was saved, but public cache refresh failed.",
-    );
+    return;
   }
 }

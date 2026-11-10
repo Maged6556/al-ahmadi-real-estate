@@ -370,6 +370,38 @@ describe("listing API routes", () => {
     });
   });
 
+  it("returns the committed listing update when public cache revalidation is unavailable", async () => {
+    const updateStatus = vi.fn(async () => ({
+      ...listing,
+      status: ListingStatus.SOLD,
+    }));
+    const repository = {
+      ...testListingsRepository(),
+      updateStatus,
+    } satisfies ListingRepository;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new Error("Website unavailable");
+      }),
+    );
+    const app = createApp(testEnvironment(), {
+      authRepository: testAuthRepository(),
+      listingsRepository: repository,
+      rateLimiters: testRateLimiters(),
+    });
+
+    const response = await request(app)
+      .patch(`/api/admin/listings/${listingId}/status`)
+      .set("Authorization", `Bearer ${await tokenFor(editorId)}`)
+      .set("X-Requested-With", "XMLHttpRequest")
+      .send({ status: "sold" })
+      .expect(200);
+
+    expect(updateStatus).toHaveBeenCalledOnce();
+    expect(response.body.data.status).toBe("sold");
+  });
+
   it("keeps soft deletion restricted to admins", async () => {
     await request(createTestApp())
       .delete(`/api/admin/listings/${listingId}`)

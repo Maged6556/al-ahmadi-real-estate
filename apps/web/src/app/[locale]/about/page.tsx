@@ -48,7 +48,7 @@ export default async function AboutPage({
           </div>
           <div className="about-visual" aria-hidden="true">
             <div className="about-visual-circle">
-              <span>04</span>
+              <span>6</span>
               <small>
                 {locale === "ar" ? "سنوات خبرة" : "years of experience"}
               </small>

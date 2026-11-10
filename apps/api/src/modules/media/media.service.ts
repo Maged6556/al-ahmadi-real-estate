@@ -254,16 +254,6 @@ export class MediaService {
       );
     }
 
-    if (media.kind === "IMAGE") {
-      if (!this.storage) {
-        throw new AppError(
-          503,
-          "MEDIA_STORAGE_UNAVAILABLE",
-          "Media storage is not configured.",
-        );
-      }
-      await this.storage.deleteImage(media.publicId);
-    }
     const deleted = await this.repository.deleteMedia(id, actorId, ip);
     if (!deleted) {
       throw new AppError(
@@ -272,6 +262,33 @@ export class MediaService {
         "The requested resource was not found.",
       );
     }
+
+    if (media.kind === "IMAGE") {
+      if (!this.storage) {
+        console.error(
+          JSON.stringify({
+            level: "error",
+            event: "orphaned_cloudinary_media",
+            publicId: media.publicId,
+            reason: "storage_unavailable_during_delete",
+          }),
+        );
+      } else {
+        try {
+          await this.storage.deleteImage(media.publicId);
+        } catch (error) {
+          console.error(
+            JSON.stringify({
+              level: "error",
+              event: "orphaned_cloudinary_media",
+              publicId: media.publicId,
+              errorName: error instanceof Error ? error.name : "UnknownError",
+            }),
+          );
+        }
+      }
+    }
+
     return { data: { id }, listingSlug: media.listing.slug };
   }
 

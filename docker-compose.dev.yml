@@ -21,6 +21,7 @@ services:
       - "127.0.0.1:5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U al_ahmadi -d al_ahmadi"]
       interval: 5s
@@ -34,6 +35,7 @@ services:
       - "127.0.0.1:6379:6379"
     volumes:
       - redis_data:/data
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -74,6 +76,7 @@ services:
       - root_node_modules:/workspace/node_modules
       - api_node_modules:/workspace/apps/api/node_modules
       - shared_node_modules:/workspace/packages/shared/node_modules
+    restart: unless-stopped
     depends_on:
       install:
         condition: service_completed_successfully
@@ -113,6 +116,7 @@ services:
       - web_node_modules:/workspace/apps/web/node_modules
       - shared_node_modules:/workspace/packages/shared/node_modules
       - next_data:/workspace/apps/web/.next
+    restart: unless-stopped
     depends_on:
       install:
         condition: service_completed_successfully

@@ -487,6 +487,34 @@ describe("AuthService", () => {
     expect(unauthenticated.body.error.requestId).toBeTruthy();
   });
 
+  it("completes registration and issues its session if verification email queuing fails", async () => {
+    const lifecycle = {
+      sendVerificationEmail: vi
+        .fn()
+        .mockRejectedValue(new Error("Redis unavailable")),
+    } as unknown as AccountLifecycleService;
+    const app = createApp(testEnvironment(), {
+      authRepository: repository,
+      accountLifecycle: lifecycle,
+      rateLimiters: testRateLimiters(),
+    });
+    const response = await request(app)
+      .post("/api/auth/register")
+      .set("Origin", "http://localhost:3000")
+      .set("X-Requested-With", "XMLHttpRequest")
+      .send({
+        email: "mail-failure@example.com",
+        password: "a-strong-password",
+        termsAccepted: true,
+      });
+
+    expect(response.status).toBe(201);
+    expect(response.body.meta.verificationEmailQueued).toBe(false);
+    expect(setCookieValues(response.headers["set-cookie"])).toEqual(
+      expect.arrayContaining([expect.stringContaining("refresh_token=")]),
+    );
+  });
+
   it("rotates refresh cookies and revokes the session family on logout", async () => {
     const app = createApp(testEnvironment(), {
       authRepository: repository,
