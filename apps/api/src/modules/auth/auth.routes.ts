@@ -89,19 +89,28 @@ export function createAuthRouter(
     async (request, response) => {
       const input = registerSchema.parse(request.body);
       const session = await authService.register(input, metadataFrom(request));
-      setSessionCookies(response, session, config.cookieSecure);
+      let verificationEmailQueued = false;
       if (lifecycle) {
-        await lifecycle.sendVerificationEmail(session.user);
-      } else {
-        throw new AppError(
-          503,
-          "EMAIL_UNAVAILABLE",
-          "Email delivery is not configured.",
-        );
+        try {
+          await lifecycle.sendVerificationEmail(session.user);
+          verificationEmailQueued = true;
+        } catch (error) {
+          console.error(
+            JSON.stringify({
+              level: "error",
+              event: "registration_verification_email_unavailable",
+              errorName: error instanceof Error ? error.name : "UnknownError",
+            }),
+          );
+        }
       }
+      setSessionCookies(response, session, config.cookieSecure);
       response.status(201).json({
         data: { user: session.user },
-        meta: { accessTokenExpiresIn: session.accessTokenExpiresIn },
+        meta: {
+          accessTokenExpiresIn: session.accessTokenExpiresIn,
+          verificationEmailQueued,
+        },
       });
     },
   );
