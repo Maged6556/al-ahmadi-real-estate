@@ -98,3 +98,4 @@ export function ThemeToggle({ locale, className = "" }: ThemeToggleProps) {
     </button>
   );
 }
+

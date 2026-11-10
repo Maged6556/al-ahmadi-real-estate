@@ -159,3 +159,4 @@
 - **تشغيل الموقع:** `pnpm dev` (أو `make dev`)
 - **تشغيل فحص الاختبارات:** `pnpm test`
 - **إيقاف خدمات دوكر:** `docker compose -f docker-compose.dev.yml down`
+

@@ -102,7 +102,7 @@ select:focus-visible {
 }
 
 ::selection {
-  background: #e2ecf7;
+  background: var(--green-soft);
   color: var(--green-dark);
 }
 
@@ -298,7 +298,7 @@ select:focus-visible {
   overflow: hidden;
   background:
     radial-gradient(ellipse at 12% 10%, rgb(200 150 80 / 14%), transparent 34%),
-    linear-gradient(120deg, #edf3fa 0%, #f8fafc 58%, #f6f1e7 100%);
+    linear-gradient(120deg, var(--green-soft) 0%, var(--paper) 58%, var(--gold-light) 100%);
   transition: background 200ms ease;
 }
 
@@ -414,7 +414,7 @@ p {
 }
 
 .button-outline {
-  border-color: #cbd5e1;
+  border-color: var(--line);
   background: transparent;
   color: var(--green);
 }
@@ -439,7 +439,7 @@ p {
   align-items: center;
   gap: 9px;
   margin-top: 32px;
-  color: #64748b;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 600;
 }
@@ -507,7 +507,7 @@ p {
 
 .trust-section {
   border-block: 1px solid var(--line);
-  background: linear-gradient(90deg, #fff, #f8fafc);
+  background: linear-gradient(90deg, var(--white), var(--paper));
 }
 
 .trust-inner {
@@ -567,7 +567,7 @@ p {
 .featured-section {
   background:
     radial-gradient(ellipse at 100% 0%, rgb(200 150 80 / 8%), transparent 35%),
-    #f1f5f9;
+    var(--surface-raised);
 }
 
 .section-heading {
@@ -680,7 +680,7 @@ p {
   position: relative;
   height: 222px;
   overflow: hidden;
-  background: #f1f5f9;
+  background: var(--surface-raised);
 }
 
 .listing-image {
@@ -705,8 +705,8 @@ p {
       rgb(255 255 255 / 36%) 49%,
       transparent 51%
     ),
-    #edf2f7;
-  color: #64748b;
+    var(--surface-raised);
+  color: var(--muted);
   font-size: 12px;
 }
 
@@ -731,8 +731,8 @@ p {
 }
 
 .status-sold {
-  background: #fef2f2;
-  color: #991b1b;
+  background: var(--error-bg, #fef2f2);
+  color: var(--rose);
 }
 
 .status-rented {
@@ -762,7 +762,7 @@ p {
 }
 
 .kicker-separator {
-  color: #cbd5e1;
+  color: var(--line);
 }
 
 .listing-card-content h3 {
@@ -816,7 +816,7 @@ p {
   justify-items: center;
   align-content: center;
   padding: 30px;
-  border: 1px dashed #cbd5e1;
+  border: 1px dashed var(--line);
   background: rgb(255 255 255 / 55%);
   text-align: center;
 }
@@ -981,9 +981,9 @@ p {
 
 .inline-error {
   padding: 18px 20px;
-  border-inline-start: 3px solid #a34a3e;
-  background: #f9eeeb;
-  color: #78443d;
+  border-inline-start: 3px solid var(--rose);
+  background: var(--error-bg, #fef2f2);
+  color: var(--rose);
   font-size: 13px;
   line-height: 1.7;
 }
@@ -1044,7 +1044,7 @@ p {
   position: relative;
   min-height: 190px;
   overflow: hidden;
-  background: #e8ebe5;
+  background: var(--surface-raised);
 }
 
 .gallery-image-0 {
@@ -1256,7 +1256,7 @@ p {
   position: absolute;
   width: 140%;
   height: 1px;
-  background: #cbd5e1;
+  background: var(--line);
 }
 
 .location-line-one {
@@ -1276,7 +1276,7 @@ p {
 
 .about-hero {
   overflow: hidden;
-  background: linear-gradient(120deg, #f5f4ed, #e9eee7);
+  background: linear-gradient(120deg, var(--surface-raised), var(--surface-raised));
 }
 
 .about-layout {
@@ -1329,7 +1329,7 @@ p {
 
 .about-visual-circle small {
   margin-top: 12px;
-  color: #63746d;
+  color: var(--muted);
   font-size: 11px;
 }
 
@@ -1565,13 +1565,13 @@ p {
 }
 
 .form-success {
-  background: #edf5ed;
-  color: #356342;
+  background: var(--success-bg, #edf5ed);
+  color: var(--success-fg, #356342);
 }
 
 .form-error {
-  background: #f9eeeb;
-  color: #88483e;
+  background: var(--error-bg, #fef2f2);
+  color: var(--rose);
 }
 
 .auth-switch {
@@ -1596,7 +1596,7 @@ p {
 }
 
 .state-code {
-  color: #d2dcd3;
+  color: var(--line);
   font-size: clamp(70px, 14vw, 140px);
   font-weight: 700;
   line-height: 1;
@@ -1619,7 +1619,7 @@ p {
 .site-footer {
   padding-block: 54px 25px;
   background: #0b1526;
-  color: #f8fafc;
+  color: var(--paper);
 }
 
 .footer-grid {
@@ -1641,7 +1641,7 @@ p {
 .footer-note > p {
   max-width: 330px;
   margin: 15px 0 0;
-  color: #94a3b8;
+  color: var(--muted);
   font-size: 11px;
   line-height: 1.9;
 }
@@ -1655,7 +1655,7 @@ p {
 
 .footer-nav a {
   width: fit-content;
-  color: #cbd5e1;
+  color: var(--line);
   font-size: 11px;
 }
 
@@ -1675,7 +1675,7 @@ p {
 }
 
 .footer-note small {
-  color: #64748b;
+  color: var(--muted);
   font-size: 9px;
   line-height: 1.7;
 }
@@ -2151,7 +2151,7 @@ p {
   flex-direction: column;
   padding: 26px 18px 18px;
   background: #0b1526;
-  color: #f8fafc;
+  color: var(--paper);
 }
 
 .admin-sidebar-brand {
@@ -2183,7 +2183,7 @@ p {
   gap: 12px;
   padding: 0 13px;
   border-radius: 4px;
-  color: #cbd5e1;
+  color: var(--line);
   font-size: 12px;
   font-weight: 600;
   transition:
@@ -2244,7 +2244,7 @@ p {
 }
 
 .admin-user-info small {
-  color: #94a3b8;
+  color: var(--muted);
   font-size: 10px;
 }
 
@@ -2254,7 +2254,7 @@ p {
   border: 0;
   border-radius: 4px;
   background: transparent;
-  color: #cbd5e1;
+  color: var(--line);
   cursor: pointer;
   font-size: 19px;
 }
@@ -2295,7 +2295,7 @@ p {
 }
 
 .admin-public-link {
-  color: #53665e;
+  color: var(--muted);
   font-size: 11px;
   font-weight: 600;
 }
@@ -2432,7 +2432,7 @@ p {
   height: 6px;
   overflow: hidden;
   border-radius: 10px;
-  background: #e2e8f0;
+  background: var(--line);
 }
 
 .admin-meter > span {
@@ -2488,7 +2488,7 @@ p {
   width: 19px;
   height: 19px;
   flex: 0 0 auto;
-  border: 2px solid #dfe6de;
+  border: 2px solid var(--line);
   border-top-color: var(--green);
   border-radius: 50%;
   animation: admin-spin 700ms linear infinite;
@@ -2581,13 +2581,13 @@ p {
   max-width: 220px;
   margin-top: 4px;
   overflow: hidden;
-  color: #8a9690;
+  color: var(--muted);
   font-size: 9px;
   text-overflow: ellipsis;
 }
 
 .admin-code {
-  color: #8e7147 !important;
+  color: var(--gold-dark) !important;
   font-weight: 700;
   white-space: nowrap;
 }
@@ -2596,8 +2596,8 @@ p {
   display: inline-flex;
   padding: 5px 8px;
   border-radius: 20px;
-  background: #edf3ec;
-  color: #3b6b4c;
+  background: var(--success-bg, #edf5ed);
+  color: var(--success-fg, #356342);
   font-size: 9px;
   font-weight: 700;
   white-space: nowrap;
@@ -2605,18 +2605,18 @@ p {
 
 .admin-status.status-sold,
 .admin-status.status-draft {
-  background: #f6eae7;
-  color: #99544b;
+  background: var(--error-bg, #fef2f2);
+  color: var(--rose);
 }
 
 .admin-status.status-rented {
-  background: #f5f0e2;
-  color: #866a36;
+  background: var(--gold-light);
+  color: var(--gold-dark);
 }
 
 .admin-status.status-published {
-  background: #e8f1e9;
-  color: #356e47;
+  background: var(--success-bg, #e8f1e9);
+  color: var(--success-fg, #356e47);
 }
 
 .admin-row-actions {
@@ -2632,7 +2632,7 @@ p {
   padding: 5px 2px;
   border: 0;
   background: transparent;
-  color: #315f4c;
+  color: var(--green);
   cursor: pointer;
   font-size: 9px;
   font-weight: 700;
@@ -2645,7 +2645,7 @@ p {
 }
 
 .table-action-danger {
-  color: #a64e42;
+  color: var(--rose);
 }
 
 .admin-row-actions select {
@@ -2707,7 +2707,7 @@ p {
   display: grid;
   align-content: start;
   gap: 7px;
-  color: #53645b;
+  color: var(--muted);
   font-size: 10px;
   font-weight: 700;
 }
@@ -2769,12 +2769,12 @@ p {
   min-width: 0;
   overflow: hidden;
   border: 2px solid transparent;
-  background: #f0f2ed;
+  background: var(--surface-raised);
   cursor: grab;
 }
 
 .admin-media-item.is-cover {
-  border-color: #b8955b;
+  border-color: var(--gold);
 }
 
 .admin-media-item > img {
@@ -3021,15 +3021,15 @@ p {
 }
 
 .account-danger {
-  border-color: #e5c7c1;
+  border-color: var(--line);
 }
 
 .button-danger {
   min-height: 44px;
   padding: 0 18px;
-  border: 1px solid #a64e42;
+  border: 1px solid var(--rose);
   border-radius: 3px;
-  background: #a64e42;
+  background: var(--rose);
   color: white;
   cursor: pointer;
   font-size: 12px;
@@ -3143,7 +3143,7 @@ p {
   padding: 0;
   border: 0;
   background: transparent;
-  color: #d8e0dc;
+  color: var(--muted);
   cursor: pointer;
   font: inherit;
   text-align: start;
@@ -3272,7 +3272,7 @@ p {
   display: grid;
   flex: 1;
   gap: 7px;
-  color: #53645b;
+  color: var(--muted);
   font-size: 10px;
   font-weight: 700;
 }
@@ -3280,7 +3280,7 @@ p {
 .admin-video-link-form input {
   min-height: 42px;
   padding: 9px 11px;
-  border: 1px solid #dfe4de;
+  border: 1px solid var(--line);
   color: var(--ink);
   font-size: 11px;
 }
@@ -3292,7 +3292,7 @@ p {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #e9eee8;
+  background: var(--surface-raised);
   color: var(--green);
   font-size: 10px;
   font-weight: 700;
