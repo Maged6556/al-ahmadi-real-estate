@@ -1,0 +1,51 @@
+[
+  {
+    "id": "SEC-001",
+    "title": "Strict Public Price & PII Masking Enforcement (Rule 9)",
+    "severity": "CRITICAL",
+    "category": "Security",
+    "where": "apps/api/src/modules/listings/listings.service.ts:toPublicListing",
+    "status": "VERIFIED_SECURE",
+    "description": "Public listing serialization strictly excludes numeric asking prices, owner contact details, and client budgets in compliance with project policy."
+  },
+  {
+    "id": "CODE-001",
+    "title": "Uncaught 503 EMAIL_UNAVAILABLE in auth route tests",
+    "severity": "HIGH",
+    "category": "Code",
+    "where": "apps/api/src/modules/auth/auth.service.test.ts:396",
+    "status": "FIXED",
+    "commit": "573ceb6",
+    "description": "Registration route test failed with HTTP 503 because the mock accountLifecycle service was missing from createApp dependencies."
+  },
+  {
+    "id": "I18N-001",
+    "title": "Duplicate object key 'title' in localization messages",
+    "severity": "MEDIUM",
+    "category": "i18n",
+    "where": "apps/web/src/messages/en.json:174 & apps/web/src/messages/ar.json:174",
+    "status": "FIXED",
+    "commit": "fe0e1b0",
+    "description": "Key 'title' was declared twice within the admin object (section title vs table column header), overwriting section header text."
+  },
+  {
+    "id": "DEVOPS-001",
+    "title": "Docker container zombie process on termination (Missing init system)",
+    "severity": "MEDIUM",
+    "category": "DevOps",
+    "where": "docker-compose.dev.yml & docker-compose.prod.yml",
+    "status": "FIXED",
+    "commit": "working-tree",
+    "description": "Next.js dev/prod processes under sh -c ran as PID 1 without an init reaper, causing Docker daemon zombie process kill failures on shutdown."
+  },
+  {
+    "id": "CONFIG-001",
+    "title": "Missing WEB_REVALIDATION_URL & DATABASE_URL Fallbacks",
+    "severity": "LOW",
+    "category": "Code",
+    "where": "apps/api/src/config/env.ts & load-env.ts",
+    "status": "FIXED",
+    "commit": "30a4d69",
+    "description": "API initialization threw if WEB_REVALIDATION_URL was omitted or if only DIRECT_URL was defined in .env. Added sensible default and fallback."
+  }
+]

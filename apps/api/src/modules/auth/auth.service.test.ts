@@ -20,6 +20,16 @@ import type {
 import { AuthService } from "./auth.service.js";
 import { loginSchema, registerSchema } from "./auth.schemas.js";
 import { can } from "./permissions.js";
+import type { AccountLifecycleService } from "./account-lifecycle.service.js";
+
+function testLifecycle(): AccountLifecycleService {
+  return {
+    sendVerificationEmail: async () => {},
+    confirmEmailLink: async () => {},
+    requestPasswordReset: async () => {},
+    resetPassword: async () => {},
+  } as unknown as AccountLifecycleService;
+}
 
 function testRateLimiters(): ApiRateLimiters {
   const limiter = rateLimit({
@@ -396,6 +406,7 @@ describe("AuthService", () => {
     const app = createApp(testEnvironment(), {
       authRepository: repository,
       rateLimiters: testRateLimiters(),
+      accountLifecycle: testLifecycle(),
     });
     const response = await request(app)
       .post("/api/auth/register")
@@ -482,6 +493,7 @@ describe("AuthService", () => {
     const app = createApp(testEnvironment(), {
       authRepository: repository,
       rateLimiters: testRateLimiters(),
+      accountLifecycle: testLifecycle(),
     });
     const csrfHeaders = {
       Origin: "http://localhost:3000",
