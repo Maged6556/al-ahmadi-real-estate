@@ -11,6 +11,7 @@
     "dev:web": "pnpm --filter @al-ahmadi/web dev",
     "build": "pnpm --recursive --if-present build",
     "lint": "eslint .",
+    "pretest": "pnpm --filter @al-ahmadi/api db:generate",
     "test": "vitest run",
     "typecheck": "pnpm --recursive --if-present typecheck",
     "format": "prettier --write .",
