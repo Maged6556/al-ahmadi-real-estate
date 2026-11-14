@@ -14,6 +14,9 @@ importers:
       "@next/eslint-plugin-next":
         specifier: ^15.2.4
         version: 15.5.28
+      "@prisma/client":
+        specifier: 6.8.2
+        version: 6.8.2(prisma@6.8.2(typescript@5.9.3))(typescript@5.9.3)
       "@types/node":
         specifier: ^22.13.10
         version: 22.20.5
@@ -23,6 +26,12 @@ importers:
       eslint-config-prettier:
         specifier: ^10.1.1
         version: 10.1.8(eslint@9.39.5(jiti@2.7.0))
+      express-rate-limit:
+        specifier: ^7.5.1
+        version: 7.5.1(express@5.3.0)
+      jose:
+        specifier: ^6.0.10
+        version: 6.0.10
       prettier:
         specifier: ^3.5.3
         version: 3.9.10
@@ -2524,6 +2533,12 @@ packages:
         integrity: sha512-AC/7JofJvZGrrneWNaEnJeOLUx+JlGt7tNa0wZiRPT4MY1wmfKjt2+6O2p2uz2+skll8OZZmJMNqeke7kKbNgQ==,
       }
     hasBin: true
+
+  jose@6.0.10:
+    resolution:
+      {
+        integrity: sha512-skIAxZqcMkOrSwjJvplIPYrlXGpxTPnro2/QWTDCxAdWQrSTV5/KqspMWmi5WAx5+ULswASJiZ0a+1B/Lxt9cw==,
+      }
 
   jose@6.2.14:
     resolution:
@@ -5052,6 +5067,8 @@ snapshots:
 
   jiti@2.7.0:
     optional: true
+
+  jose@6.0.10: {}
 
   jose@6.2.14: {}
 
