@@ -1,9 +1,4 @@
-import {
-  ListingOffer,
-  ListingStatus,
-  ListingType,
-  Prisma,
-} from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import type {
   ListingOffer as PublicListingOffer,
   ListingStatus as PublicListingStatus,
@@ -20,41 +15,41 @@ import type {
 } from "./listings.repository.js";
 
 const typeToDb = {
-  apartment: ListingType.APARTMENT,
-  building: ListingType.BUILDING,
-  residential_unit: ListingType.RESIDENTIAL_UNIT,
-  villa: ListingType.VILLA,
-  land: ListingType.LAND,
+  apartment: "APARTMENT",
+  building: "BUILDING",
+  residential_unit: "RESIDENTIAL_UNIT",
+  villa: "VILLA",
+  land: "LAND",
 } as const;
 
 const typeFromDb = {
-  [ListingType.APARTMENT]: "apartment",
-  [ListingType.BUILDING]: "building",
-  [ListingType.RESIDENTIAL_UNIT]: "residential_unit",
-  [ListingType.VILLA]: "villa",
-  [ListingType.LAND]: "land",
+  APARTMENT: "apartment",
+  BUILDING: "building",
+  RESIDENTIAL_UNIT: "residential_unit",
+  VILLA: "villa",
+  LAND: "land",
 } as const;
 
 const offerToDb = {
-  sale: ListingOffer.SALE,
-  rent: ListingOffer.RENT,
+  sale: "SALE",
+  rent: "RENT",
 } as const;
 
 const offerFromDb = {
-  [ListingOffer.SALE]: "sale",
-  [ListingOffer.RENT]: "rent",
+  SALE: "sale",
+  RENT: "rent",
 } as const;
 
 const statusToDb = {
-  available: ListingStatus.AVAILABLE,
-  sold: ListingStatus.SOLD,
-  rented: ListingStatus.RENTED,
+  available: "AVAILABLE",
+  sold: "SOLD",
+  rented: "RENTED",
 } as const;
 
 const statusFromDb = {
-  [ListingStatus.AVAILABLE]: "available",
-  [ListingStatus.SOLD]: "sold",
-  [ListingStatus.RENTED]: "rented",
+  AVAILABLE: "available",
+  SOLD: "sold",
+  RENTED: "rented",
 } as const;
 
 export function publicListingWhere(
