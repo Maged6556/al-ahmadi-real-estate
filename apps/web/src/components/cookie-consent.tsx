@@ -110,9 +110,7 @@ export function CookieConsent({ locale }: { locale: Locale }) {
         <div className="cookie-consent-options">
           <label>
             <input type="checkbox" checked disabled />
-            <span>
-              {locale === "ar" ? "ضرورية دائماً" : "Always essential"}
-            </span>
+            <span>{locale === "ar" ? "ضرورية دائماً" : "Always essential"}</span>
           </label>
           <label>
             <input

@@ -26,7 +26,13 @@ function invalidImage() {
   );
 }
 
-export function detectImageMime(buffer: Buffer): SupportedImageMime | null {
+function isPositiveSafeInteger(value: unknown): value is number {
+  return typeof value === "number" && Number.isSafeInteger(value) && value > 0;
+}
+
+export function detectImageMime(buffer: unknown): SupportedImageMime | null {
+  if (!Buffer.isBuffer(buffer)) return null;
+
   if (
     buffer.length >= 3 &&
     buffer[0] === 0xff &&
@@ -61,12 +67,15 @@ export type SanitizedImage = {
 };
 
 export async function sanitizeImage(
-  buffer: Buffer,
-  claimedMime: string | undefined,
-  maxImageBytes = MAX_IMAGE_BYTES,
-  maxImagePixels = MAX_IMAGE_PIXELS,
+  buffer: unknown,
+  claimedMime: unknown,
+  maxImageBytes: unknown = MAX_IMAGE_BYTES,
+  maxImagePixels: unknown = MAX_IMAGE_PIXELS,
 ): Promise<SanitizedImage> {
   if (
+    !Buffer.isBuffer(buffer) ||
+    !isPositiveSafeInteger(maxImageBytes) ||
+    !isPositiveSafeInteger(maxImagePixels) ||
     buffer.length === 0 ||
     buffer.length > maxImageBytes ||
     !claimedMime ||

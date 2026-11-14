@@ -2,7 +2,7 @@
   "name": "al-ahmadi-real-estate",
   "private": true,
   "engines": {
-    "node": "\u003e\u003d22"
+    "node": ">=22"
   },
   "scripts": {
     "postinstall": "pnpm --filter @al-ahmadi/api db:generate",
@@ -11,24 +11,25 @@
     "dev:web": "pnpm --filter @al-ahmadi/web dev",
     "build": "pnpm --recursive --if-present build",
     "lint": "eslint .",
+    "pretest": "pnpm --filter @al-ahmadi/api db:generate",
     "test": "vitest run",
     "typecheck": "pnpm --recursive --if-present typecheck",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^15.2.4",
+    "@next/eslint-plugin-next": "^16.4.6",
     "@prisma/client": "6.8.2",
-    "@types/node": "^22.13.10",
-    "eslint": "^9.22.0",
-    "eslint-config-prettier": "^10.1.1",
-    "express-rate-limit": "^7.5.1",
-    "jose": "^6.0.10",
-    "prettier": "^3.5.3",
-    "supertest": "^7.1.1",
-    "typescript": "^5.8.2",
-    "typescript-eslint": "^8.26.0",
-    "vitest": "^4.0.5"
+    "@types/node": "^22.20.5",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "express-rate-limit": "^8.7.4",
+    "jose": "^6.2.17",
+    "prettier": "^3.10.1",
+    "supertest": "^7.3.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
