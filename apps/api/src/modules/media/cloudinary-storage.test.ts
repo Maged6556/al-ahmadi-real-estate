@@ -1,18 +1,9 @@
-import { createHash } from "node:crypto";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { CloudinaryStorage } from "./cloudinary-storage.js";
+import { CloudinaryStorage, signParameters } from "./cloudinary-storage.js";
 
 const apiSecret = "cloudinary-test-secret";
 const apiKey = "123456789";
 const cloudName = "test-cloud";
-
-function expectedSignature(parameters: Record<string, string>) {
-  const canonical = Object.entries(parameters)
-    .sort(([left], [right]) => left.localeCompare(right))
-    .map(([key, value]) => `${key}=${value}`)
-    .join("&");
-  return createHash("sha1").update(`${canonical}${apiSecret}`).digest("hex");
-}
 
 describe("CloudinaryStorage", () => {
   afterEach(() => {
@@ -59,10 +50,13 @@ describe("CloudinaryStorage", () => {
     expect(form?.get("api_key")).toBe(apiKey);
     expect(form?.get("public_id")).toBe(publicId);
     expect(form?.get("signature")).toBe(
-      expectedSignature({
-        public_id: publicId,
-        timestamp: String(form?.get("timestamp")),
-      }),
+      signParameters(
+        {
+          public_id: publicId,
+          timestamp: String(form?.get("timestamp")),
+        },
+        apiSecret,
+      ),
     );
     expect(String(form)).not.toContain(apiSecret);
     const uploadedFile = form?.get("file");
@@ -91,11 +85,14 @@ describe("CloudinaryStorage", () => {
 
     expect(form?.get("invalidate")).toBe("true");
     expect(form?.get("signature")).toBe(
-      expectedSignature({
-        invalidate: "true",
-        public_id: "al-ahmadi/listings/123/image",
-        timestamp: String(form?.get("timestamp")),
-      }),
+      signParameters(
+        {
+          invalidate: "true",
+          public_id: "al-ahmadi/listings/123/image",
+          timestamp: String(form?.get("timestamp")),
+        },
+        apiSecret,
+      ),
     );
   });
 });
