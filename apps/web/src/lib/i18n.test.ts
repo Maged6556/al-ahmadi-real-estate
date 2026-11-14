@@ -18,7 +18,7 @@ describe("Web i18n & Localization (Unit Testing)", () => {
 
     // Key navigational and theme strings
     expect(arMessages.nav.listings).toBe("العقارات");
-    expect(enMessages.nav.listings).toBe("Listings");
+    expect(enMessages.nav.listings).toBe("Properties");
 
     expect(arMessages.theme.dark).toBe("الوضع الداكن");
     expect(enMessages.theme.dark).toBe("Dark mode");
@@ -28,7 +28,7 @@ describe("Web i18n & Localization (Unit Testing)", () => {
     expect(localizedPath("en", "/ar/listings")).toBe("/en/listings");
     expect(localizedPath("ar", "/en/contact")).toBe("/ar/contact");
     expect(localizedPath("en", "/listings")).toBe("/en/listings");
-    expect(localizedPath("ar", "/")).toBe("/ar");
+    expect(localizedPath("ar", "/")).toBe("/ar/");
   });
 
   it("preserves deep route parameters when translating", () => {

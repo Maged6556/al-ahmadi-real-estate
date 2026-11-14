@@ -53,8 +53,11 @@ async function signJwt(user: AuthUser) {
     role: user.role,
     name: user.name,
     locale: user.preferredLocale,
+    tokenUse: "access",
   })
     .setProtectedHeader({ alg: "HS256" })
+    .setIssuer("al-ahmadi-api")
+    .setAudience("al-ahmadi-web")
     .setIssuedAt()
     .setExpirationTime("15m")
     .sign(new TextEncoder().encode(secret));
@@ -176,24 +179,28 @@ describe("System Testing (End-to-End System Journey)", () => {
         if (where.offer && l.offer !== where.offer) return false;
         return true;
       });
-      return {
-        items: filtered.slice(skip, skip + take),
-        total: filtered.length,
-      };
+      return filtered.slice(skip, skip + take);
+    },
+    async countPublic() {
+      return listings.length;
+    },
+    async countPublicByType() {
+      return [{ type: ListingType.VILLA, count: 1 }];
+    },
+    async countPublicByOffer() {
+      return [{ offer: ListingOffer.SALE, count: 1 }];
     },
     async findPublicBySlug(slug) {
       return listings.find((l) => l.slug === slug && l.isPublished) ?? null;
     },
-    async findPublicMetadata() {
-      return {
-        cities: ["Cairo", "Riyadh"],
-        types: [ListingType.VILLA, ListingType.APARTMENT],
-        offers: [ListingOffer.SALE, ListingOffer.RENT],
-        statuses: [ListingStatus.AVAILABLE],
-      };
+    async findPublicFilterOptions() {
+      return [{ city: "Cairo", district: "New Cairo" }];
     },
     async findAdminPage() {
-      return { items: listings, total: listings.length };
+      return listings;
+    },
+    async countAdmin() {
+      return listings.length;
     },
     async findAdminById(id) {
       return listings.find((l) => l.id === id) ?? null;
@@ -223,20 +230,23 @@ describe("System Testing (End-to-End System Journey)", () => {
   };
 
   const dashboardRepo: DashboardRepository = {
-    async getOverview() {
+    async getStats() {
       return {
-        totalListings: listings.length,
-        publishedListings: listings.filter((l) => l.isPublished).length,
-        totalUsers: users.size,
-        availableListings: 1,
-        soldListings: 0,
-        rentedListings: 0,
-        byType: { villa: 1 },
-        byCity: { Cairo: 1 },
+        listings: {
+          total: listings.length,
+          published: listings.filter((l) => l.isPublished).length,
+          byStatus: [{ value: ListingStatus.AVAILABLE, count: 1 }],
+          byType: [{ value: ListingType.VILLA, count: 1 }],
+        },
+        inquiries: {
+          total: 5,
+          whatsappClicks: 3,
+          byChannel: [{ value: "whatsapp", count: 3 }],
+        },
       };
     },
-    async getAuditLog() {
-      return { items: [], total: 0 };
+    async getAuditPage() {
+      return { data: [], total: 0 };
     },
   };
 
@@ -265,9 +275,9 @@ describe("System Testing (End-to-End System Journey)", () => {
       .query({ city: "Cairo", type: "villa", offer: "sale" });
 
     expect(listingsResponse.status).toBe(200);
-    expect(listingsResponse.body.data.items).toHaveLength(1);
-    const item = listingsResponse.body.data.items[0];
-    expect(item.slug).toBe("luxury-villa-cairo");
+    expect(listingsResponse.body.data).toHaveLength(1);
+    const item = listingsResponse.body.data[0];
+    expect(item.code).toBe("AH-2026");
     expect(item.titleAr).toBe("فيلا فاخرة للتملك");
     // Verify privacy & security: no private address or price fields in public list
     expect(item).not.toHaveProperty("addressText");
@@ -279,15 +289,15 @@ describe("System Testing (End-to-End System Journey)", () => {
       "/api/listings/luxury-villa-cairo",
     );
     expect(detailResponse.status).toBe(200);
-    expect(detailResponse.body.data.listing.code).toBe("AH-2026");
-    expect(detailResponse.body.data.listing.city).toBe("Cairo");
-    expect(detailResponse.body.data.listing).not.toHaveProperty("addressText");
+    expect(detailResponse.body.data.code).toBe("AH-2026");
+    expect(detailResponse.body.data.city).toBe("Cairo");
+    expect(detailResponse.body.data).not.toHaveProperty("addressText");
   });
 
   it("Stage 4: Normal user cannot access Admin Dashboard (RBAC barrier)", async () => {
     const regularToken = await signJwt(users.get(userId)!);
     const response = await request(app)
-      .get("/api/admin/dashboard")
+      .get("/api/admin/stats")
       .set("Authorization", `Bearer ${regularToken}`);
 
     expect(response.status).toBe(403);
@@ -297,18 +307,18 @@ describe("System Testing (End-to-End System Journey)", () => {
   it("Stage 5: Admin authenticates and accesses Dashboard and Admin Listings", async () => {
     const adminToken = await signJwt(users.get(adminId)!);
 
-    // 1. Dashboard summary
+    // 1. Dashboard summary stats
     const dashResponse = await request(app)
-      .get("/api/admin/dashboard")
+      .get("/api/admin/stats")
       .set("Authorization", `Bearer ${adminToken}`);
     expect(dashResponse.status).toBe(200);
-    expect(dashResponse.body.data.overview.totalListings).toBeGreaterThanOrEqual(1);
+    expect(dashResponse.body.data.listings.total).toBeGreaterThanOrEqual(1);
 
     // 2. Admin Listings view (shows code and internal details)
     const adminListingsResponse = await request(app)
       .get("/api/admin/listings")
       .set("Authorization", `Bearer ${adminToken}`);
     expect(adminListingsResponse.status).toBe(200);
-    expect(adminListingsResponse.body.data.items[0].code).toBe("AH-2026");
+    expect(adminListingsResponse.body.data[0].code).toBe("AH-2026");
   });
 });

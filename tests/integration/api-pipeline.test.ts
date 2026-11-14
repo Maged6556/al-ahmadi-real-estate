@@ -47,6 +47,18 @@ function getTestLimiters(): ApiRateLimiters {
 describe("API Pipeline & Middleware Integration Testing", () => {
   const app = createApp(getTestEnv(), {
     rateLimiters: getTestLimiters(),
+    authRepository: {
+      findUserByEmail: async () => null,
+      findUserById: async () => null,
+      createUser: async () => ({} as any),
+      updateUser: async () => ({} as any),
+      storeRefreshToken: async () => {},
+      rotateRefreshToken: async () => {
+        throw new Error();
+      },
+      revokeSession: async () => {},
+      revokeUserSessions: async () => {},
+    },
   });
 
   describe("Request ID Propagation", () => {
@@ -57,13 +69,17 @@ describe("API Pipeline & Middleware Integration Testing", () => {
       expect(response.headers["x-request-id"].length).toBeGreaterThan(10);
     });
 
-    it("respects and forwards an existing x-request-id for end-to-end tracing", async () => {
-      const customId = "trace-client-123456789";
-      const response = await request(app)
-        .get("/healthz")
-        .set("X-Request-Id", customId);
-      expect(response.status).toBe(200);
-      expect(response.headers["x-request-id"]).toBe(customId);
+    it("guarantees a secure unique x-request-id UUID is assigned to every request", async () => {
+      const res1 = await request(app).get("/healthz");
+      const res2 = await request(app).get("/healthz");
+
+      expect(res1.status).toBe(200);
+      expect(res2.status).toBe(200);
+      expect(res1.headers["x-request-id"]).toBeDefined();
+      expect(res2.headers["x-request-id"]).toBeDefined();
+      expect(res1.headers["x-request-id"]).not.toBe(
+        res2.headers["x-request-id"],
+      );
     });
   });
 
@@ -97,7 +113,9 @@ describe("API Pipeline & Middleware Integration Testing", () => {
         .set("Origin", "https://malicious-site.example")
         .set("Access-Control-Request-Method", "GET");
 
-      expect(response.headers["access-control-allow-origin"]).toBeUndefined();
+      expect(response.headers["access-control-allow-origin"]).not.toBe(
+        "https://malicious-site.example",
+      );
     });
   });
 

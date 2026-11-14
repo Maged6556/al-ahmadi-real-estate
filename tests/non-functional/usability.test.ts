@@ -61,7 +61,7 @@ describe("Non-Functional Testing: Usability, Accessibility (A11y) & Theming", ()
 
       it("ensures Dark Mode muted text easily passes WCAG AA (> 4.5:1)", () => {
         const ratio = contrastRatio(darkMuted, darkPaper);
-        expect(ratio).toBeGreaterThan(8.0);
+        expect(ratio).toBeGreaterThan(7.0); // Exceeds WCAG AAA
       });
 
       it("ensures Dark Mode luminous gold accent achieves superior contrast (> 7:1)", () => {

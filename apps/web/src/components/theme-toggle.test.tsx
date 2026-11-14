@@ -1,7 +1,7 @@
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { ThemeToggle } from "./theme-toggle.js";
+import { ThemeToggle } from "./theme-toggle";
 
 describe("ThemeToggle Component (Unit Testing)", () => {
   it("renders with correct accessibility attributes in Arabic", () => {
