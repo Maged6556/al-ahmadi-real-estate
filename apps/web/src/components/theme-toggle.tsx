@@ -19,7 +19,9 @@ export function ThemeToggle({ locale, className = "" }: ThemeToggleProps) {
       setTheme(saved);
       document.documentElement.setAttribute("data-theme", saved);
     } else {
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
       const initial = prefersDark ? "dark" : "light";
       setTheme(initial);
       document.documentElement.setAttribute("data-theme", initial);
@@ -98,4 +100,3 @@ export function ThemeToggle({ locale, className = "" }: ThemeToggleProps) {
     </button>
   );
 }
-

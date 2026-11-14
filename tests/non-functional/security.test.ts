@@ -46,9 +46,9 @@ describe("Non-Functional Testing: Security & Vulnerability Auditing", () => {
       }),
       findAdminPage: async () => ({ items: [], total: 0 }),
       findAdminById: async () => null,
-      create: async () => ({} as any),
-      update: async () => ({} as any),
-      delete: async () => ({} as any),
+      create: async () => ({}) as never,
+      update: async () => ({}) as never,
+      delete: async () => ({}) as never,
     },
   });
 
@@ -112,7 +112,9 @@ describe("Non-Functional Testing: Security & Vulnerability Auditing", () => {
     it("enforces frame-ancestors none and X-Frame-Options DENY against clickjacking", async () => {
       const res = await request(app).get("/healthz");
       expect(res.headers["x-frame-options"]).toBe("DENY");
-      expect(res.headers["content-security-policy"]).toContain("frame-ancestors 'none'");
+      expect(res.headers["content-security-policy"]).toContain(
+        "frame-ancestors 'none'",
+      );
     });
 
     it("sets X-Content-Type-Options: nosniff to prevent MIME type confusion attacks", async () => {
@@ -135,4 +137,3 @@ describe("Non-Functional Testing: Security & Vulnerability Auditing", () => {
     });
   });
 });
-

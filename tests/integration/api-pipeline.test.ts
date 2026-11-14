@@ -50,8 +50,8 @@ describe("API Pipeline & Middleware Integration Testing", () => {
     authRepository: {
       findUserByEmail: async () => null,
       findUserById: async () => null,
-      createUser: async () => ({} as any),
-      updateUser: async () => ({} as any),
+      createUser: async () => ({}) as never,
+      updateUser: async () => ({}) as never,
       storeRefreshToken: async () => {},
       rotateRefreshToken: async () => {
         throw new Error();
@@ -160,4 +160,3 @@ describe("API Pipeline & Middleware Integration Testing", () => {
     });
   });
 });
-

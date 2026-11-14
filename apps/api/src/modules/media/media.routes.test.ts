@@ -490,10 +490,13 @@ describe("media upload API", () => {
     const { repository, media } = createMediaRepository();
     const { storage } = createStorage();
     const upload = storage.uploadImage.bind(storage);
-    const deleteImage = vi.fn(async (_publicId: string) => {
+    const deleteImage = vi.fn(async () => {
       throw new Error("Cloudinary unavailable");
     });
-    const failingStorage: StorageProvider = { uploadImage: upload, deleteImage };
+    const failingStorage: StorageProvider = {
+      uploadImage: upload,
+      deleteImage,
+    };
     vi.stubGlobal(
       "fetch",
       vi.fn(async () => new Response(null, { status: 200 })),

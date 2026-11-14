@@ -48,14 +48,20 @@ describe("Non-Functional Testing: Performance & Load Testing", () => {
       findAdminPage: async () => [],
       countAdmin: async () => 0,
       findAdminById: async () => null,
-      create: async () => ({} as any),
-      update: async () => ({} as any),
-      delete: async () => ({} as any),
+      create: async () => ({}) as never,
+      update: async () => ({}) as never,
+      delete: async () => ({}) as never,
     },
   });
 
   it("handles 50 concurrent requests with zero errors and low latency", async () => {
     const concurrentRequests = 50;
+
+    // Warm the request path so module initialization and one-time middleware
+    // setup do not distort the throughput measurement.
+    const warmup = await request(app).get("/api/meta/filters");
+    expect(warmup.status).toBe(200);
+
     const start = performance.now();
 
     const promises = Array.from({ length: concurrentRequests }, () =>

@@ -11,7 +11,10 @@ import request from "supertest";
 import { describe, expect, it } from "vitest";
 import { createApp } from "../../apps/api/src/app.js";
 import type { ApiEnv } from "../../apps/api/src/config/env.js";
-import type { AuthRepository, AuthUser } from "../../apps/api/src/modules/auth/auth.repository.js";
+import type {
+  AuthRepository,
+  AuthUser,
+} from "../../apps/api/src/modules/auth/auth.repository.js";
 import type { DashboardRepository } from "../../apps/api/src/modules/admin/dashboard.repository.js";
 import type {
   ListingRecord,

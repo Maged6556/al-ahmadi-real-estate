@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseConsentCookie } from "../../apps/web/src/components/cookie-consent.js";
-import { getMessages, isLocale, localizedPath } from "../../apps/web/src/lib/i18n.js";
+import { getMessages, localizedPath } from "../../apps/web/src/lib/i18n.js";
 import { can } from "../../apps/api/src/modules/auth/permissions.js";
 
 const UserRole = {
@@ -37,7 +37,9 @@ describe("User Acceptance Testing (UAT) & Business Acceptance Criteria", () => {
       expect(keys).not.toContain("ownerName");
 
       const stringified = JSON.stringify(publicPropertySample);
-      expect(stringified).not.toMatch(/\b(?:EGP|USD|EUR|GBP|SAR)\b|جنيه|ج\.م|ريال/i);
+      expect(stringified).not.toMatch(
+        /\b(?:EGP|USD|EUR|GBP|SAR)\b|جنيه|ج\.م|ريال/i,
+      );
     });
   });
 
@@ -87,7 +89,9 @@ describe("User Acceptance Testing (UAT) & Business Acceptance Criteria", () => {
     });
 
     it("safely rejects tampered, corrupted, or injected cookies without crashing", () => {
-      expect(parseConsentCookie("malicious<script>alert(1)</script>", Date.now())).toBeNull();
+      expect(
+        parseConsentCookie("malicious<script>alert(1)</script>", Date.now()),
+      ).toBeNull();
       expect(parseConsentCookie("", Date.now())).toBeNull();
       expect(parseConsentCookie("%7Bincomplete_json", Date.now())).toBeNull();
     });

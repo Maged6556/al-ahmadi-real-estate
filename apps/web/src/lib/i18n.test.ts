@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getMessages, isLocale, localizedPath, messages } from "./i18n.js";
+import { getMessages, isLocale, localizedPath } from "./i18n.js";
 
 describe("Web i18n & Localization (Unit Testing)", () => {
   it("correctly identifies valid and invalid locales", () => {
@@ -35,7 +35,8 @@ describe("Web i18n & Localization (Unit Testing)", () => {
     expect(localizedPath("en", "/ar/listings/luxury-villa-101")).toBe(
       "/en/listings/luxury-villa-101",
     );
-    expect(localizedPath("ar", "/en/admin/listings")).toBe("/ar/admin/listings");
+    expect(localizedPath("ar", "/en/admin/listings")).toBe(
+      "/ar/admin/listings",
+    );
   });
 });
-

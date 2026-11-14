@@ -28,10 +28,10 @@ function isAdminPath(path: string | null, locale: Locale): path is string {
   const prefix = `/${locale}/admin`;
   return Boolean(
     path?.startsWith(prefix) &&
-      (path.length === prefix.length ||
-        path[prefix.length] === "/" ||
-        path[prefix.length] === "?" ||
-        path[prefix.length] === "#"),
+    (path.length === prefix.length ||
+      path[prefix.length] === "/" ||
+      path[prefix.length] === "?" ||
+      path[prefix.length] === "#"),
   );
 }
 

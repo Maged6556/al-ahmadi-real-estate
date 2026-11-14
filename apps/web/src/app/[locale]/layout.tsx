@@ -33,7 +33,11 @@ export default async function LocaleLayout({
   const { locale: localeParam } = await params;
   const locale = requireLocale(localeParam);
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} suppressHydrationWarning>
+    <html
+      lang={locale}
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{

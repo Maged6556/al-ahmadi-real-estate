@@ -35,4 +35,3 @@ describe("ThemeToggle Component (Unit Testing)", () => {
     expect(markup).toContain('type="button"');
   });
 });
-
