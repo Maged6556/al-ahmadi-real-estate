@@ -82,15 +82,28 @@ function apiBaseUrl() {
 }
 
 async function getJson<T>(path: string, tags: string[]): Promise<T> {
-  const response = await fetch(`${apiBaseUrl()}${path}`, {
-    cache: "force-cache",
-    next: { revalidate: 300, tags },
-    headers: { accept: "application/json" },
-  });
-  if (!response.ok) {
-    throw new Error(`Public listing API returned HTTP ${response.status}.`);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+  try {
+    const response = await fetch(`${apiBaseUrl()}${path}`, {
+      cache: "force-cache",
+      next: { revalidate: 300, tags },
+      headers: { accept: "application/json" },
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      throw new Error(`Public listing API returned HTTP ${response.status}.`);
+    }
+    return (await response.json()) as T;
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      throw new Error("API request timed out");
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeoutId);
   }
-  return (await response.json()) as T;
 }
 
 export async function getListings(
