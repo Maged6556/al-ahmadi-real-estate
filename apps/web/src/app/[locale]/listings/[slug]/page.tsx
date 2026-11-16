@@ -8,7 +8,7 @@ import { getMessages } from "../../../../lib/i18n";
 import { buildListingWhatsAppUrl } from "../../../../lib/whatsapp";
 import { requireLocale } from "../../../../lib/route-locale";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
