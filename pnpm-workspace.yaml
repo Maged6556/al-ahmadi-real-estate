@@ -2,13 +2,18 @@ packages:
   - apps/*
   - packages/*
 
-onlyBuiltDependencies:
-  - esbuild
-  - msgpackr-extract
-  - "@prisma/client"
-  - "@prisma/engines"
-  - prisma
+allowBuilds:
+  esbuild: true
+  msgpackr-extract: true
+  "@prisma/client": true
+  "@prisma/engines": true
+  prisma: true
 
 overrides:
   minimatch: ^11.0.1
   postcss: ^8.5.32
+  effect: 4.0.5
+  "@effect/vitest": 4.0.5
+  "@effect/platform-bun": 4.0.5
+  "@effect/platform-node": 4.0.5
+  "@effect/platform-node-shared": 4.0.5
