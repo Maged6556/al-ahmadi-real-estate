@@ -79,18 +79,14 @@ function shutdown() {
     );
   });
 }
-
-// ضع هذا السطر قبل أي مسارات أو Routes
 app.use(
   cors({
     origin: [
-      "https://al-ahmadi-real-estate-r9xwjauov.vercel.app", // رابط موقع الـ Web الخاص بك
-      "http://localhost:3000", // للتطوير المحلي
+      'http://localhost:3000',
+      'https://al-ahmadi-real-estate-r9xwjauov.vercel.app' // رابط موقع الـ Web الخاص بك
     ],
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
+  })
 );
 process.once("SIGINT", shutdown);
 process.once("SIGTERM", shutdown);
