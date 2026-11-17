@@ -42,5 +42,8 @@
   },
   "dependencies": {
     "animate.css": "^4.1.1"
-  }
+  },
+  "overrides": {
+  "picomatch": "^4.0.8"
+}
 }
