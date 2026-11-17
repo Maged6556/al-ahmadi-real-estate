@@ -85,8 +85,8 @@ export function ThemeToggle({ locale, className = "" }: ThemeToggleProps) {
         ? "التبديل إلى الوضع الفاتح"
         : "التبديل إلى الوضع الداكن"
       : isDark
-      ? "Switch to light mode"
-      : "Switch to dark mode";
+        ? "Switch to light mode"
+        : "Switch to dark mode";
 
   return (
     <button
