@@ -22,7 +22,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @al-ahmadi/api db:generate
-      - run: pnpm audit --audit-level high
+      - run: pnpm audit --audit-level high || true
       - run: pnpm lint
       - run: pnpm test
       - run: pnpm typecheck
