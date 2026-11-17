@@ -5,9 +5,14 @@ import { z } from "zod";
 
 export const dynamic = "force-dynamic";
 
-const revalidationRequestSchema = z.object({
-  tags: z.array(z.string().regex(/^(listings|listing:[\p{L}\p{N}-]+)$/u)).min(1).max(10),
-}).strict();
+const revalidationRequestSchema = z
+  .object({
+    tags: z
+      .array(z.string().regex(/^(listings|listing:[\p{L}\p{N}-]+)$/u))
+      .min(1)
+      .max(10),
+  })
+  .strict();
 
 export async function POST(request: Request) {
   const expectedSecret = process.env.WEB_REVALIDATION_SECRET;

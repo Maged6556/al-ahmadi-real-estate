@@ -10,7 +10,8 @@ function generateNonce(): string {
 
 function buildCspHeader(nonce: string): string {
   const scriptSources = ["'self'", `'nonce-${nonce}'`];
-  if (process.env.NODE_ENV === "development") scriptSources.push("'unsafe-eval'");
+  if (process.env.NODE_ENV === "development")
+    scriptSources.push("'unsafe-eval'");
 
   return [
     "default-src 'self'",
@@ -31,8 +32,12 @@ export function proxy(request: NextRequest) {
   const nonce = generateNonce();
   const cspHeader = buildCspHeader(nonce);
 
-  if (request.nextUrl.pathname === "/" || request.nextUrl.pathname === "/admin") {
-    const destination = request.nextUrl.pathname === "/admin" ? `/${locale}/admin` : `/${locale}`;
+  if (
+    request.nextUrl.pathname === "/" ||
+    request.nextUrl.pathname === "/admin"
+  ) {
+    const destination =
+      request.nextUrl.pathname === "/admin" ? `/${locale}/admin` : `/${locale}`;
     const response = NextResponse.redirect(new URL(destination, request.url));
     response.headers.set("Content-Security-Policy", cspHeader);
     return response;
