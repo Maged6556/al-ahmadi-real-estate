@@ -6,6 +6,7 @@ import { parseEnv } from "./config/env.js";
 import { accountLifecycleRepository } from "./modules/auth/account-lifecycle.repository.js";
 import { AccountLifecycleService } from "./modules/auth/account-lifecycle.service.js";
 import { createMailQueue } from "./modules/auth/mail.queue.js";
+import cors from "cors";
 
 loadEnv();
 
@@ -79,5 +80,17 @@ function shutdown() {
   });
 }
 
+// ضع هذا السطر قبل أي مسارات أو Routes
+app.use(
+  cors({
+    origin: [
+      "https://al-ahmadi-real-estate-r9xwjauov.vercel.app", // رابط موقع الـ Web الخاص بك
+      "http://localhost:3000"                              // للتطوير المحلي
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 process.once("SIGINT", shutdown);
 process.once("SIGTERM", shutdown);
