@@ -43,7 +43,7 @@ This runbook targets a fresh Ubuntu LTS VPS with Docker Engine and the Docker Co
 
 ## 2. First deployment
 
-The CI workflow runs lint, tests, typecheck, formatting, dependency audit, and production builds. After CI succeeds on `main`, the release workflow builds and scans the API and web images, pushes SHA-tagged images to GHCR, and deploys over SSH if the production SSH secrets are configured.
+The CI workflow runs lint, tests, typecheck, formatting, dependency audit, and production builds. After CI succeeds on `master`, the release workflow builds and scans the API and web images, pushes SHA-tagged images to GHCR, and deploys over SSH if the production SSH secrets are configured.
 
 To deploy manually on the VPS, first log in to GHCR and run:
 

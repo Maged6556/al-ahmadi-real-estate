@@ -10,6 +10,7 @@
     "migrate:deploy": "prisma migrate deploy",
     "build": "tsc --noEmit -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run ../../apps/api/src",
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",

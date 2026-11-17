@@ -3,7 +3,7 @@ import { SiteFooter } from "../../components/site-footer";
 import { SiteHeader } from "../../components/site-header";
 import { CookieConsent } from "../../components/cookie-consent";
 import { requireLocale } from "../../lib/route-locale";
-import { getCspNonce } from "../../middleware";
+import { getCspNonce } from "../../lib/csp";
 import "../globals.css";
 import "animate.css/animate.min.css";
 
