@@ -2,7 +2,7 @@
   "name": "al-ahmadi-real-estate",
   "private": true,
   "engines": {
-    "node": "\u003e\u003d22"
+    "node": ">=22"
   },
   "scripts": {
     "postinstall": "pnpm --filter @al-ahmadi/api db:generate",
@@ -14,7 +14,8 @@
     "test": "vitest run",
     "typecheck": "pnpm --recursive --if-present typecheck",
     "format": "prettier --write .",
-"format:check": "prettier --write \"apps/api/src/server.ts\" && prettier --check \"apps/**/*.{ts,tsx,json,css,md}\" \"packages/**/*.{ts,tsx,json,css,md}\""  },
+    "format:check": "prettier --write apps/api/src/server.ts && prettier --check \"apps/**/*.{ts,tsx,json,css,md}\" \"packages/**/*.{ts,tsx,json,css,md}\""
+  },
   "devDependencies": {
     "@next/eslint-plugin-next": "^15.2.4",
     "@prisma/client": "6.8.2",
