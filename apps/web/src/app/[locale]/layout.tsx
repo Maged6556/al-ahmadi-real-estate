@@ -5,6 +5,7 @@ import { CookieConsent } from "../../components/cookie-consent";
 import { requireLocale } from "../../lib/route-locale";
 import { getCspNonce } from "../../middleware";
 import "../globals.css";
+import "animate.css/animate.min.css";
 
 export const metadata: Metadata = {
   title: {
