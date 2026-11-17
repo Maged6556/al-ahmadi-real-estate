@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build:full": "prisma generate && prisma migrate deploy && tsc --noEmit -p tsconfig.json",
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
     "migrate:deploy": "prisma migrate deploy",
