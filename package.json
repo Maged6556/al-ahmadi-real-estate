@@ -15,8 +15,8 @@
     "pretest": "pnpm --filter @al-ahmadi/api db:generate",
     "test": "vitest run",
     "typecheck": "pnpm --recursive --if-present typecheck",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+ "format": "prettier --write \"apps/**/*.{ts,tsx,json,css,md}\" \"packages/**/*.{ts,tsx,json,css,md}\"",
+  "format:check": "prettier --check \"apps/**/*.{ts,tsx,json,css,md}\" \"packages/**/*.{ts,tsx,json,css,md}\""
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^16.4.6",
