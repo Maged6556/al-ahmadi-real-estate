@@ -52,8 +52,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid tags" }, { status: 400 });
   }
 
-  for (const tag of body.tags) {
-    revalidateTag(tag);
+for (const tag of body.tags) {
+    revalidateTag(tag, 'page');
   }
 
   return NextResponse.json({ revalidated: body.tags });
