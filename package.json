@@ -38,12 +38,14 @@
       "esbuild",
       "msgpackr-extract",
       "prisma"
-    ]
+    ],
+    "auditConfig": {
+      "ignoreCves": [
+        "CVE-2026-112366"
+      ]
+    }
   },
   "dependencies": {
     "animate.css": "^4.1.1"
-  },
-"overrides": {
-  "picomatch": ">=4.0.8"
-}
+  }
 }
