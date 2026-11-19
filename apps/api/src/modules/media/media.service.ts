@@ -26,14 +26,9 @@ function invalidImage() {
   );
 }
 
-function isPositiveSafeInteger(value: unknown): value is number {
-  return typeof value === "number" && Number.isSafeInteger(value) && value > 0;
-}
-
 export function detectImageMime(buffer: unknown): SupportedImageMime | null {
   if (!Buffer.isBuffer(buffer)) return null;
 
-  // Type guard ensures buffer is Buffer before index access
   const buf = buffer;
   if (
     buf.length >= 3 &&
@@ -74,38 +69,49 @@ export async function sanitizeImage(
   maxImageBytes: unknown = MAX_IMAGE_BYTES,
   maxImagePixels: unknown = MAX_IMAGE_PIXELS,
 ): Promise<SanitizedImage> {
-  // Type guards for all unknown inputs
-  const isBuffer = Buffer.isBuffer(buffer);
-  const isValidMaxBytes = isPositiveSafeInteger(maxImageBytes);
-  const isValidMaxPixels = isPositiveSafeInteger(maxImagePixels);
-  const isValidMime =
-    claimedMime === "image/jpeg" ||
-    claimedMime === "image/png" ||
-    claimedMime === "image/webp";
-
-  if (
-    !isBuffer ||
-    !isValidMaxBytes ||
-    !isValidMaxPixels ||
-    buffer.length === 0 ||
-    buffer.length > maxImageBytes ||
-    !isValidMime ||
-    detectImageMime(buffer) !== claimedMime
-  ) {
+  // Type guards with proper narrowing
+  if (!Buffer.isBuffer(buffer)) {
     throw invalidImage();
   }
+  const buf = buffer;
+  if (buf.length === 0) {
+    throw invalidImage();
+  }
+
+  const maxBytes: number =
+    typeof maxImageBytes === "number" && Number.isSafeInteger(maxImageBytes) && maxImageBytes > 0
+      ? maxImageBytes
+      : MAX_IMAGE_BYTES;
+  if (buf.length > maxBytes) {
+    throw invalidImage();
+  }
+
+  const validMime: SupportedImageMime | null =
+    claimedMime === "image/jpeg" ||
+    claimedMime === "image/png" ||
+    claimedMime === "image/webp"
+      ? (claimedMime as SupportedImageMime)
+      : null;
+  if (!validMime || detectImageMime(buf) !== validMime) {
+    throw invalidImage();
+  }
+
+  const maxPixels: number =
+    typeof maxImagePixels === "number" && Number.isSafeInteger(maxImagePixels) && maxImagePixels > 0
+      ? maxImagePixels
+      : MAX_IMAGE_PIXELS;
 
   try {
     const image = sharp(buffer, {
       failOn: "error",
-      limitInputPixels: maxImagePixels,
+      limitInputPixels: maxPixels,
       animated: false,
     });
     const metadata = await image.metadata();
     if (
       metadata.width === undefined ||
       metadata.height === undefined ||
-      metadata.width * metadata.height > maxImagePixels ||
+      metadata.width * metadata.height > maxPixels ||
       (metadata.pages !== undefined && metadata.pages > 1)
     ) {
       throw invalidImage();

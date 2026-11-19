@@ -57,7 +57,7 @@ jobs:
           tags: ${{ steps.meta-web.outputs.tags }}
           labels: ${{ steps.meta-web.outputs.labels }}
           build-args: |
-            NEXT_PUBLIC_SITE_URL=${{ vars['NEXT_PUBLIC_SITE_URL'] || 'https://example.invalid' }}
+            NEXT_PUBLIC_SITE_URL=${{ vars.NEXT_PUBLIC_SITE_URL || 'https://example.invalid' }}
       - name: Scan API image
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
@@ -82,7 +82,7 @@ jobs:
   deploy:
     runs-on: ubuntu-24.04
     needs: publish
-    environment: production
+    environment: "production"
     permissions:
       contents: read
     steps:
