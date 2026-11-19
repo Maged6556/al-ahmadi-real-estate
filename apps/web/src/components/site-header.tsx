@@ -48,7 +48,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
       <div className="container header-inner">
         <Link href={`/${locale}`} className="brand" aria-label={messages.brand}>
           <Image
-            src="apps/web/public/al-ahmadi-logo.jpg"
+            src="/al-ahmadi-logo.jpg"
             alt=""
             width={56}
             height={56}
