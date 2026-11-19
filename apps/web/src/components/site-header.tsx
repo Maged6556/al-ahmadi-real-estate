@@ -53,7 +53,6 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             width={56}
             height={56}
             className="brand-logo"
-            priority
           />
           <span className="brand-name">{messages.brand}</span>
         </Link>

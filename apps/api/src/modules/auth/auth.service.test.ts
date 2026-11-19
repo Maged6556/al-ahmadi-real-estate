@@ -590,6 +590,14 @@ describe("AuthService", () => {
     }
 
     const rbacApp = express();
+    rbacApp.use(
+      rateLimit({
+        windowMs: 60_000,
+        limit: 100,
+        standardHeaders: false,
+        legacyHeaders: false,
+      }),
+    );
     rbacApp.use(requestId);
     rbacApp.get(
       "/admin/users",

@@ -1,29 +1,18 @@
 import { timingSafeEqual } from "node:crypto";
 import { revalidateTag } from "next/cache";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 export const dynamic = "force-dynamic";
 
-function isRevalidationRequest(body: unknown): body is { tags: string[] } {
-  if (
-    typeof body !== "object" ||
-    body === null ||
-    Array.isArray(body) ||
-    Object.keys(body).length !== 1 ||
-    !("tags" in body) ||
-    !Array.isArray(body.tags) ||
-    body.tags.length < 1 ||
-    body.tags.length > 10
-  ) {
-    return false;
-  }
-
-  return body.tags.every(
-    (tag) =>
-      typeof tag === "string" &&
-      /^(listings|listing:[\p{L}\p{N}-]+)$/u.test(tag),
-  );
-}
+const revalidationRequestSchema = z
+  .object({
+    tags: z
+      .array(z.string().regex(/^(listings|listing:[\p{L}\p{N}-]+)$/u))
+      .min(1)
+      .max(10),
+  })
+  .strict();
 
 export async function POST(request: Request) {
   const expectedSecret = process.env.WEB_REVALIDATION_SECRET;
@@ -48,13 +37,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  if (!isRevalidationRequest(body)) {
+  const parsedBody = revalidationRequestSchema.safeParse(body);
+  if (!parsedBody.success) {
     return NextResponse.json({ error: "Invalid tags" }, { status: 400 });
   }
 
-for (const tag of body.tags) {
+  for (const tag of parsedBody.data.tags) {
     revalidateTag(tag);
   }
 
-  return NextResponse.json({ revalidated: body.tags });
+  return NextResponse.json({ revalidated: parsedBody.data.tags });
 }

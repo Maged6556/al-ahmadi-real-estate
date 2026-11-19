@@ -3,7 +3,9 @@ import { SiteFooter } from "../../components/site-footer";
 import { SiteHeader } from "../../components/site-header";
 import { CookieConsent } from "../../components/cookie-consent";
 import { requireLocale } from "../../lib/route-locale";
+import { getCspNonce } from "../../lib/csp";
 import "../globals.css";
+import "animate.css/animate.min.css";
 
 export const metadata: Metadata = {
   title: {
@@ -32,6 +34,7 @@ export default async function LocaleLayout({
 }>) {
   const { locale: localeParam } = await params;
   const locale = requireLocale(localeParam);
+  const nonce = await getCspNonce();
   return (
     <html
       lang={locale}
@@ -40,6 +43,7 @@ export default async function LocaleLayout({
     >
       <head>
         <script
+          nonce={nonce}
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&m)){document.documentElement.setAttribute('data-theme','dark');}else{document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();`,
           }}

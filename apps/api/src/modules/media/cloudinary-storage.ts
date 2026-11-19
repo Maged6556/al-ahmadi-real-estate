@@ -8,11 +8,17 @@ type CloudinaryConfig = {
   apiSecret: string;
 };
 
-function signParameters(parameters: Record<string, string>, apiSecret: string) {
+export function signParameters(
+  parameters: Record<string, string>,
+  apiSecret: string,
+) {
   const canonical = Object.entries(parameters)
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([key, value]) => `${key}=${value}`)
     .join("&");
+  // Cloudinary's upload API requires SHA-1 for request signatures. This is
+  // protocol authentication, not password or token hashing.
+  // codeql[js/weak-cryptographic-algorithm]
   return createHash("sha1").update(`${canonical}${apiSecret}`).digest("hex");
 }
 

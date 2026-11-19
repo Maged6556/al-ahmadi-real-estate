@@ -24,15 +24,28 @@ function isAdminLoginResponse(
   );
 }
 
-function isAdminPath(path: string | null, locale: Locale): path is string {
+function getSafeAdminPath(path: string | null, locale: Locale): string | null {
+  if (!path) return null;
+
   const prefix = `/${locale}/admin`;
-  return Boolean(
-    path?.startsWith(prefix) &&
-    (path.length === prefix.length ||
-      path[prefix.length] === "/" ||
-      path[prefix.length] === "?" ||
-      path[prefix.length] === "#"),
-  );
+  try {
+    const parsed = new URL(path, window.location.origin);
+    const isAdminPath =
+      parsed.pathname === prefix || parsed.pathname.startsWith(`${prefix}/`);
+
+    if (
+      parsed.origin !== window.location.origin ||
+      parsed.username ||
+      parsed.password ||
+      !isAdminPath
+    ) {
+      return null;
+    }
+
+    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return null;
+  }
 }
 
 export function AuthForm({
@@ -96,14 +109,13 @@ export function AuthForm({
       form.reset();
       if (mode === "login") {
         const next = new URLSearchParams(window.location.search).get("next");
+        const safeAdminPath = getSafeAdminPath(next, locale);
         if (isAdminLoginResponse(payload)) {
-          window.location.assign(
-            isAdminPath(next, locale) ? next : `/${locale}/admin`,
-          );
+          window.location.assign(safeAdminPath ?? `/${locale}/admin`);
           return;
         }
-        if (isAdminPath(next, locale)) {
-          window.location.assign(next);
+        if (safeAdminPath) {
+          window.location.assign(safeAdminPath);
           return;
         }
       }

@@ -1,10 +1,3 @@
-import {
-  ListingOffer,
-  ListingStatus,
-  ListingType,
-  Prisma,
-  UserRole,
-} from "@prisma/client";
 import { SignJWT } from "jose";
 import { rateLimit } from "express-rate-limit";
 import request from "supertest";
@@ -25,6 +18,15 @@ const secret = "test-secret-with-more-than-thirty-two-bytes";
 const adminId = "00000000-0000-4000-8000-000000000001";
 const userId = "00000000-0000-4000-8000-000000000002";
 const sampleListingId = "00000000-0000-4000-8000-000000000003";
+const ADMIN_ROLE = "ADMIN" as AuthUser["role"];
+const USER_ROLE = "USER" as AuthUser["role"];
+const LISTING_TYPE_VILLA = "VILLA" as ListingRecord["type"];
+const LISTING_OFFER_SALE = "SALE" as ListingRecord["offer"];
+const LISTING_STATUS_AVAILABLE = "AVAILABLE" as ListingRecord["status"];
+const decimal = (value: number) =>
+  ({ toNumber: () => value }) as unknown as NonNullable<
+    ListingRecord["areaSqm"]
+  >;
 
 function testEnv(): ApiEnv {
   return {
@@ -66,13 +68,13 @@ async function signJwt(user: AuthUser) {
     .sign(new TextEncoder().encode(secret));
 }
 
-const sampleListing: ListingRecord = {
+const sampleListing = {
   id: sampleListingId,
   code: "AH-2026",
   slug: "luxury-villa-cairo",
-  type: ListingType.VILLA,
-  offer: ListingOffer.SALE,
-  status: ListingStatus.AVAILABLE,
+  type: LISTING_TYPE_VILLA,
+  offer: LISTING_OFFER_SALE,
+  status: LISTING_STATUS_AVAILABLE,
   titleAr: "فيلا فاخرة للتملك",
   titleEn: "Luxury Villa for Sale",
   descriptionAr: "فيلا بتشطيب ملكي راقي",
@@ -80,9 +82,9 @@ const sampleListing: ListingRecord = {
   city: "Cairo",
   district: "New Cairo",
   addressText: "Confidential private address",
-  latitude: new Prisma.Decimal(30.0444),
-  longitude: new Prisma.Decimal(31.2357),
-  areaSqm: new Prisma.Decimal(450),
+  latitude: decimal(30.0444),
+  longitude: decimal(31.2357),
+  areaSqm: decimal(450),
   bedrooms: 5,
   bathrooms: 4,
   floor: null,
@@ -94,7 +96,7 @@ const sampleListing: ListingRecord = {
   createdAt: new Date("2026-02-01T00:00:00.000Z"),
   updatedAt: new Date("2026-02-01T00:00:00.000Z"),
   media: [],
-};
+} as unknown as ListingRecord;
 
 describe("System Testing (End-to-End System Journey)", () => {
   const users = new Map<string, AuthUser>([
@@ -105,7 +107,7 @@ describe("System Testing (End-to-End System Journey)", () => {
         email: "admin@al-ahmadi.com",
         passwordHash: "hash",
         name: "Admin Manager",
-        role: UserRole.ADMIN,
+        role: ADMIN_ROLE,
         preferredLocale: "ar",
         emailVerifiedAt: new Date(),
         isActive: true,
@@ -120,7 +122,7 @@ describe("System Testing (End-to-End System Journey)", () => {
         email: "client@example.com",
         passwordHash: "hash",
         name: "Client User",
-        role: UserRole.USER,
+        role: USER_ROLE,
         preferredLocale: "ar",
         emailVerifiedAt: new Date(),
         isActive: true,
@@ -188,10 +190,10 @@ describe("System Testing (End-to-End System Journey)", () => {
       return listings.length;
     },
     async countPublicByType() {
-      return [{ type: ListingType.VILLA, count: 1 }];
+      return [{ type: LISTING_TYPE_VILLA, count: 1 }];
     },
     async countPublicByOffer() {
-      return [{ offer: ListingOffer.SALE, count: 1 }];
+      return [{ offer: LISTING_OFFER_SALE, count: 1 }];
     },
     async findPublicBySlug(slug) {
       return listings.find((l) => l.slug === slug && l.isPublished) ?? null;
@@ -238,8 +240,8 @@ describe("System Testing (End-to-End System Journey)", () => {
         listings: {
           total: listings.length,
           published: listings.filter((l) => l.isPublished).length,
-          byStatus: [{ value: ListingStatus.AVAILABLE, count: 1 }],
-          byType: [{ value: ListingType.VILLA, count: 1 }],
+          byStatus: [{ value: LISTING_STATUS_AVAILABLE, count: 1 }],
+          byType: [{ value: LISTING_TYPE_VILLA, count: 1 }],
         },
         inquiries: {
           total: 5,

@@ -2,7 +2,7 @@ services:
   install:
     image: node:22-alpine
     working_dir: /workspace
-    command: sh -c "corepack enable && pnpm install --no-frozen-lockfile"
+    command: sh -c "corepack enable && corepack prepare pnpm@10.6.5 --activate && pnpm install --no-frozen-lockfile"
     volumes:
       - .:/workspace
       - root_node_modules:/workspace/node_modules

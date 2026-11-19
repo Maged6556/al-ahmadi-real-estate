@@ -7,7 +7,6 @@ import { accountLifecycleRepository } from "./modules/auth/account-lifecycle.rep
 import { AccountLifecycleService } from "./modules/auth/account-lifecycle.service.js";
 import { createMailQueue } from "./modules/auth/mail.queue.js";
 import cors from "cors";
-
 loadEnv();
 
 const env = parseEnv(process.env);
@@ -82,11 +81,13 @@ function shutdown() {
 app.use(
   cors({
     origin: [
-      'http://localhost:3000',
-      'https://al-ahmadi-real-estate-r9xwjauov.vercel.app' // رابط موقع الـ Web الخاص بك
+      "https://al-ahmadi-real-estate-r9xwjauov.vercel.app",
+      "http://localhost:3000",
     ],
     credentials: true,
-  })
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
 );
 process.once("SIGINT", shutdown);
 process.once("SIGTERM", shutdown);

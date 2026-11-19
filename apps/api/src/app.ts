@@ -36,6 +36,7 @@ import {
   type DashboardRepository,
 } from "./modules/admin/dashboard.repository.js";
 import { createDashboardRouter } from "./modules/admin/dashboard.routes.js";
+import { requireCsrfHeaders } from "./middleware/csrf.js";
 
 export function createApp(
   env: ApiEnv,
@@ -119,7 +120,8 @@ export function createApp(
     }),
   );
   app.use(requestId);
-  app.use("/api", rateLimiters.global);
+  app.use("/api", requireCsrfHeaders(env.CORS_ORIGIN));
+  app.use(rateLimiters.global);
   app.use(express.json({ limit: "1mb" }));
   app.use(cookieParser());
 

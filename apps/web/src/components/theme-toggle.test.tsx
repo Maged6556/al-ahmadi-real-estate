@@ -11,7 +11,8 @@ describe("ThemeToggle Component (Unit Testing)", () => {
 
     expect(markup).toContain('class="theme-toggle"');
     expect(markup).toContain('aria-label="التبديل إلى الوضع الداكن"');
-    expect(markup).toContain("<svg");
+    // No SVG during SSR to avoid hydration mismatch; icon renders client-side
+    expect(markup).not.toContain("<svg");
   });
 
   it("renders with correct accessibility attributes in English", () => {
@@ -21,6 +22,7 @@ describe("ThemeToggle Component (Unit Testing)", () => {
 
     expect(markup).toContain('class="theme-toggle"');
     expect(markup).toContain('aria-label="Switch to dark mode"');
+    expect(markup).not.toContain("<svg");
   });
 
   it("accepts custom className and maintains semantic button tag", () => {

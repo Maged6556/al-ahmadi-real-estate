@@ -27,7 +27,7 @@ Cloudinary credentials are required to use media uploads and are mandatory in pr
 
 Production images are built from the root context using the API and web multi-stage Dockerfiles. `docker-compose.prod.yml` runs PostgreSQL, password-protected Redis, the API, Next.js standalone server, and an Nginx TLS reverse proxy; only ports 80/443 are published. Use `.env.production.example` as a template, never as a live environment file. Set up DNS, TLS certificates, GHCR access, and GitHub Actions variables/secrets by following [DEPLOY.md](./DEPLOY.md).
 
-The CI workflow runs dependency audit, lint, tests, typecheck, formatting, builds, and container builds. A successful `main` CI run triggers image publication, Trivy HIGH/CRITICAL scans, and an optional SSH deployment when the protected `production` environment is configured. Deployments use commit SHA tags, apply Prisma migrations, check liveness/readiness, and roll back to the last healthy image on a failed rollout. Database backups include SHA-256 checksums; the restore script only restores to a new isolated database and never overwrites the live database.
+The CI workflow runs dependency audit, lint, tests, typecheck, formatting, builds, and container builds. A successful `master` CI run triggers image publication, Trivy HIGH/CRITICAL scans, and an optional SSH deployment when the protected `production` environment is configured. Deployments use commit SHA tags, apply Prisma migrations, check liveness/readiness, and roll back to the last healthy image on a failed rollout. Database backups include SHA-256 checksums; the restore script only restores to a new isolated database and never overwrites the live database.
 
 ## Account, email, and privacy (Phase 9)
 

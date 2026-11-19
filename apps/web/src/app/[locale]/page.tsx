@@ -7,7 +7,7 @@ import { getListings } from "../../lib/api";
 import { getMessages } from "../../lib/i18n";
 import { requireLocale } from "../../lib/route-locale";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
