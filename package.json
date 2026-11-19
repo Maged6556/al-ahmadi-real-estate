@@ -43,6 +43,9 @@
       "ignoreCves": [
         "CVE-2026-112366"
       ]
+    },
+    "overrides": {
+      "tailwindcss": "^3.4.19"
     }
   },
   "dependencies": {

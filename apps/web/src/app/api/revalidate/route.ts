@@ -43,7 +43,7 @@ export async function POST(request: Request) {
   }
 
   for (const tag of parsedBody.data.tags) {
-    revalidateTag(tag);
+    revalidateTag(tag, "page");
   }
 
   return NextResponse.json({ revalidated: parsedBody.data.tags });
