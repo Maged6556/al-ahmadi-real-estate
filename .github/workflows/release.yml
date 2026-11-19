@@ -82,6 +82,7 @@ jobs:
   deploy:
     runs-on: ubuntu-24.04
     needs: publish
+    # yamllint disable-line rule:key-duplicates
     environment: "production"
     permissions:
       contents: read
