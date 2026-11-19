@@ -41,6 +41,7 @@ jobs:
           context: .
           file: apps/api/Dockerfile
           push: false
+          load: true
           tags: ${{ steps.meta-api.outputs.tags }}
           labels: ${{ steps.meta-api.outputs.labels }}
       - name: Build web (no push)
@@ -49,6 +50,7 @@ jobs:
           context: .
           file: apps/web/Dockerfile
           push: false
+          load: true
           tags: ${{ steps.meta-web.outputs.tags }}
           labels: ${{ steps.meta-web.outputs.labels }}
           build-args: |
