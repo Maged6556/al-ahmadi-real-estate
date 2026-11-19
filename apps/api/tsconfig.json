@@ -3,5 +3,5 @@
   "compilerOptions": {
     "module": "ESNext"
   },
-  "include": ["src/**/*.ts", "prisma/**/*.ts"]
+  "include": ["src/**/*.ts", "src/types/**/*.ts", "prisma/**/*.ts"]
 }
