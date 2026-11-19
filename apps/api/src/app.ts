@@ -120,7 +120,11 @@ export function createApp(
     }),
   );
   app.use(requestId);
-  app.use("/api", requireCsrfHeaders(env.CORS_ORIGIN));
+  app.use(
+    "/api",
+    // codeql[js/express-missing-csrf-middleware] - CSRF protection via origin + x-requested-with header check
+    requireCsrfHeaders(env.CORS_ORIGIN),
+  );
   app.use(rateLimiters.global);
   app.use(express.json({ limit: "1mb" }));
   app.use(cookieParser());

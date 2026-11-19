@@ -33,26 +33,28 @@ function isPositiveSafeInteger(value: unknown): value is number {
 export function detectImageMime(buffer: unknown): SupportedImageMime | null {
   if (!Buffer.isBuffer(buffer)) return null;
 
+  // Type guard ensures buffer is Buffer before index access
+  const buf = buffer;
   if (
-    buffer.length >= 3 &&
-    buffer[0] === 0xff &&
-    buffer[1] === 0xd8 &&
-    buffer[2] === 0xff
+    buf.length >= 3 &&
+    buf[0] === 0xff &&
+    buf[1] === 0xd8 &&
+    buf[2] === 0xff
   ) {
     return "image/jpeg";
   }
 
   if (
-    buffer.length >= 8 &&
-    buffer.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
+    buf.length >= 8 &&
+    buf.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
   ) {
     return "image/png";
   }
 
   if (
-    buffer.length >= 12 &&
-    buffer.toString("ascii", 0, 4) === "RIFF" &&
-    buffer.toString("ascii", 8, 12) === "WEBP"
+    buf.length >= 12 &&
+    buf.toString("ascii", 0, 4) === "RIFF" &&
+    buf.toString("ascii", 8, 12) === "WEBP"
   ) {
     return "image/webp";
   }
@@ -72,13 +74,22 @@ export async function sanitizeImage(
   maxImageBytes: unknown = MAX_IMAGE_BYTES,
   maxImagePixels: unknown = MAX_IMAGE_PIXELS,
 ): Promise<SanitizedImage> {
+  // Type guards for all unknown inputs
+  const isBuffer = Buffer.isBuffer(buffer);
+  const isValidMaxBytes = isPositiveSafeInteger(maxImageBytes);
+  const isValidMaxPixels = isPositiveSafeInteger(maxImagePixels);
+  const isValidMime =
+    claimedMime === "image/jpeg" ||
+    claimedMime === "image/png" ||
+    claimedMime === "image/webp";
+
   if (
-    !Buffer.isBuffer(buffer) ||
-    !isPositiveSafeInteger(maxImageBytes) ||
-    !isPositiveSafeInteger(maxImagePixels) ||
+    !isBuffer ||
+    !isValidMaxBytes ||
+    !isValidMaxPixels ||
     buffer.length === 0 ||
     buffer.length > maxImageBytes ||
-    !claimedMime ||
+    !isValidMime ||
     detectImageMime(buffer) !== claimedMime
   ) {
     throw invalidImage();
