@@ -1,4 +1,3 @@
-import { MetadataRoute } from "next";
 import { getListings } from "../lib/api";
 
 const BASE_URL =
@@ -10,7 +9,7 @@ const LOCALES: readonly string[] = ["ar", "en"];
 const STATIC_PATHS = ["", "/listings", "/about", "/contact"];
 
 export default async function sitemap() {
-  const entries: MetadataRoute.Sitemap = [];
+  const entries: Array<{ url: string; lastModified: Date; changeFrequency: string; priority: number }> = [];
 
   for (const locale of LOCALES) {
     for (const path of STATIC_PATHS) {
