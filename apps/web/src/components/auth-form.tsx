@@ -125,6 +125,8 @@ export function AuthForm({
           window.location.assign(safeAdminPath);
           return;
         }
+        window.location.assign(`/${locale}/account`);
+        return;
       }
     } catch {
       setFeedback({ message: messages.auth.error, success: false });
