@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   alternates: {
     languages: { ar: "/ar", en: "/en" },
   },
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export function generateStaticParams() {
