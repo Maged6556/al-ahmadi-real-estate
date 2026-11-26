@@ -230,21 +230,5 @@ export function createAuthRouter(
     },
   );
 
-  // TEMPORARY: one-time admin promotion - remove after use
-  router.post("/promote-admin", async (request, response) => {
-    const { prisma } = await import("../../lib/prisma.js");
-    const { UserRole } = await import("@prisma/client");
-    const { email } = request.body as { email?: string };
-    if (!email) {
-      response.status(400).json({ error: { code: "MISSING_EMAIL" } });
-      return;
-    }
-    await prisma.user.update({
-      where: { email },
-      data: { role: UserRole.ADMIN },
-    });
-    response.status(200).json({ data: { message: "Promoted to ADMIN" } });
-  });
-
   return router;
 }
