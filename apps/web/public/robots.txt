@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://al-ahmadi-real-estate-od57.vercel.app/sitemap.xml
