@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import type { Locale } from "@al-ahmadi/shared";
@@ -28,6 +29,8 @@ export function AccountCenter({
   forcePasswordChange: boolean;
 }) {
   const messages = getMessages(locale);
+  const router = useRouter();
+  const pathname = usePathname();
   const copy = messages.account;
   const [user, setUser] = useState<AccountUser | null>(null);
   const [loaded, setLoaded] = useState(false);
@@ -40,7 +43,15 @@ export function AccountCenter({
     let active = true;
     fetch(apiUrl("/api/account"), { credentials: "include" })
       .then(async (response) => {
-        if (!response.ok) throw new Error("account_load_failed");
+        if (!response.ok) {
+          if (response.status === 401 || response.status === 403) {
+            if (active) {
+              router.replace(`/${locale}/login?next=${encodeURIComponent(pathname)}`);
+            }
+            return;
+          }
+          throw new Error("account_load_failed");
+        }
         const body = (await response.json()) as { data: { user: AccountUser } };
         if (active) setUser(body.data.user);
       })
@@ -53,7 +64,7 @@ export function AccountCenter({
     return () => {
       active = false;
     };
-  }, [copy.loadError]);
+  }, [copy.loadError, locale, pathname, router]);
 
   async function submit(
     event: FormEvent<HTMLFormElement>,
@@ -131,7 +142,7 @@ export function AccountCenter({
         method: "POST",
         body: "{}",
       });
-      window.location.assign(`/${locale}`);
+      router.replace(`/${locale}`);
     } catch {
       setFeedback(copy.error);
     }

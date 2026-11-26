@@ -927,6 +927,16 @@ p {
   font-weight: 700;
 }
 
+.field-error {
+  color: var(--rose);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.auth-form input[aria-invalid="true"] {
+  border-color: var(--rose);
+}
+
 .search-input-wrap {
   position: relative;
 }
