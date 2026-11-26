@@ -171,6 +171,7 @@
     "newPassword": "New password",
     "changePassword": "Change password",
     "passwordChanged": "Password changed. Sign in again.",
+    "mustChangePassword": "You must change your password before accessing your account.",
     "deleteTitle": "Delete account",
     "deleteWarning": "This anonymizes your account and removes saved favorites. This cannot be undone.",
     "deleteAccount": "Delete my account",

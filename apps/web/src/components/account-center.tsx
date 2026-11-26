@@ -20,12 +20,21 @@ function apiUrl(path: string) {
   return `${base.replace(/\/+$/, "")}${path}`;
 }
 
-export function AccountCenter({ locale }: { locale: Locale }) {
+export function AccountCenter({
+  locale,
+  forcePasswordChange,
+}: {
+  locale: Locale;
+  forcePasswordChange: boolean;
+}) {
   const messages = getMessages(locale);
   const copy = messages.account;
   const [user, setUser] = useState<AccountUser | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [mustChangePassword, setMustChangePassword] = useState(
+    forcePasswordChange,
+  );
 
   useEffect(() => {
     let active = true;
@@ -73,6 +82,12 @@ export function AccountCenter({ locale }: { locale: Locale }) {
         return;
       }
       if (path === "/password") {
+        if (mustChangePassword) {
+          setMustChangePassword(false);
+          setFeedback(copy.passwordChanged);
+          form.reset();
+          return;
+        }
         setFeedback(copy.passwordChanged);
         window.location.assign(`/${locale}/login`);
         return;
@@ -132,6 +147,55 @@ export function AccountCenter({ locale }: { locale: Locale }) {
         <Link className="button button-primary" href={`/${locale}/login`}>
           {messages.nav.login}
         </Link>
+      </div>
+    );
+  }
+
+  if (mustChangePassword) {
+    return (
+      <div className="account-center">
+        <div className="account-section">
+          <p className="form-feedback form-error" role="alert">
+            {copy.mustChangePassword}
+          </p>
+        </div>
+        <section className="account-section">
+          <h2>{copy.changePassword}</h2>
+          <p>
+            {copy.email}: {user.email} ·{" "}
+            {user.name ? copy.name + ": " + user.name : ""}
+          </p>
+          <form
+            className="account-form"
+            onSubmit={(event) =>
+              submit(event, "/password", "POST", copy.passwordChanged)
+            }
+          >
+            <label>
+              <span>{copy.currentPassword}</span>
+              <input
+                name="currentPassword"
+                type="password"
+                autoComplete="current-password"
+                required
+              />
+            </label>
+            <label>
+              <span>{copy.newPassword}</span>
+              <input
+                name="newPassword"
+                type="password"
+                minLength={10}
+                maxLength={72}
+                autoComplete="new-password"
+                required
+              />
+            </label>
+            <button className="button button-primary">
+              {copy.changePassword}
+            </button>
+          </form>
+        </section>
       </div>
     );
   }

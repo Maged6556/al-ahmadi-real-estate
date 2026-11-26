@@ -125,7 +125,9 @@ export function AuthForm({
           window.location.assign(safeAdminPath);
           return;
         }
-        window.location.assign(`/${locale}/account`);
+        window.location.assign(
+          registered ? `/${locale}/account?forcePasswordChange=true` : `/${locale}/account`,
+        );
         return;
       }
     } catch {

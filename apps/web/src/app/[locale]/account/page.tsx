@@ -17,11 +17,14 @@ export async function generateMetadata({
 
 export default async function AccountPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ forcePasswordChange?: string }>;
 }) {
   const { locale: localeParam } = await params;
   const locale = requireLocale(localeParam);
+  const { forcePasswordChange } = await searchParams;
   const copy = getMessages(locale).account;
   return (
     <main id="main-content" className="page-main container account-page">
@@ -29,7 +32,7 @@ export default async function AccountPage({
         <p className="eyebrow">{copy.title}</p>
         <h1>{copy.title}</h1>
       </div>
-      <AccountCenter locale={locale} />
+      <AccountCenter locale={locale} forcePasswordChange={forcePasswordChange === "true"} />
     </main>
   );
 }
