@@ -95,6 +95,7 @@ export default async function HomePage({
               alt=""
               fill
               priority
+              loading="eager"
               sizes="(max-width: 700px) 100vw, 45vw"
               className="hero-visual-logo"
             />
