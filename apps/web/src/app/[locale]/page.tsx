@@ -116,7 +116,7 @@ export default async function HomePage({
             <p>{messages.home.experienceText}</p>
           </div>
           <div className="trust-stat">
-            <strong>04</strong>
+            <strong>06</strong>
             <span>{messages.home.yearsExperience}</span>
           </div>
           <div className="trust-stat">
