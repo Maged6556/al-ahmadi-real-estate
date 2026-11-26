@@ -1,6 +1,4 @@
-import { defineRailwayConfig } from "@railway/cli";
-
-export default defineRailwayConfig({
+export default {
   build: {
     builder: "DOCKER",
     dockerfile: "apps/api/Dockerfile",
@@ -9,4 +7,4 @@ export default defineRailwayConfig({
     restartPolicyType: "ON_FAILURE",
     restartPolicyMaxRetries: 10,
   },
-});
+};
