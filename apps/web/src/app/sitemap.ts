@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { getListings } from "../../lib/api";
+import { getListings } from "../lib/api";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ??
