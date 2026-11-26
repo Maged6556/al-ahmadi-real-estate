@@ -29,9 +29,6 @@ export const metadata: Metadata = {
       "Explore selected properties for sale and rent with personal service and local market experience.",
     type: "website",
     locale: "en_US",
-    alternates: {
-      locale: ["ar_SA", "en_US"],
-    },
     siteName: "Al-ahmadi Real Estate",
   },
   twitter: {
