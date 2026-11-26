@@ -7,15 +7,10 @@ const BASE_URL =
 
 const LOCALES: readonly string[] = ["ar", "en"];
 
-const STATIC_PATHS = [
-  "",
-  "/listings",
-  "/about",
-  "/contact",
-];
+const STATIC_PATHS = ["", "/listings", "/about", "/contact"];
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const entries: MetadataRoute.Sitemap[] = [];
+export default async function sitemap() {
+  const entries: MetadataRoute.Sitemap = [];
 
   for (const locale of LOCALES) {
     for (const path of STATIC_PATHS) {
