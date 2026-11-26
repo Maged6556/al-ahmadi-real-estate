@@ -89,6 +89,7 @@ export default async function LocaleLayout({
           }}
         />
         <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="preload" as="image" href="/al-ahmadi-logo.jpg" fetchPriority="high" />
         <script
           nonce={nonce}
           type="application/ld+json"
