@@ -13,6 +13,9 @@ export async function generateMetadata({
   const { locale } = await params;
   return {
     title: locale === "ar" ? "تواصل معنا" : "Contact",
+    description: locale === "ar"
+      ? "تواصل مع الأحمدى للتسويق العقاري عبر الواتساب أو البريد الإلكتروني أو الهاتف للاستفسار عن العقارات."
+      : "Contact Al-ahmadi Real Estate Marketing via WhatsApp, email, or phone for property inquiries.",
     alternates: {
       canonical: `/${locale}/contact`,
       languages: {

@@ -11,6 +11,9 @@ export async function generateMetadata({
   const { locale } = await params;
   return {
     title: locale === "ar" ? "من نحن" : "About us",
+    description: locale === "ar"
+      ? "تعرف على الأحمدى للتسويق العقاري، خبرتنا في السوق العقاري، والتزامنا بخدمة شخصية وموثوقة."
+      : "Learn about Al-ahmadi Real Estate Marketing, our market expertise, and our commitment to personal and reliable service.",
     alternates: {
       canonical: `/${locale}/about`,
       languages: {
