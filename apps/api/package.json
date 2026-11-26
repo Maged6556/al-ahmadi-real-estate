@@ -6,7 +6,7 @@
   "scripts": {
     "build:full": "prisma generate && prisma migrate deploy && tsc --noEmit -p tsconfig.json",
     "dev": "tsx watch src/server.ts",
-    "start": "tsx src/server.ts",
+    "start": "prisma migrate deploy && tsx src/server.ts",
     "migrate:deploy": "prisma migrate deploy",
     "build": "tsc --noEmit -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",
