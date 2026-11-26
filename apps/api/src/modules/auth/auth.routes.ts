@@ -40,30 +40,33 @@ function setSessionCookies(
   const commonOptions = {
     httpOnly: true,
     secure,
-    sameSite: "lax" as const,
-    path: AUTH_COOKIE_PATH,
+    sameSite: secure ? ("none" as const) : ("lax" as const),
   };
 
   response.cookie(ACCESS_COOKIE, session.accessToken, {
     ...commonOptions,
+    path: "/",
     maxAge: session.accessTokenExpiresIn * 1000,
   });
   response.cookie(REFRESH_COOKIE, session.refreshToken, {
     ...commonOptions,
+    path: "/api/auth/refresh",
     expires: session.refreshTokenExpiresAt,
   });
 }
 
 export function clearSessionCookies(response: Response, secure: boolean) {
-  const options = {
+  const commonOptions = {
     httpOnly: true,
     secure,
-    sameSite: "lax" as const,
-    path: AUTH_COOKIE_PATH,
+    sameSite: secure ? ("none" as const) : ("lax" as const),
   };
 
-  response.clearCookie(ACCESS_COOKIE, options);
-  response.clearCookie(REFRESH_COOKIE, options);
+  response.clearCookie(ACCESS_COOKIE, { ...commonOptions, path: "/" });
+  response.clearCookie(REFRESH_COOKIE, {
+    ...commonOptions,
+    path: "/api/auth/refresh",
+  });
 }
 
 export function createAuthRouter(

@@ -10,8 +10,11 @@ function generateNonce(): string {
 
 function buildCspHeader(nonce: string): string {
   const scriptSources = ["'self'", `'nonce-${nonce}'`];
-  if (process.env.NODE_ENV === "development")
+  const connectSources = ["'self'", "https:"];
+  if (process.env.NODE_ENV === "development") {
     scriptSources.push("'unsafe-eval'");
+    connectSources.push("http://localhost:*", "http://127.0.0.1:*");
+  }
 
   return [
     "default-src 'self'",
@@ -19,7 +22,7 @@ function buildCspHeader(nonce: string): string {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
     "font-src 'self'",
-    "connect-src 'self' https:",
+    `connect-src ${connectSources.join(" ")}`,
     "frame-ancestors 'none'",
     "base-uri 'none'",
     "form-action 'self'",

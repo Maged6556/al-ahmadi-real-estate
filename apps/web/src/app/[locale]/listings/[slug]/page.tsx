@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import type { Locale } from "@al-ahmadi/shared";
 import { getListing, localizedListingText } from "../../../../lib/api";
 import { getMessages } from "../../../../lib/i18n";
 import { buildListingWhatsAppUrl } from "../../../../lib/whatsapp";
@@ -19,8 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = requireLocale(localeParam);
   const listing = await getListing(slug);
   if (!listing) {
+    const messages = getMessages(locale);
     return {
-      title: locale === "ar" ? "العقار غير موجود" : "Property not found",
+      title: messages.detail.notFound,
     };
   }
   const text = localizedListingText(listing, locale);
@@ -50,29 +50,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function formatListingType(
-  type: "apartment" | "building" | "residential_unit" | "villa" | "land",
-  locale: Locale,
-) {
-  const labels = {
-    ar: {
-      apartment: "شقة",
-      building: "مبنى",
-      residential_unit: "وحدة سكنية",
-      villa: "فيلا",
-      land: "أرض",
-    },
-    en: {
-      apartment: "apartment",
-      building: "building",
-      residential_unit: "residential unit",
-      villa: "villa",
-      land: "land",
-    },
-  };
-  return labels[locale][type];
-}
-
 export default async function ListingDetailPage({ params }: Props) {
   const { locale: localeParam, slug } = await params;
   const locale = requireLocale(localeParam);
@@ -91,7 +68,7 @@ export default async function ListingDetailPage({ params }: Props) {
   const whatsappUrl = buildListingWhatsAppUrl(listing, locale, listingUrl);
   const statusLabel = messages.listings[listing.status];
   const offerLabel = messages.listings[listing.offer];
-  const typeLabel = formatListingType(listing.type, locale);
+  const typeLabel = messages.listings[listing.type];
 
   return (
     <main id="main-content" className="page-main detail-page">
@@ -121,6 +98,14 @@ export default async function ListingDetailPage({ params }: Props) {
                       sizes="(max-width: 800px) 100vw, 65vw"
                       className="listing-image"
                     />
+                    {images.length > 5 && index === 4 && (
+                      <span className="gallery-more-badge">
+                        {messages.detail.morePhotos.replace(
+                          "{count}",
+                          String(images.length - 4),
+                        )}
+                      </span>
+                    )}
                   </div>
                 ))
               ) : (

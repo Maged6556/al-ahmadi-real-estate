@@ -100,9 +100,7 @@ export default async function HomePage({
             />
             <div className="hero-art-label">
               <span className="label-dot" />
-              <span>
-                {locale === "ar" ? "وجهتك العقارية" : "Your property journey"}
-              </span>
+              <span>{messages.home.heroJourney}</span>
             </div>
           </div>
         </div>
@@ -119,11 +117,11 @@ export default async function HomePage({
           </div>
           <div className="trust-stat">
             <strong>04</strong>
-            <span>{locale === "ar" ? "سنوات خبرة" : "Years experience"}</span>
+            <span>{messages.home.yearsExperience}</span>
           </div>
           <div className="trust-stat">
             <strong>01</strong>
-            <span>{locale === "ar" ? "فريق يهتم بك" : "Dedicated team"}</span>
+            <span>{messages.home.dedicatedTeam}</span>
           </div>
         </div>
       </section>

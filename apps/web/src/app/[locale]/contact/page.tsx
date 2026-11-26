@@ -56,7 +56,7 @@ export default async function ContactPage({
               ◉
             </span>
             <span>
-              <small>{locale === "ar" ? "واتساب" : "WhatsApp"}</small>
+              <small>{messages.common.whatsapp}</small>
               <strong>{messages.contact.whatsapp}</strong>
             </span>
             <span className="contact-option-arrow" aria-hidden="true">
@@ -68,18 +68,14 @@ export default async function ContactPage({
               ⌕
             </span>
             <span>
-              <small>{locale === "ar" ? "اتصال مباشر" : "Call directly"}</small>
+              <small>{messages.contact.directCall}</small>
               <strong dir="ltr">{phone}</strong>
             </span>
             <span className="contact-option-arrow" aria-hidden="true">
               ↗
             </span>
           </a>
-          <p className="contact-response">
-            {locale === "ar"
-              ? "تواصل معنا باللغة التي تفضلها، العربية أو الإنجليزية."
-              : "Reach us in the language you prefer, Arabic or English."}
-          </p>
+          <p className="contact-response">{messages.contact.languageNote}</p>
         </div>
       </section>
     </main>

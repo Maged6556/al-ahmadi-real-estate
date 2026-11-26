@@ -80,12 +80,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale: localeParam } = await params;
   const locale = requireLocale(localeParam);
+  const messages = getMessages(locale);
   return {
-    title: locale === "ar" ? "العقارات" : "Properties",
-    description:
-      locale === "ar"
-        ? "تصفح العقارات المتاحة للبيع والإيجار."
-        : "Browse available properties for sale and rent.",
+    title: messages.listings.title,
+    description: messages.listings.metaDescription,
     alternates: {
       canonical: `/${locale}/listings`,
       languages: {
@@ -160,9 +158,7 @@ export default async function ListingsPage({
             {result.meta.totalPages > 1 && (
               <nav
                 className="pagination"
-                aria-label={
-                  locale === "ar" ? "التنقل بين الصفحات" : "Pagination"
-                }
+                aria-label={messages.listings.pagination}
               >
                 {filters.page > 1 ? (
                   <Link

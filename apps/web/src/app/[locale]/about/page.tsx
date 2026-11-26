@@ -48,10 +48,8 @@ export default async function AboutPage({
           </div>
           <div className="about-visual" aria-hidden="true">
             <div className="about-visual-circle">
-              <span>6</span>
-              <small>
-                {locale === "ar" ? "سنوات خبرة" : "years of experience"}
-              </small>
+              <span>{messages.about.experienceYears}</span>
+              <small>{messages.about.experienceBadge}</small>
             </div>
             <span className="about-spark about-spark-one">✦</span>
             <span className="about-spark about-spark-two">✦</span>
@@ -60,33 +58,13 @@ export default async function AboutPage({
       </section>
       <section className="section-block">
         <div className="container about-values">
-          <article>
-            <span className="value-number">01</span>
-            <h2>{locale === "ar" ? "نستمع أولاً" : "We listen first"}</h2>
-            <p>
-              {locale === "ar"
-                ? "نفهم احتياجك وأولوياتك قبل أن نساعدك في استكشاف الخيارات."
-                : "We understand your needs and priorities before exploring your options."}
-            </p>
-          </article>
-          <article>
-            <span className="value-number">02</span>
-            <h2>{locale === "ar" ? "معلومة واضحة" : "Clear information"}</h2>
-            <p>
-              {locale === "ar"
-                ? "نقدم تفاصيل العقار المتاحة بشفافية، ونوضح ما يحتاج إلى تأكيد."
-                : "We share available property details transparently and clarify what needs confirmation."}
-            </p>
-          </article>
-          <article>
-            <span className="value-number">03</span>
-            <h2>{locale === "ar" ? "خدمة شخصية" : "Personal service"}</h2>
-            <p>
-              {locale === "ar"
-                ? "نبقى إلى جانبك خلال البحث والتواصل لاتخاذ الخطوة المناسبة."
-                : "We stay by your side through your search and conversations to help you take the right next step."}
-            </p>
-          </article>
+          {messages.about.values.map((val) => (
+            <article key={val.number}>
+              <span className="value-number">{val.number}</span>
+              <h2>{val.title}</h2>
+              <p>{val.description}</p>
+            </article>
+          ))}
         </div>
       </section>
     </main>

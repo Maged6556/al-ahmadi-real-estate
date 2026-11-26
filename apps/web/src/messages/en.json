@@ -12,7 +12,8 @@
     "contact": "Contact",
     "login": "Log in",
     "register": "Create account",
-    "account": "My account"
+    "account": "My account",
+    "mainNav": "Main navigation"
   },
   "home": {
     "eyebrow": "Local knowledge. Personal service.",
@@ -26,7 +27,10 @@
     "featuredText": "Explore the latest properties available for sale and rent.",
     "allListings": "View all properties",
     "categories": "Explore by property type",
-    "categoriesText": "Start with the type that best matches your search."
+    "categoriesText": "Start with the type that best matches your search.",
+    "heroJourney": "Your property journey",
+    "yearsExperience": "Years experience",
+    "dedicatedTeam": "Dedicated team"
   },
   "listings": {
     "eyebrow": "Find your next move",
@@ -60,7 +64,9 @@
     "area": "m²",
     "bedrooms": "beds",
     "bathrooms": "baths",
-    "details": "View details"
+    "details": "View details",
+    "pagination": "Pagination",
+    "metaDescription": "Browse available properties for sale and rent."
   },
   "detail": {
     "back": "Back to properties",
@@ -71,13 +77,34 @@
     "whatsappUnavailable": "Ask about similar options",
     "whatsappMessage": "Hello, I would like to inquire about the details of",
     "addressPrivate": "Approximate location — contact us for details",
-    "gallery": "Property photos"
+    "gallery": "Property photos",
+    "notFound": "Property not found",
+    "morePhotos": "+{count} more photos"
   },
   "about": {
     "eyebrow": "About us",
     "title": "Real-estate relationships built on trust",
     "body": "Al-ahmadi Real Estate Marketing helps property seekers explore available options and connect with our team through clear, personal service. We believe great service starts with listening and ends with reliable information.",
-    "experience": "4 years of real-estate marketing experience"
+    "experience": "4 years of real-estate marketing experience",
+    "experienceYears": "4",
+    "experienceBadge": "years of experience",
+    "values": [
+      {
+        "number": "01",
+        "title": "We listen first",
+        "description": "We understand your needs and priorities before exploring your options."
+      },
+      {
+        "number": "02",
+        "title": "Clear information",
+        "description": "We share available property details transparently and clarify what needs confirmation."
+      },
+      {
+        "number": "03",
+        "title": "Personal service",
+        "description": "We stay by your side through your search and conversations to help you take the right next step."
+      }
+    ]
   },
   "contact": {
     "eyebrow": "Contact",
@@ -85,7 +112,9 @@
     "body": "Tell us what you are looking for and our team will help you explore the available options.",
     "whatsapp": "Chat on WhatsApp",
     "phone": "Call us",
-    "email": "Email us"
+    "email": "Email us",
+    "directCall": "Call directly",
+    "languageNote": "Reach us in the language you prefer, Arabic or English."
   },
   "auth": {
     "loginTitle": "Welcome back",
@@ -297,6 +326,16 @@
     "roles": {
       "ADMIN": "Administrator",
       "EDITOR": "Editor"
+    },
+    "channels": {
+      "WHATSAPP_LISTING": "WhatsApp (Listing)",
+      "WHATSAPP_FLOATING": "WhatsApp (General)",
+      "PROPERTY_REQUEST": "Property Request",
+      "OWNER_SUBMISSION": "Owner Submission",
+      "PHONE": "Phone Call",
+      "REFERRAL": "Referral",
+      "SOCIAL": "Social Media",
+      "OTHER": "Other"
     }
   },
   "footer": {

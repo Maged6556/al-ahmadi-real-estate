@@ -120,7 +120,10 @@ export function AdminDashboard({ locale }: { locale: Locale }) {
             <BreakdownCard
               title={messages.admin.channelBreakdown}
               entries={stats.inquiries.byChannel.map(({ value, count }) => ({
-                label: value,
+                label:
+                  messages.admin.channels[
+                    value as keyof typeof messages.admin.channels
+                  ] ?? value,
                 value: count,
               }))}
             />
@@ -137,7 +140,8 @@ export function AdminDashboard({ locale }: { locale: Locale }) {
           href={`/${locale}/admin/listings`}
           className="button button-outline"
         >
-          {messages.admin.listings} <span aria-hidden="true">→</span>
+          {messages.admin.listings}{" "}
+          <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
         </Link>
       </section>
     </div>

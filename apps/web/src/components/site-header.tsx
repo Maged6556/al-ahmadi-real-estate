@@ -58,7 +58,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
         </Link>
         <nav
           className="main-nav"
-          aria-label={locale === "ar" ? "التنقل الرئيسي" : "Main navigation"}
+          aria-label={messages.nav.mainNav}
         >
           <Link href={`/${locale}`}>{messages.nav.home}</Link>
           <Link href={`/${locale}/listings`}>{messages.nav.listings}</Link>
