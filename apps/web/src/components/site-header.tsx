@@ -3,38 +3,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import type { Locale } from "@al-ahmadi/shared";
-import { adminRequest } from "../lib/admin-api";
 import { getMessages, localizedPath } from "../lib/i18n";
 import { ThemeToggle } from "./theme-toggle";
 
-export function SiteHeader({ locale }: { locale: Locale }) {
+export function SiteHeader({
+  locale,
+  account,
+}: {
+  locale: Locale;
+  account: {
+    id: string;
+    email: string;
+    name: string | null;
+    role: string;
+  } | null;
+}) {
   const pathname = usePathname();
   const messages = getMessages(locale);
-  const [account, setAccount] = useState<{
-    name: string | null;
-    email: string;
-    role: string;
-  } | null>(null);
   const nextLocale: Locale = locale === "ar" ? "en" : "ar";
-
-  useEffect(() => {
-    let active = true;
-    adminRequest<{
-      data: { user: { name: string | null; email: string; role: string } };
-    }>("/api/auth/me")
-      .then(({ data }) => {
-        if (active) setAccount(data.user);
-      })
-      .catch(() => {
-        if (active) setAccount(null);
-      });
-
-    return () => {
-      active = false;
-    };
-  }, []);
 
   function changeLocale(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();

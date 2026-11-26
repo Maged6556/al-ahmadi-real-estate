@@ -4,8 +4,8 @@ import { SiteHeader } from "../../components/site-header";
 import { CookieConsent } from "../../components/cookie-consent";
 import { requireLocale } from "../../lib/route-locale";
 import { getCspNonce } from "../../lib/csp";
+import { getServerAuth } from "../../lib/auth-server";
 import "../globals.css";
-import "animate.css/animate.min.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://al-ahmadi-real-estate-od57.vercel.app";
 
@@ -74,6 +74,7 @@ export default async function LocaleLayout({
   const { locale: localeParam } = await params;
   const locale = requireLocale(localeParam);
   const nonce = await getCspNonce();
+  const account = await getServerAuth();
   return (
     <html
       lang={locale}
@@ -87,6 +88,7 @@ export default async function LocaleLayout({
             __html: `(function(){try{var t=localStorage.getItem('theme');var m=window.matchMedia('(prefers-color-scheme: dark)').matches;if(t==='dark'||(!t&&m)){document.documentElement.setAttribute('data-theme','dark');}else{document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();`,
           }}
         />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
         <script
           nonce={nonce}
           type="application/ld+json"
@@ -99,7 +101,7 @@ export default async function LocaleLayout({
         <a className="skip-link" href="#main-content">
           {locale === "ar" ? "انتقل إلى المحتوى" : "Skip to content"}
         </a>
-        <SiteHeader locale={locale} />
+        <SiteHeader locale={locale} account={account} />
         {children}
         <SiteFooter locale={locale} />
         <CookieConsent locale={locale} />
