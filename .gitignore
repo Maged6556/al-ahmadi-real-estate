@@ -21,3 +21,6 @@ node-compile-cache/
 audit/
 
 /generated/prisma
+
+.vercel
+.env*
