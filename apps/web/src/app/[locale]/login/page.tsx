@@ -17,11 +17,14 @@ export async function generateMetadata({
 
 export default async function LoginPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ registered?: string }>;
 }) {
   const { locale: localeParam } = await params;
   const locale = requireLocale(localeParam);
+  const { registered } = await searchParams;
   const messages = getMessages(locale);
   return (
     <main id="main-content" className="page-main auth-page">
@@ -33,7 +36,7 @@ export default async function LoginPage({
           <p className="eyebrow">{messages.nav.login}</p>
           <h1>{messages.auth.loginTitle}</h1>
         </div>
-        <AuthForm locale={locale} mode="login" />
+        <AuthForm locale={locale} mode="login" registered={registered === "true"} />
       </section>
     </main>
   );

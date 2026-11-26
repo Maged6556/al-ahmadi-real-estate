@@ -51,9 +51,11 @@ function getSafeAdminPath(path: string | null, locale: Locale): string | null {
 export function AuthForm({
   locale,
   mode,
+  registered,
 }: {
   locale: Locale;
   mode: "login" | "register";
+  registered?: boolean;
 }) {
   const messages = getMessages(locale);
   const [pending, setPending] = useState(false);
@@ -99,14 +101,19 @@ export function AuthForm({
         return;
       }
       const payload: unknown = await response.json();
+      if (mode === "register") {
+        setFeedback({
+          message: messages.auth.registrationSuccess,
+          success: true,
+        });
+        form.reset();
+        window.location.assign(`/${locale}/login?registered=true`);
+        return;
+      }
       setFeedback({
-        message:
-          mode === "register"
-            ? messages.auth.registrationSuccess
-            : messages.auth.success,
+        message: messages.auth.success,
         success: true,
       });
-      form.reset();
       if (mode === "login") {
         const next = new URLSearchParams(window.location.search).get("next");
         const safeAdminPath = getSafeAdminPath(next, locale);
@@ -128,6 +135,11 @@ export function AuthForm({
 
   return (
     <form className="auth-form" onSubmit={submit}>
+      {registered && (
+        <p className="form-feedback form-success" role="status">
+          {messages.auth.registrationSuccess}
+        </p>
+      )}
       {mode === "register" && (
         <label>
           <span>{messages.auth.name}</span>
