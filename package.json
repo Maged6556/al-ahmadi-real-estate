@@ -15,6 +15,7 @@
     "pretest": "pnpm --filter @al-ahmadi/api db:generate",
     "test": "vitest run",
     "typecheck": "pnpm --recursive --if-present typecheck",
+    "start": "pnpm --filter @al-ahmadi/api start",
     "format": "prettier --write \"apps/**/*.{ts,tsx,json,css,md}\" \"packages/**/*.{ts,tsx,json,css,md}\"",
     "format:check": "prettier --check \"apps/**/*.{ts,tsx,json,css,md}\" \"packages/**/*.{ts,tsx,json,css,md}\""
   },

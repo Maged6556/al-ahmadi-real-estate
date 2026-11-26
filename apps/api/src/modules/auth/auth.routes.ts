@@ -16,7 +16,6 @@ import type { AuthService, AuthSession } from "./auth.service.js";
 
 const ACCESS_COOKIE = "access_token";
 const REFRESH_COOKIE = "refresh_token";
-const AUTH_COOKIE_PATH = "/api";
 
 function metadataFrom(request: Request) {
   const userAgent = request.get("user-agent");
