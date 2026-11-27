@@ -132,11 +132,6 @@ export function LifecycleForm({
               ? copy.forgotAction
               : copy.resetAction}
       </button>
-      {!actionToken && mode !== "forgot" && (
-        <p className="form-feedback form-error" role="status">
-          {copy.error}
-        </p>
-      )}
       {feedback && (
         <p
           className={`form-feedback ${feedback.success ? "form-success" : "form-error"}`}

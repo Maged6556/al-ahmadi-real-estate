@@ -38,6 +38,7 @@ export function AccountCenter({
   const [mustChangePassword, setMustChangePassword] = useState(
     forcePasswordChange,
   );
+  const [resendPending, setResendPending] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -123,6 +124,7 @@ export function AccountCenter({
 
   async function resendVerification() {
     setFeedback(null);
+    setResendPending(true);
     try {
       const response = await fetch(apiUrl("/api/auth/resend-verification"), {
         method: "POST",
@@ -132,6 +134,8 @@ export function AccountCenter({
       setFeedback(response.ok ? messages.lifecycle.genericSuccess : copy.error);
     } catch {
       setFeedback(copy.error);
+    } finally {
+      setResendPending(false);
     }
   }
 
@@ -233,8 +237,9 @@ export function AccountCenter({
           <button
             className="button button-secondary"
             onClick={resendVerification}
+            disabled={resendPending}
           >
-            {copy.resendVerification}
+            {resendPending ? "…" : copy.resendVerification}
           </button>
         )}
         <form
