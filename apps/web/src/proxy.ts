@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const CSP_NONCE_HEADER = "x-csp-nonce";
-const ACCESS_COOKIE = "access_token";
 
 function generateNonce(): string {
   const array = new Uint8Array(16);
@@ -30,42 +29,12 @@ function buildCspHeader(nonce: string): string {
   ].join("; ");
 }
 
-function isAuthRoute(pathname: string): boolean {
-  return (
-    pathname === "/login" ||
-    pathname === "/register" ||
-    pathname === "/forgot-password" ||
-    pathname === "/reset-password" ||
-    pathname === "/verify-email"
-  );
-}
-
-function isProtectedRoute(pathname: string): boolean {
-  return (
-    pathname === "/account" ||
-    pathname.startsWith("/account/") ||
-    pathname.startsWith("/admin")
-  );
-}
-
-function localeFrom(pathname: string): string {
-  const match = pathname.match(/^\/(ar|en)(\/|$)/);
-  return match ? match[1] : "ar";
-}
-
-function stripLocale(pathname: string): string {
-  return pathname.replace(/^\/(ar|en)/, "") || "/";
-}
-
 export function proxy(request: NextRequest) {
   const localeCookie = request.cookies.get("locale")?.value;
   const locale = localeCookie === "en" ? "en" : "ar";
   const nonce = generateNonce();
   const cspHeader = buildCspHeader(nonce);
   const pathname = request.nextUrl.pathname;
-  const hasToken = request.cookies.has(ACCESS_COOKIE);
-  const pathWithoutLocale = stripLocale(pathname);
-  const pathLocale = localeFrom(pathname);
 
   if (
     pathname === "/" ||
@@ -74,25 +43,6 @@ export function proxy(request: NextRequest) {
     const destination =
       pathname === "/admin" ? `/${locale}/admin` : `/${locale}`;
     const response = NextResponse.redirect(new URL(destination, request.url));
-    response.headers.set("Content-Security-Policy", cspHeader);
-    return response;
-  }
-
-  // Route protection: redirect unauthenticated users from protected routes
-  if (isProtectedRoute(pathWithoutLocale) && !hasToken) {
-    const loginUrl = new URL(
-      `/${pathLocale}/login?next=${encodeURIComponent(pathname)}`,
-      request.url,
-    );
-    const response = NextResponse.redirect(loginUrl);
-    response.headers.set("Content-Security-Policy", cspHeader);
-    return response;
-  }
-
-  // Redirect already-authenticated users from auth pages
-  if (isAuthRoute(pathWithoutLocale) && hasToken) {
-    const accountUrl = new URL(`/${pathLocale}/account`, request.url);
-    const response = NextResponse.redirect(accountUrl);
     response.headers.set("Content-Security-Policy", cspHeader);
     return response;
   }

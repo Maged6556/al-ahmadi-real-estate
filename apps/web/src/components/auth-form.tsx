@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import type { Locale } from "@al-ahmadi/shared";
@@ -83,7 +82,6 @@ export function AuthForm({
   registered?: boolean;
 }) {
   const messages = getMessages(locale);
-  const router = useRouter();
   const [pending, setPending] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [feedback, setFeedback] = useState<{
@@ -193,7 +191,7 @@ export function AuthForm({
           success: true,
         });
         form.reset();
-        router.replace(`/${locale}/login?registered=true`);
+        window.location.assign(`/${locale}/login?registered=true`);
         return;
       }
 
@@ -205,14 +203,14 @@ export function AuthForm({
         const next = new URLSearchParams(window.location.search).get("next");
         const safeAdminPath = getSafeAdminPath(next, locale);
         if (isAdminLoginResponse(payload)) {
-          router.replace(safeAdminPath ?? `/${locale}/admin`);
+          window.location.assign(safeAdminPath ?? `/${locale}/admin`);
           return;
         }
         if (safeAdminPath) {
-          router.replace(safeAdminPath);
+          window.location.assign(safeAdminPath);
           return;
         }
-        router.replace(
+        window.location.assign(
           registered
             ? `/${locale}/account?forcePasswordChange=true`
             : `/${locale}/account`,
