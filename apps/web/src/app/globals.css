@@ -1716,7 +1716,7 @@ p {
 .site-footer {
   padding-block: 54px 25px;
   background: #0b1526;
-  color: var(--paper);
+  color: #f8fafc;
 }
 
 .footer-grid {
@@ -1752,7 +1752,7 @@ p {
 
 .footer-nav a {
   width: fit-content;
-  color: var(--line);
+  color: #e2e8f0;
   font-size: 11px;
 }
 
@@ -2464,7 +2464,7 @@ svg[data-prefix="far"] {
   flex-direction: column;
   padding: 26px 18px 18px;
   background: #0b1526;
-  color: var(--paper);
+  color: #f8fafc;
 }
 
 .admin-sidebar-brand {
@@ -2496,7 +2496,7 @@ svg[data-prefix="far"] {
   gap: 12px;
   padding: 0 13px;
   border-radius: 4px;
-  color: var(--line);
+  color: #e2e8f0;
   font-size: 12px;
   font-weight: 600;
   transition:
@@ -2567,7 +2567,7 @@ svg[data-prefix="far"] {
   border: 0;
   border-radius: 4px;
   background: transparent;
-  color: var(--line);
+  color: #e2e8f0;
   cursor: pointer;
   font-size: 19px;
 }
