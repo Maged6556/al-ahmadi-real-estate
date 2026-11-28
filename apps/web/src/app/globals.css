@@ -2,6 +2,7 @@
   color-scheme: light;
   --green: #142542;
   --green-dark: #0b1526;
+  --heading: #0b1526;
   --green-soft: #edf3f9;
   --gold: #c89650;
   --gold-light: #f7f1e6;
@@ -30,6 +31,7 @@
   color-scheme: dark;
   --green: #60a5fa;
   --green-dark: #070d17;
+  --heading: #f8fafc;
   --green-soft: #17253d;
   --gold: #dfb15b;
   --gold-light: #2a2318;
@@ -41,6 +43,9 @@
   --muted: #94a3b8;
   --line: #1e293b;
   --rose: #f87171;
+  --error-bg: rgb(185 28 28 / 20%);
+  --success-bg: rgb(34 197 94 / 16%);
+  --success-fg: #86efac;
   --shadow: 0 18px 50px rgb(0 0 0 / 55%);
 }
 @media (prefers-color-scheme: dark) {
@@ -48,6 +53,7 @@
     color-scheme: dark;
     --green: #60a5fa;
     --green-dark: #070d17;
+    --heading: #f8fafc;
     --green-soft: #17253d;
     --gold: #dfb15b;
     --gold-light: #2a2318;
@@ -59,6 +65,9 @@
     --muted: #94a3b8;
     --line: #1e293b;
     --rose: #f87171;
+    --error-bg: rgb(185 28 28 / 20%);
+    --success-bg: rgb(34 197 94 / 16%);
+    --success-fg: #86efac;
     --shadow: 0 18px 50px rgb(0 0 0 / 55%);
   }
 }
@@ -377,7 +386,7 @@ p {
 .hero-copy h1 {
   max-width: 620px;
   margin: 0;
-  color: var(--green-dark);
+  color: var(--heading);
   font-size: clamp(39px, 5vw, 66px);
   font-weight: 700;
   letter-spacing: -0.045em;
@@ -431,6 +440,16 @@ p {
 .button-primary {
   background: var(--green);
   color: white;
+}
+
+[data-theme="dark"] .button-primary {
+  color: #070d17;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .button-primary {
+    color: #070d17;
+  }
 }
 
 .button-primary:hover {
@@ -610,7 +629,7 @@ p {
 
 .section-heading h2 {
   margin: 0;
-  color: var(--green-dark);
+  color: var(--heading);
   font-size: clamp(24px, 3vw, 34px);
   letter-spacing: -0.025em;
   line-height: 1.4;
@@ -843,7 +862,7 @@ p {
   align-content: center;
   padding: 30px;
   border: 1px dashed var(--line);
-  background: rgb(255 255 255 / 55%);
+  background: var(--white);
   text-align: center;
 }
 
@@ -881,7 +900,7 @@ p {
 .about-copy h1,
 .contact-intro h1 {
   margin: 0;
-  color: var(--green-dark);
+  color: var(--heading);
   font-size: clamp(32px, 4vw, 48px);
   letter-spacing: -0.03em;
   line-height: 1.35;
@@ -1381,6 +1400,24 @@ p {
     0 0 0 48px rgb(255 255 255 / 16%);
 }
 
+[data-theme="dark"] .about-visual-circle {
+  border-color: rgb(223 177 91 / 25%);
+  background: rgb(15 23 42 / 75%);
+  box-shadow:
+    0 0 0 24px rgb(15 23 42 / 45%),
+    0 0 0 48px rgb(15 23 42 / 25%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .about-visual-circle {
+    border-color: rgb(223 177 91 / 25%);
+    background: rgb(15 23 42 / 75%);
+    box-shadow:
+      0 0 0 24px rgb(15 23 42 / 45%),
+      0 0 0 48px rgb(15 23 42 / 25%);
+  }
+}
+
 .about-visual-circle span {
   color: var(--green);
   font-size: 72px;
@@ -1668,7 +1705,7 @@ p {
 
 .state-page h1 {
   margin: 0 0 23px;
-  color: var(--green-dark);
+  color: var(--heading);
   font-size: clamp(22px, 4vw, 32px);
 }
 
@@ -2293,7 +2330,25 @@ svg[data-prefix="far"] {
     height: 175px;
   }
 
-  .about-visual-circle span {
+  [data-theme="dark"] .about-visual-circle {
+  border-color: rgb(223 177 91 / 25%);
+  background: rgb(15 23 42 / 75%);
+  box-shadow:
+    0 0 0 24px rgb(15 23 42 / 45%),
+    0 0 0 48px rgb(15 23 42 / 25%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .about-visual-circle {
+    border-color: rgb(223 177 91 / 25%);
+    background: rgb(15 23 42 / 75%);
+    box-shadow:
+      0 0 0 24px rgb(15 23 42 / 45%),
+      0 0 0 48px rgb(15 23 42 / 25%);
+  }
+}
+
+.about-visual-circle span {
     font-size: 55px;
   }
 
@@ -2584,7 +2639,7 @@ svg[data-prefix="far"] {
 
 .admin-page-heading h1 {
   margin: 0;
-  color: var(--green-dark);
+  color: var(--heading);
   font-size: clamp(24px, 3vw, 34px);
   line-height: 1.4;
 }
@@ -3237,7 +3292,7 @@ svg[data-prefix="far"] {
 
 .account-section h2 {
   margin: 0;
-  color: var(--green-dark);
+  color: var(--heading);
   font-size: 19px;
 }
 
