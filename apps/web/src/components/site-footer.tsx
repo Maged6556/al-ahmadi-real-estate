@@ -29,6 +29,16 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               <span className="brand-name">{messages.brand}</span>
             </Link>
             <p>{messages.footer.description}</p>
+            <div className="footer-social">
+              <a
+                href="https://www.facebook.com/profile.php?id=100063926743207"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={messages.footer.facebook}
+              >
+                {messages.footer.facebook}
+              </a>
+            </div>
           </div>
           <nav
             className="footer-nav"
