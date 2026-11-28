@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { getMessages } from "../../../lib/i18n";
 import { buildGenericWhatsAppUrl } from "../../../lib/whatsapp";
-import { siteConfig, FACEBOOK_SVG } from "../../../lib/site-config";
+import { siteConfig } from "../../../lib/site-config";
 import { requireLocale } from "../../../lib/route-locale";
 
 const phone = "+201004761901";
@@ -86,7 +88,7 @@ export default async function ContactPage({
             className="contact-option contact-option-primary"
           >
             <span className="contact-option-icon" aria-hidden="true">
-              {FACEBOOK_SVG}
+              <FontAwesomeIcon icon={faFacebookF} />
             </span>
             <span>
               <small>{messages.contact.facebook}</small>

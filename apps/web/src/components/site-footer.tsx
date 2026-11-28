@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import type { Locale } from "@al-ahmadi/shared";
 import { getMessages } from "../lib/i18n";
 import { buildGenericWhatsAppUrl } from "../lib/whatsapp";
-import { siteConfig, FACEBOOK_SVG } from "../lib/site-config";
+import { siteConfig } from "../lib/site-config";
 import { CookieSettingsButton } from "./cookie-settings-button";
 
 export function SiteFooter({ locale }: { locale: Locale }) {
@@ -38,7 +40,7 @@ export function SiteFooter({ locale }: { locale: Locale }) {
                 className="social-link"
                 aria-label={messages.footer.facebook}
               >
-                {FACEBOOK_SVG}
+                <FontAwesomeIcon icon={faFacebookF} />
               </a>
             </div>
           </div>

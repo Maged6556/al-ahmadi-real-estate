@@ -6,6 +6,7 @@ import { requireLocale } from "../../lib/route-locale";
 import { getCspNonce } from "../../lib/csp";
 import { getServerAuth } from "../../lib/auth-server";
 import { siteConfig } from "../../lib/site-config";
+import "../../lib/fontawesome";
 import "../globals.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://al-ahmadi-real-estate-od57.vercel.app";

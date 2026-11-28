@@ -1777,6 +1777,14 @@ p {
   margin-top: 12px;
 }
 
+.social-link svg,
+.contact-option .contact-option-icon svg {
+  fill: currentColor;
+  color: currentColor;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 @media (min-width: 1500px) {
   .hero-layout {
     min-height: 620px;
