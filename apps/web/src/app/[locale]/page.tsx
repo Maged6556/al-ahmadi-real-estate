@@ -9,7 +9,6 @@ import {
   faArrowRight,
   faBuilding,
   faHouse,
-  faLandmark,
   faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { getListings } from "../../lib/api";
@@ -47,7 +46,27 @@ const categories: {
   { type: "building", icon: <Icon icon={faBuilding} size="lg" /> },
   { type: "residential_unit", icon: <Icon icon={faHouse} size="lg" /> },
   { type: "villa", icon: <Icon icon={faHouse} size="lg" /> },
-  { type: "land", icon: <Icon icon={faLandmark} size="lg" /> },
+  { type: "land", icon: (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="land-icon"
+    >
+      <path d="M4 4h16v16H4z" />
+      <path d="M4 4l16 16" />
+      <circle cx="4" cy="4" r="1" fill="currentColor" />
+      <circle cx="20" cy="4" r="1" fill="currentColor" />
+      <circle cx="4" cy="20" r="1" fill="currentColor" />
+      <circle cx="20" cy="20" r="1" fill="currentColor" />
+    </svg>
+  ) },
 ];
 
 export default async function HomePage({

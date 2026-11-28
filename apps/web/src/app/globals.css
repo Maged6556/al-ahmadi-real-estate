@@ -1826,6 +1826,13 @@ svg[data-prefix="far"] {
   flex-shrink: 0;
 }
 
+.land-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
 .contact-option-icon svg {
   width: 20px !important;
   height: 20px !important;
