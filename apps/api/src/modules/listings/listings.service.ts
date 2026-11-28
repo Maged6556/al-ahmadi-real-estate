@@ -126,6 +126,7 @@ export function toPublicListing(record: ListingRecord) {
     bathrooms: record.bathrooms,
     floor: record.floor,
     features: record.features,
+    details: record.details ?? null,
     publishedAt: record.publishedAt,
     media: mediaDto(record),
   };

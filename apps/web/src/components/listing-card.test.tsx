@@ -26,6 +26,7 @@ const listing: PublicListing = {
   bathrooms: 1,
   floor: null,
   features: [],
+  details: null,
   publishedAt: null,
   media: [],
 };

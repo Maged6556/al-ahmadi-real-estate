@@ -28,6 +28,7 @@ const listingSelect = {
   bathrooms: true,
   floor: true,
   features: true,
+  details: true,
   isPublished: true,
   publishedAt: true,
   soldAt: true,

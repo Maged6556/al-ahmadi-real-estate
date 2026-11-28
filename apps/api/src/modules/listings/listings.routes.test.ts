@@ -65,6 +65,7 @@ const listing: ListingRecord = {
   bathrooms: 2,
   floor: 4,
   features: [],
+  details: null,
   isPublished: true,
   publishedAt: new Date("2026-01-01T00:00:00.000Z"),
   soldAt: null,

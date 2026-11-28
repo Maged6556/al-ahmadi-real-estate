@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Locale } from "@al-ahmadi/shared";
 import type { PublicListing } from "../lib/api";
-import { localizedListingText } from "../lib/api";
+import { localizedListingText, listingSpecs } from "../lib/api";
 import { getMessages } from "../lib/i18n";
 
 export function ListingCard({
@@ -20,6 +20,7 @@ export function ListingCard({
   const statusClass = `status-${listing.status}`;
   const typeLabel = messages.listings[listing.type];
   const offerLabel = messages.listings[listing.offer];
+  const specs = listingSpecs(listing, locale);
 
   return (
     <article
@@ -60,21 +61,11 @@ export function ListingCard({
             {listing.district ? `، ${listing.district}` : ""}
           </p>
           <div className="listing-specs">
-            {listing.areaSqm !== null && (
-              <span>
-                {listing.areaSqm} {messages.listings.area}
+            {specs.map((spec, index) => (
+              <span key={spec.label + index} className="listing-spec">
+                {spec.value} {spec.label}
               </span>
-            )}
-            {listing.bedrooms !== null && (
-              <span>
-                {listing.bedrooms} {messages.listings.bedrooms}
-              </span>
-            )}
-            {listing.bathrooms !== null && (
-              <span>
-                {listing.bathrooms} {messages.listings.bathrooms}
-              </span>
-            )}
+            ))}
           </div>
           <span className="listing-card-cta">
             {messages.listings.details}

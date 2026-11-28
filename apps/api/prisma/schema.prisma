@@ -380,6 +380,7 @@ model Listing {
   bathrooms            Int?
   floor                Int?
   features             String[]           @default([])
+  details              Json?
   isPublished          Boolean            @default(false)
   publishedAt          DateTime?
   soldAt               DateTime?

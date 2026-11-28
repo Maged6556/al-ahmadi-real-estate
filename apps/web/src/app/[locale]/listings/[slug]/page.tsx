@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getListing, localizedListingText } from "../../../../lib/api";
+import { getListing, localizedListingText, listingSpecs } from "../../../../lib/api";
 import { getMessages } from "../../../../lib/i18n";
 import { buildListingWhatsAppUrl } from "../../../../lib/whatsapp";
 import { requireLocale } from "../../../../lib/route-locale";
@@ -58,6 +58,7 @@ export default async function ListingDetailPage({ params }: Props) {
   if (!listing) notFound();
 
   const text = localizedListingText(listing, locale);
+  const specs = listingSpecs(listing, locale);
   const images = listing.media.filter((item) => item.kind === "image");
   const video = listing.media.find((item) => item.kind === "video");
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -213,6 +214,20 @@ export default async function ListingDetailPage({ params }: Props) {
                 : messages.detail.addressPrivate}
             </p>
           </aside>
+          {specs.length > 0 && (
+            <article className="detail-specs">
+              <p className="eyebrow">{messages.listings.details}</p>
+              <h2>{text.title} — {messages.listings.details}</h2>
+              <dl className="spec-list">
+                {specs.map((spec) => (
+                  <div key={spec.label} className="spec-item">
+                    <dt>{spec.label}</dt>
+                    <dd>{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </article>
+          )}
         </section>
       </div>
     </main>

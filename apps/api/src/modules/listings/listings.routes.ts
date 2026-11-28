@@ -14,6 +14,7 @@ import {
   listingPublishBodySchema,
   listingSlugParamsSchema,
   listingStatusBodySchema,
+  normalizeListingDetails,
   publicListingQuerySchema,
   updateListingSchema,
 } from "./listings.schemas.js";
@@ -39,17 +40,21 @@ function requestIp(request: Request) {
 }
 
 function toCreateData(input: ReturnType<typeof createListingSchema.parse>) {
-  const { type, offer, ...fields } = input;
+  const { type, offer, details, ...fields } = input;
+  const normalized = normalizeListingDetails(type, details);
   return {
     ...fields,
+    ...(normalized !== null ? { details: normalized as Prisma.InputJsonObject } : {}),
     ...toListingEnums(type, offer),
   } satisfies Prisma.ListingCreateInput;
 }
 
 function toUpdateData(input: ReturnType<typeof updateListingSchema.parse>) {
-  const { type, offer, ...fields } = input;
+  const { type, offer, details, ...fields } = input;
+  const normalized = details !== undefined ? normalizeListingDetails(type ?? "apartment", details) : null;
   return {
     ...fields,
+    ...(normalized !== null ? { details: normalized as Prisma.InputJsonObject } : {}),
     ...(type === undefined ? {} : { type: toListingType(type) }),
     ...(offer === undefined ? {} : { offer: toListingOffer(offer) }),
   } satisfies Prisma.ListingUpdateInput;

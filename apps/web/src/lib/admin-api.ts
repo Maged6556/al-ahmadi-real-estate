@@ -42,6 +42,7 @@ export type AdminListing = {
   bathrooms: number | null;
   floor: number | null;
   features: string[];
+  details: Record<string, unknown> | null;
   isPublished: boolean;
   publishedAt: string | null;
   soldAt: string | null;
