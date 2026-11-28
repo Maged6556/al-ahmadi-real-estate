@@ -1748,6 +1748,35 @@ p {
   font-size: 17px;
 }
 
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: #142542;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+.social-link:hover {
+  background: #c89650;
+  color: #0b1526;
+  transform: translateY(-2px);
+}
+
+.social-list {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
 @media (min-width: 1500px) {
   .hero-layout {
     min-height: 620px;

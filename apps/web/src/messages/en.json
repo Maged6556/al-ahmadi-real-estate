@@ -135,6 +135,7 @@
     "phone": "Call us",
     "email": "Email us",
     "directCall": "Call directly",
+    "facebook": "Follow us on Facebook",
     "languageNote": "Reach us in the language you prefer, Arabic or English."
   },
   "auth": {

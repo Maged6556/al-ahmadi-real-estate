@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Locale } from "@al-ahmadi/shared";
 import { getMessages } from "../lib/i18n";
 import { buildGenericWhatsAppUrl } from "../lib/whatsapp";
+import { siteConfig, FACEBOOK_SVG } from "../lib/site-config";
 import { CookieSettingsButton } from "./cookie-settings-button";
 
 export function SiteFooter({ locale }: { locale: Locale }) {
@@ -29,14 +30,15 @@ export function SiteFooter({ locale }: { locale: Locale }) {
               <span className="brand-name">{messages.brand}</span>
             </Link>
             <p>{messages.footer.description}</p>
-            <div className="footer-social">
+            <div className="social-list">
               <a
-                href="https://www.facebook.com/profile.php?id=100063926743207"
+                href={siteConfig.social.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
+                className="social-link"
                 aria-label={messages.footer.facebook}
               >
-                {messages.footer.facebook}
+                {FACEBOOK_SVG}
               </a>
             </div>
           </div>

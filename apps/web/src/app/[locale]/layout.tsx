@@ -5,6 +5,7 @@ import { CookieConsent } from "../../components/cookie-consent";
 import { requireLocale } from "../../lib/route-locale";
 import { getCspNonce } from "../../lib/csp";
 import { getServerAuth } from "../../lib/auth-server";
+import { siteConfig } from "../../lib/site-config";
 import "../globals.css";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://al-ahmadi-real-estate-od57.vercel.app";
@@ -56,7 +57,7 @@ export function structuredData(locale: string) {
       "@type": "PostalAddress",
       addressCountry: "EG",
     },
-    sameAs: [],
+    sameAs: [siteConfig.social.facebook],
   };
 }
 

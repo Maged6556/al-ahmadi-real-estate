@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getMessages } from "../../../lib/i18n";
 import { buildGenericWhatsAppUrl } from "../../../lib/whatsapp";
+import { siteConfig, FACEBOOK_SVG } from "../../../lib/site-config";
 import { requireLocale } from "../../../lib/route-locale";
 
 const phone = "+201004761901";
@@ -76,6 +77,19 @@ export default async function ContactPage({
             </span>
             <span className="contact-option-arrow" aria-hidden="true">
               ↗
+            </span>
+          </a>
+          <a
+            href={siteConfig.social.facebook}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="contact-option contact-option-primary"
+          >
+            <span className="contact-option-icon" aria-hidden="true">
+              {FACEBOOK_SVG}
+            </span>
+            <span>
+              <small>{messages.contact.facebook}</small>
             </span>
           </a>
           <p className="contact-response">{messages.contact.languageNote}</p>
