@@ -1,4 +1,10 @@
 import Link from "next/link";
+import { Icon } from "../../../components/ui/icon";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 import type { Metadata } from "next";
 import { getMessages } from "../../../lib/i18n";
 import { requireLocale } from "../../../lib/route-locale";
@@ -46,7 +52,7 @@ export default async function AboutPage({
               className="button button-primary"
             >
               {messages.home.browse}
-              <span aria-hidden="true">{locale === "ar" ? " ←" : " →"}</span>
+              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
             </Link>
           </div>
           <div className="about-visual" aria-hidden="true">
@@ -54,8 +60,12 @@ export default async function AboutPage({
               <span>{messages.about.experienceYears}</span>
               <small>{messages.about.experienceBadge}</small>
             </div>
-            <span className="about-spark about-spark-one">✦</span>
-            <span className="about-spark about-spark-two">✦</span>
+            <span className="about-spark about-spark-one" aria-hidden="true">
+              <Icon icon={faStar} size="xs" />
+            </span>
+            <span className="about-spark about-spark-two" aria-hidden="true">
+              <Icon icon={faStar} size="xs" />
+            </span>
           </div>
         </div>
       </section>

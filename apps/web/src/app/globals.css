@@ -1785,6 +1785,57 @@ p {
   height: 100% !important;
 }
 
+/* Font Awesome icon consistency */
+.fa,
+.fa-icon,
+svg[data-prefix="fas"],
+svg[data-prefix="fab"],
+svg[data-prefix="far"] {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.theme-toggle-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.location-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.proof-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
+.category-arrow-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.back-arrow-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.contact-option-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.social-link svg {
+  width: 18px !important;
+  height: 18px !important;
+}
+
 @media (min-width: 1500px) {
   .hero-layout {
     min-height: 620px;

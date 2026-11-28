@@ -1,5 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Icon } from "../../../../components/ui/icon";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faCheck,
+  faLocationPin,
+} from "@fortawesome/free-solid-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getListing, localizedListingText, listingSpecs } from "../../../../lib/api";
@@ -75,7 +83,7 @@ export default async function ListingDetailPage({ params }: Props) {
     <main id="main-content" className="page-main detail-page">
       <div className="container">
         <Link href={`/${locale}/listings`} className="back-link">
-          <span aria-hidden="true">{locale === "ar" ? "→" : "←"}</span>
+          <Icon icon={locale === "ar" ? faArrowRight : faArrowLeft} size="xs" className="back-arrow-icon" aria-hidden="true" />
           {messages.detail.back}
         </Link>
 
@@ -139,7 +147,7 @@ export default async function ListingDetailPage({ params }: Props) {
             </p>
             <h1>{text.title}</h1>
             <p className="detail-location">
-              <span aria-hidden="true">⌖</span>
+              <Icon icon={faLocationPin} size="xs" className="location-icon" aria-hidden="true" />
               {listing.city}
               {listing.district ? `، ${listing.district}` : ""}
             </p>
@@ -169,8 +177,10 @@ export default async function ListingDetailPage({ params }: Props) {
               rel="noopener noreferrer"
               className="button button-whatsapp detail-contact"
             >
-              <span aria-hidden="true">◉</span>
-              {listing.status === "available"
+            <span aria-hidden="true">
+              <Icon icon={faWhatsapp} size="1x" />
+            </span>
+            {listing.status === "available"
                 ? messages.detail.whatsappAvailable
                 : messages.detail.whatsappUnavailable}
             </a>
@@ -190,7 +200,7 @@ export default async function ListingDetailPage({ params }: Props) {
                   {listing.features.map((feature) => (
                     <li key={feature}>
                       <span className="feature-check" aria-hidden="true">
-                        ✓
+                        <Icon icon={faCheck} size="xs" />
                       </span>
                       {feature}
                     </li>
@@ -202,7 +212,9 @@ export default async function ListingDetailPage({ params }: Props) {
           <aside className="location-card">
             <p className="eyebrow">{messages.detail.location}</p>
             <div className="location-visual" aria-hidden="true">
-              <span className="location-pin">⌖</span>
+              <span className="location-pin">
+                <Icon icon={faLocationPin} size="2x" />
+              </span>
               <span className="location-circle" />
               <span className="location-line location-line-one" />
               <span className="location-line location-line-two" />

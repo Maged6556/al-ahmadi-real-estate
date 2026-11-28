@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
+import {
+  faArrowUpRightFromSquare,
+  faLocationPin,
+  faPhone,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
+import { faFacebookF, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { Icon } from "../../../components/ui/icon";
 import { getMessages } from "../../../lib/i18n";
 import { buildGenericWhatsAppUrl } from "../../../lib/whatsapp";
 import { siteConfig } from "../../../lib/site-config";
@@ -46,9 +52,9 @@ export default async function ContactPage({
           <h1>{messages.contact.title}</h1>
           <p>{messages.contact.body}</p>
           <div className="contact-decoration" aria-hidden="true">
-            <span>✦</span>
-            <span>⌖</span>
-            <span>✦</span>
+            <Icon icon={faStar} size="xs" />
+            <Icon icon={faLocationPin} size="xs" />
+            <Icon icon={faStar} size="xs" />
           </div>
         </div>
         <div className="contact-options">
@@ -59,26 +65,26 @@ export default async function ContactPage({
             className="contact-option contact-option-primary"
           >
             <span className="contact-option-icon" aria-hidden="true">
-              ◉
+              <Icon icon={faWhatsapp} size="1x" />
             </span>
             <span>
               <small>{messages.common.whatsapp}</small>
               <strong>{messages.contact.whatsapp}</strong>
             </span>
             <span className="contact-option-arrow" aria-hidden="true">
-              ↗
+              <Icon icon={faArrowUpRightFromSquare} size="xs" />
             </span>
           </a>
           <a href={`tel:${phone}`} className="contact-option">
             <span className="contact-option-icon" aria-hidden="true">
-              ⌕
+              <Icon icon={faPhone} size="1x" />
             </span>
             <span>
               <small>{messages.contact.directCall}</small>
               <strong dir="ltr">{phone}</strong>
             </span>
             <span className="contact-option-arrow" aria-hidden="true">
-              ↗
+              <Icon icon={faArrowUpRightFromSquare} size="xs" />
             </span>
           </a>
           <a
@@ -88,7 +94,7 @@ export default async function ContactPage({
             className="contact-option contact-option-primary"
           >
             <span className="contact-option-icon" aria-hidden="true">
-              <FontAwesomeIcon icon={faFacebookF} />
+              <Icon icon={faFacebookF} size="1x" />
             </span>
             <span>
               <small>{messages.contact.facebook}</small>

@@ -3,6 +3,15 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import type { PublicListing } from "../../lib/api";
 import { ListingGrid } from "../../components/listing-grid";
+import { Icon } from "../../components/ui/icon";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faBuilding,
+  faHouse,
+  faLandmark,
+  faStar,
+} from "@fortawesome/free-solid-svg-icons";
 import { getListings } from "../../lib/api";
 import { getMessages } from "../../lib/i18n";
 import { requireLocale } from "../../lib/route-locale";
@@ -32,13 +41,13 @@ export async function generateMetadata({
 
 const categories: {
   type: "apartment" | "building" | "residential_unit" | "villa" | "land";
-  icon: string;
+  icon: ReturnType<typeof Icon> | React.ReactNode;
 }[] = [
-  { type: "apartment", icon: "⌂" },
-  { type: "building", icon: "▥" },
-  { type: "residential_unit", icon: "⌂" },
-  { type: "villa", icon: "⌂" },
-  { type: "land", icon: "▱" },
+  { type: "apartment", icon: <Icon icon={faHouse} size="lg" /> },
+  { type: "building", icon: <Icon icon={faBuilding} size="lg" /> },
+  { type: "residential_unit", icon: <Icon icon={faHouse} size="lg" /> },
+  { type: "villa", icon: <Icon icon={faHouse} size="lg" /> },
+  { type: "land", icon: <Icon icon={faLandmark} size="lg" /> },
 ];
 
 export default async function HomePage({
@@ -73,7 +82,7 @@ export default async function HomePage({
                 className="button button-primary"
               >
                 {messages.home.browse}
-                <span aria-hidden="true">{locale === "ar" ? " ←" : " →"}</span>
+                <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
               </Link>
               <Link
                 href={`/${locale}/contact`}
@@ -83,9 +92,7 @@ export default async function HomePage({
               </Link>
             </div>
             <div className="hero-proof">
-              <span className="proof-star" aria-hidden="true">
-                ✦
-              </span>
+              <Icon icon={faStar} size="xs" className="proof-icon" aria-hidden="true" />
               <span>{messages.home.experience}</span>
             </div>
           </div>
@@ -110,7 +117,7 @@ export default async function HomePage({
       <section className="trust-section">
         <div className="container trust-inner">
           <div className="trust-icon" aria-hidden="true">
-            ✦
+            <Icon icon={faStar} size="lg" />
           </div>
           <div>
             <p className="eyebrow">{messages.home.experience}</p>
@@ -136,7 +143,7 @@ export default async function HomePage({
             </div>
             <Link href={`/${locale}/listings`} className="text-link">
               {messages.home.allListings}
-              <span aria-hidden="true">{locale === "ar" ? " ←" : " →"}</span>
+              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
             </Link>
           </div>
           <div className="category-grid">
@@ -150,9 +157,12 @@ export default async function HomePage({
                   {icon}
                 </span>
                 <span>{messages.listings[type]}</span>
-                <span className="category-arrow" aria-hidden="true">
-                  {locale === "ar" ? "↙" : "↘"}
-                </span>
+                <Icon
+                  icon={locale === "ar" ? faArrowLeft : faArrowRight}
+                  size="xs"
+                  className="category-arrow-icon"
+                  aria-hidden="true"
+                />
               </Link>
             ))}
           </div>
@@ -168,7 +178,7 @@ export default async function HomePage({
             </div>
             <Link href={`/${locale}/listings`} className="text-link">
               {messages.home.allListings}
-              <span aria-hidden="true">{locale === "ar" ? " ←" : " →"}</span>
+              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
             </Link>
           </div>
           {!listingsAvailable ? (

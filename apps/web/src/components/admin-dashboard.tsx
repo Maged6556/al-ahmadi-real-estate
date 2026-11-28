@@ -2,6 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Icon } from "../components/ui/icon";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faArrowUpRightFromSquare,
+  faEnvelope,
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import type { Locale } from "@al-ahmadi/shared";
 import { adminRequest } from "../lib/admin-api";
 import { getMessages } from "../lib/i18n";
@@ -71,22 +80,22 @@ export function AdminDashboard({ locale }: { locale: Locale }) {
             <StatCard
               label={messages.admin.totalListings}
               value={stats.listings.total}
-              icon="⌂"
+              icon={<Icon icon={faHouse} size="lg" />}
             />
             <StatCard
               label={messages.admin.publishedListings}
               value={stats.listings.published}
-              icon="↗"
+              icon={<Icon icon={faArrowUpRightFromSquare} size="lg" />}
             />
             <StatCard
               label={messages.admin.inquiries}
               value={stats.inquiries.total}
-              icon="✉"
+              icon={<Icon icon={faEnvelope} size="lg" />}
             />
             <StatCard
               label={messages.admin.whatsappClicks}
               value={stats.inquiries.whatsappClicks}
-              icon="◉"
+              icon={<Icon icon={faWhatsapp} size="lg" />}
             />
           </div>
 
@@ -141,7 +150,7 @@ export function AdminDashboard({ locale }: { locale: Locale }) {
           className="button button-outline"
         >
           {messages.admin.listings}{" "}
-          <span aria-hidden="true">{locale === "ar" ? "←" : "→"}</span>
+          <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
         </Link>
       </section>
     </div>
@@ -155,7 +164,7 @@ function StatCard({
 }: {
   label: string;
   value: number;
-  icon: string;
+  icon: React.ReactNode;
 }) {
   return (
     <article className="admin-stat-card">

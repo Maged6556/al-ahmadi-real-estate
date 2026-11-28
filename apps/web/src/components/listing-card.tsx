@@ -1,5 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Icon } from "../components/ui/icon";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faLocationPin,
+} from "@fortawesome/free-solid-svg-icons";
 import type { Locale } from "@al-ahmadi/shared";
 import type { PublicListing } from "../lib/api";
 import { localizedListingText, listingSpecs } from "../lib/api";
@@ -57,7 +63,8 @@ export function ListingCard({
           </div>
           <h3>{text.title}</h3>
           <p className="listing-location">
-            <span aria-hidden="true">⌖</span> {listing.city}
+            <Icon icon={faLocationPin} size="xs" className="location-icon" aria-hidden="true" />
+            {listing.city}
             {listing.district ? `، ${listing.district}` : ""}
           </p>
           <div className="listing-specs">
@@ -69,7 +76,7 @@ export function ListingCard({
           </div>
           <span className="listing-card-cta">
             {messages.listings.details}
-            <span aria-hidden="true">{locale === "ar" ? " ←" : " →"}</span>
+            <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
           </span>
         </div>
       </Link>

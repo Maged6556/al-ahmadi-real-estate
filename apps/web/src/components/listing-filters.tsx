@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { Icon } from "../components/ui/icon";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import type { Locale } from "@al-ahmadi/shared";
 import type {
   ListingFilterOptions,
@@ -88,7 +90,9 @@ export function ListingFilters({ locale, options, filters, facets }: Props) {
         <div className="filter-search">
           <label htmlFor="listing-query">{messages.listings.search}</label>
           <div className="search-input-wrap">
-            <span aria-hidden="true">⌕</span>
+            <span aria-hidden="true">
+              <Icon icon={faMagnifyingGlass} size="1x" />
+            </span>
             <input
               id="listing-query"
               type="search"

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import type { Locale } from "@al-ahmadi/shared";
 import { getMessages } from "../lib/i18n";
 import { buildGenericWhatsAppUrl } from "../lib/whatsapp";
@@ -19,7 +19,9 @@ export function SiteFooter({ locale }: { locale: Locale }) {
         rel="noopener noreferrer"
         aria-label={messages.common.whatsapp}
       >
-        <span aria-hidden="true">◉</span>
+        <span aria-hidden="true">
+          <FontAwesomeIcon icon={faWhatsapp} />
+        </span>
         <span>{messages.common.whatsapp}</span>
       </a>
       <footer className="site-footer">
