@@ -14,9 +14,16 @@
   --line: #e2e8f0;
   --rose: #b91c1c;
   --shadow: 0 18px 50px rgb(11 21 38 / 9%);
-  font-family: Arial, "Noto Sans Arabic", sans-serif;
+  --font-body:
+    var(--font-ibm-plex-sans-arabic), var(--font-plus-jakarta-sans),
+    "IBM Plex Sans Arabic", "Plus Jakarta Sans", sans-serif;
+  --font-heading:
+    var(--font-cairo), var(--font-plus-jakarta-sans), "Cairo",
+    "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-body);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 :root[data-theme="dark"] {
@@ -69,14 +76,25 @@ body {
   min-height: 100vh;
   background: var(--paper);
   color: var(--ink);
+  font-family: var(--font-body);
   transition:
     background-color 200ms ease,
     color 200ms ease;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
 button,
 input,
-select {
+select,
+textarea {
   font: inherit;
 }
 

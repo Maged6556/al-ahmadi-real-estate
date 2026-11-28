@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Cairo, IBM_Plex_Sans_Arabic, Plus_Jakarta_Sans } from "next/font/google";
 import { SiteFooter } from "../../components/site-footer";
 import { SiteHeader } from "../../components/site-header";
 import { CookieConsent } from "../../components/cookie-consent";
@@ -8,6 +9,27 @@ import { getServerAuth } from "../../lib/auth-server";
 import { siteConfig } from "../../lib/site-config";
 import "../../lib/fontawesome";
 import "../globals.css";
+
+const ibmPlexSansArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-ibm-plex-sans-arabic",
+  display: "swap",
+});
+
+const cairo = Cairo({
+  subsets: ["arabic", "latin"],
+  weight: ["600", "700", "800"],
+  variable: "--font-cairo",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plus-jakarta-sans",
+  display: "swap",
+});
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://al-ahmadi-real-estate-od57.vercel.app";
 
@@ -81,6 +103,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={locale === "ar" ? "rtl" : "ltr"}
+      className={`${ibmPlexSansArabic.variable} ${cairo.variable} ${plusJakartaSans.variable}`}
       suppressHydrationWarning
     >
       <head>
