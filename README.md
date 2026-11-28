@@ -1,6 +1,14 @@
 # Al-ahmadi Real Estate Marketing
 
-Bilingual real-estate marketing platform for Al-ahmadi. This repository is being delivered in phases; Phases 1–9 are implemented.
+Bilingual (Arabic RTL / English LTR) real-estate marketing platform for Al-ahmadi. This repository is being delivered in phases; Phases 1–9 are implemented.
+
+**Live Demo:** https://al-ahmadi-real-estate-od57.vercel.app/en (Arabic: https://al-ahmadi-real-estate-od57.vercel.app/ar)
+
+## Monorepo & Stack
+
+- **`apps/web`** — Next.js 16 (App Router, React 19, TypeScript) public storefront and localized admin dashboard
+- **`apps/api`** — Express 5 (TypeScript), Prisma 6 (PostgreSQL), Redis + BullMQ, Sharp, Cloudinary, Resend
+- **`packages/shared`** — Shared types, locale definitions (`ar` / `en`), and legal/domain constants
 
 ## Requirements
 
@@ -29,6 +37,14 @@ Production images are built from the root context using the API and web multi-st
 
 The CI workflow runs dependency audit, lint, tests, typecheck, formatting, builds, and container builds. A successful `master` CI run triggers image publication, Trivy HIGH/CRITICAL scans, and an optional SSH deployment when the protected `production` environment is configured. Deployments use commit SHA tags, apply Prisma migrations, check liveness/readiness, and roll back to the last healthy image on a failed rollout. Database backups include SHA-256 checksums; the restore script only restores to a new isolated database and never overwrites the live database.
 
+### Split Deployment (Vercel + External API)
+
+When deploying `apps/web` to Vercel and `apps/api` to a persistent Node host (e.g., Railway, Render, or Fly.io):
+- Set `NEXT_PUBLIC_API_BASE_URL` and `API_INTERNAL_BASE_URL` on Vercel to your deployed HTTPS API origin.
+- Set `NEXT_PUBLIC_SITE_URL` on Vercel and `CORS_ORIGIN` / `WEB_BASE_URL` on the API to your exact Vercel web origin (no trailing slash).
+- Set matching `WEB_REVALIDATION_SECRET` values on both `apps/web` and `apps/api`, and point `WEB_REVALIDATION_URL` to `https://<web-domain>/api/revalidate`.
+- If the web app and API are on different top-level domains, configure auth cookies with `SameSite=None; Secure` in production so browser requests with `credentials: "include"` send session cookies cross-origin.
+
 ## Account, email, and privacy (Phase 9)
 
 Registration requires acceptance of the localized Terms and Privacy templates and queues a 24-hour email-verification link. Password reset links are single-use, expire after 30 minutes, and revoke all refresh sessions. Email changes require confirmation at the new address; account settings also support profile/language changes, password changes, and account anonymization. Configure Resend (`RESEND_API_KEY`, verified `EMAIL_FROM`, and `WEB_BASE_URL`) to deliver messages; BullMQ retries delivery up to five times. Optional analytics/marketing cookies remain disabled unless the visitor consents; this release does not load analytics or marketing scripts. The localized legal pages are templates requiring owner/legal review. See [DATA-HANDLING.md](./DATA-HANDLING.md).
@@ -37,7 +53,13 @@ Registration requires acceptance of the localized Terms and Privacy templates an
 
 The public site is available in Arabic at `/ar` and English at `/en`; `/` redirects to the locale cookie or Arabic by default. It includes the home page, searchable and filterable listings, listing details, About, Contact, and login/registration pages. Set `NEXT_PUBLIC_SITE_URL` to the canonical public origin. Server-side listing requests use `API_INTERNAL_BASE_URL` (Compose sets this to `http://api:4000`); browser authentication uses `NEXT_PUBLIC_API_BASE_URL`.
 
-Public listing cards and details do not expose prices or exact addresses. Listing inquiry and contact actions open WhatsApp using the configured business number. Cloudinary image URLs are enabled for Next.js image optimization. Public listing fetches are tagged for the existing API-triggered revalidation route.
+Public listing cards and details do not expose prices or exact addresses. Listing inquiry and contact actions open WhatsApp using the configured business number. Cloudinary image URLs are enabled for Next.js image optimization. Public listing fetches are tagged for the existing API-triggered revalidation route (`/api/revalidate`).
+
+### UI, Typography & Theming
+
+- **Fonts:** Self-hosted via `next/font/google` (CSP-compatible `font-src 'self'`) — **IBM Plex Sans Arabic** & **Plus Jakarta Sans** for body/UI text, and **Cairo** & **Plus Jakarta Sans** for headings.
+- **Icons:** Font Awesome SVG icons (`@fortawesome/react-fontawesome`) with bundled core CSS (`config.autoAddCss = false` + `@fortawesome/fontawesome-svg-core/styles.css`) and standardized sizing across RTL and LTR layouts.
+- **Theme:** Light and Dark mode toggle (`ThemeToggle`) persisted in `localStorage` with `prefers-color-scheme` fallback and high-contrast CSS variables (`--heading`, `--paper`, `--ink`, `--gold`, `--green`).
 
 ## Admin dashboard (Phase 7)
 
