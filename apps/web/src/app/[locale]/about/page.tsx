@@ -52,7 +52,7 @@ export default async function AboutPage({
               className="button button-primary"
             >
               {messages.home.browse}
-              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
+              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" aria-hidden="true" />
             </Link>
           </div>
           <div className="about-visual" aria-hidden="true">

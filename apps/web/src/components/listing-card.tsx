@@ -76,7 +76,7 @@ export function ListingCard({
           </div>
           <span className="listing-card-cta">
             {messages.listings.details}
-            <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
+            <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" aria-hidden="true" />
           </span>
         </div>
       </Link>

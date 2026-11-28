@@ -17,7 +17,7 @@ export function ListingGrid({
     return (
       <div className="empty-state">
         <span className="empty-icon" aria-hidden="true">
-          <Icon icon={faMagnifyingGlass} size="3x" />
+          <Icon icon={faMagnifyingGlass} size="1x" />
         </span>
         <h2>{messages.listings.emptyTitle}</h2>
         <p>{messages.listings.emptyText}</p>

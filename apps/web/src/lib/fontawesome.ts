@@ -1,8 +1,11 @@
-import { library } from "@fortawesome/fontawesome-svg-core";
+import { config, library } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import {
   faFacebookF,
   faWhatsapp,
 } from "@fortawesome/free-brands-svg-icons";
+
+config.autoAddCss = false;
 import {
   faArrowLeft,
   faArrowRight,

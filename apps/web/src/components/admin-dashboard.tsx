@@ -80,22 +80,22 @@ export function AdminDashboard({ locale }: { locale: Locale }) {
             <StatCard
               label={messages.admin.totalListings}
               value={stats.listings.total}
-              icon={<Icon icon={faHouse} size="lg" />}
+              icon={<Icon icon={faHouse} size="1x" />}
             />
             <StatCard
               label={messages.admin.publishedListings}
               value={stats.listings.published}
-              icon={<Icon icon={faArrowUpRightFromSquare} size="lg" />}
+              icon={<Icon icon={faArrowUpRightFromSquare} size="1x" />}
             />
             <StatCard
               label={messages.admin.inquiries}
               value={stats.inquiries.total}
-              icon={<Icon icon={faEnvelope} size="lg" />}
+              icon={<Icon icon={faEnvelope} size="1x" />}
             />
             <StatCard
               label={messages.admin.whatsappClicks}
               value={stats.inquiries.whatsappClicks}
-              icon={<Icon icon={faWhatsapp} size="lg" />}
+              icon={<Icon icon={faWhatsapp} size="1x" />}
             />
           </div>
 
@@ -150,7 +150,7 @@ export function AdminDashboard({ locale }: { locale: Locale }) {
           className="button button-outline"
         >
           {messages.admin.listings}{" "}
-          <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
+          <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" aria-hidden="true" />
         </Link>
       </section>
     </div>

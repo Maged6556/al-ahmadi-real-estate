@@ -42,10 +42,10 @@ const categories: {
   type: "apartment" | "building" | "residential_unit" | "villa" | "land";
   icon: ReturnType<typeof Icon> | React.ReactNode;
 }[] = [
-  { type: "apartment", icon: <Icon icon={faHouse} size="lg" /> },
-  { type: "building", icon: <Icon icon={faBuilding} size="lg" /> },
-  { type: "residential_unit", icon: <Icon icon={faHouse} size="lg" /> },
-  { type: "villa", icon: <Icon icon={faHouse} size="lg" /> },
+  { type: "apartment", icon: <Icon icon={faHouse} size="1x" /> },
+  { type: "building", icon: <Icon icon={faBuilding} size="1x" /> },
+  { type: "residential_unit", icon: <Icon icon={faHouse} size="1x" /> },
+  { type: "villa", icon: <Icon icon={faHouse} size="1x" /> },
   { type: "land", icon: (
     <svg
       width="24"
@@ -101,7 +101,7 @@ export default async function HomePage({
                 className="button button-primary"
               >
                 {messages.home.browse}
-                <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
+                <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" aria-hidden="true" />
               </Link>
               <Link
                 href={`/${locale}/contact`}
@@ -136,7 +136,7 @@ export default async function HomePage({
       <section className="trust-section">
         <div className="container trust-inner">
           <div className="trust-icon" aria-hidden="true">
-            <Icon icon={faStar} size="lg" />
+            <Icon icon={faStar} size="1x" />
           </div>
           <div>
             <p className="eyebrow">{messages.home.experience}</p>
@@ -162,7 +162,7 @@ export default async function HomePage({
             </div>
             <Link href={`/${locale}/listings`} className="text-link">
               {messages.home.allListings}
-              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
+              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" aria-hidden="true" />
             </Link>
           </div>
           <div className="category-grid">
@@ -197,7 +197,7 @@ export default async function HomePage({
             </div>
             <Link href={`/${locale}/listings`} className="text-link">
               {messages.home.allListings}
-              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" className="ml-1" aria-hidden="true" />
+              <Icon icon={locale === "ar" ? faArrowLeft : faArrowRight} size="xs" aria-hidden="true" />
             </Link>
           </div>
           {!listingsAvailable ? (

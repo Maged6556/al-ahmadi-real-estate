@@ -1246,6 +1246,11 @@ p {
 }
 
 .feature-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 3px;
   color: var(--gold);
   font-weight: 700;
 }
@@ -1745,7 +1750,11 @@ p {
 }
 
 .whatsapp-float > span:first-child {
-  font-size: 17px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
 }
 
 .social-link {
@@ -1777,36 +1786,44 @@ p {
   margin-top: 12px;
 }
 
-.social-link svg,
-.contact-option .contact-option-icon svg {
-  fill: currentColor;
-  color: currentColor;
-  width: 100% !important;
-  height: 100% !important;
+/* Font Awesome & inline SVG icon consistency */
+.svg-inline--fa {
+  display: inline-block;
+  width: auto;
+  height: 1em;
+  max-width: 100%;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
 }
 
-/* Font Awesome icon consistency */
 .fa,
 .fa-icon,
 svg[data-prefix="fas"],
 svg[data-prefix="fab"],
 svg[data-prefix="far"] {
   display: inline-block;
+  flex-shrink: 0;
   vertical-align: middle;
 }
 
-.theme-toggle-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.location-icon {
+/* Inline & button icons (14px–16px) */
+.button svg,
+.text-link svg,
+.back-link svg,
+.listing-card-cta svg,
+.feature-check svg,
+.contact-option-arrow svg {
   width: 14px;
   height: 14px;
-  flex-shrink: 0;
 }
 
+.button-whatsapp svg,
+.whatsapp-float svg {
+  width: 16px;
+  height: 16px;
+}
+
+.location-icon,
 .proof-icon {
   width: 14px;
   height: 14px;
@@ -1814,10 +1831,79 @@ svg[data-prefix="far"] {
   color: var(--gold);
 }
 
+.search-input-wrap > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+
+.search-input-wrap > span svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Navigation, header & admin icons (16px–18px) */
+.theme-toggle-icon,
+.theme-toggle svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+.admin-nav-link svg,
+.admin-stat-icon svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+/* Social & action icon buttons (18px–20px inside sized containers) */
+.social-link svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  color: currentColor;
+}
+
+.contact-option-icon svg {
+  width: 19px;
+  height: 19px;
+  fill: currentColor;
+  color: currentColor;
+}
+
+/* Feature, category & decorative icons */
+.trust-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.category-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.category-icon svg,
+.land-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
 .category-arrow-icon {
+  position: absolute;
+  inset-inline-end: 20px;
+  bottom: 20px;
   width: 14px;
   height: 14px;
   flex-shrink: 0;
+  color: var(--gold);
 }
 
 .back-arrow-icon {
@@ -1826,21 +1912,35 @@ svg[data-prefix="far"] {
   flex-shrink: 0;
 }
 
-.land-icon {
+.empty-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.location-pin svg {
   width: 24px;
   height: 24px;
-  flex-shrink: 0;
-  color: var(--gold);
 }
 
-.contact-option-icon svg {
-  width: 20px !important;
-  height: 20px !important;
+.about-spark svg {
+  width: 22px;
+  height: 22px;
 }
 
-.social-link svg {
-  width: 18px !important;
-  height: 18px !important;
+.about-spark-two svg {
+  width: 16px;
+  height: 16px;
+}
+
+.contact-decoration svg {
+  width: 20px;
+  height: 20px;
+}
+
+.contact-decoration svg:nth-child(2) {
+  width: 26px;
+  height: 26px;
+  color: var(--green);
 }
 
 @media (min-width: 1500px) {
@@ -2042,7 +2142,8 @@ svg[data-prefix="far"] {
     font-size: 25px;
   }
 
-  .category-arrow {
+  .category-arrow,
+  .category-arrow-icon {
     inset-inline-end: 15px;
     bottom: 15px;
   }

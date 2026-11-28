@@ -213,7 +213,7 @@ export default async function ListingDetailPage({ params }: Props) {
             <p className="eyebrow">{messages.detail.location}</p>
             <div className="location-visual" aria-hidden="true">
               <span className="location-pin">
-                <Icon icon={faLocationPin} size="2x" />
+                <Icon icon={faLocationPin} size="1x" />
               </span>
               <span className="location-circle" />
               <span className="location-line location-line-one" />
